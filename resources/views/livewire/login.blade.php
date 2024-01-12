@@ -32,17 +32,17 @@
                             <label class="fancy-checkbox element-left">
                                 <input type="checkbox">
                                 <span>{{__('Remember me')}}</span>
-                            </label>								
+                            </label>
                         </div>
                         <div wire:ignore>
                             @if(env('USE_CAPTCHA')==1)
                                 <div class="g-recaptcha" data-callback="verifyCallback" data-sitekey="{{env('CAPTCHA_SITE_KEY')}}"></div>
                             @endif
-                            <button 
+                            <button
                                 type="submit" id="btn_submit"
                                 class="btn btn-info btn-lg btn-block">{{ __('LOGIN') }}</button>
                         </div>
-                        
+
                     </form>
                 </div>
             </div>

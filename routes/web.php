@@ -39,4 +39,10 @@ Route::group(['middleware' => ['auth','access:1']], function(){
     Route::get('users/edit/{id}',App\Http\Livewire\User\Edit::class)->name('users.edit');
     Route::post('users/autologin/{id}',[App\Http\Livewire\User\Index::class,'autologin'])->name('users.autologin');
     Route::get('log-activity',App\Http\Livewire\LogActivity\Index::class)->name('log-activity');
+
+    Route::get('customer',App\Http\Livewire\Customer\Index::class)->name('customer.index');
+    Route::get('customer/insert',App\Http\Livewire\Customer\Insert::class)->name('customer.insert');
+
+    Route::get('vendor',App\Http\Livewire\Vendor\Index::class)->name('vendor.index');
+    Route::get('tracking',App\Http\Livewire\Tracking\Index::class)->name('tracking.index');
 });

@@ -15,7 +15,12 @@
                         @if(\Auth::user()->user_access_id==1)
                             <li><a href="{{ route('users.index') }}" class="text-info icon-menu px-1">Users</a></li>
                         @endif
-                        <li><a href="{{ route('plc.index') }}" class="text-info icon-menu px-1">PLC / Slave</a></li>
+                        <li><a href="{{ route('customer.index') }}" class="text-info icon-menu px-1">Customer</a></li>
+                        <li><a href="{{ route('vendor.index') }}" class="text-info icon-menu px-1">Vendor / Supplier</a></li>
+                        <li><a href="{{ route('tracking.index') }}" class="text-info icon-menu px-1">Tracking</a></li>
+                        <li><a href="#" class="text-info icon-menu px-1">Expense</a></li>
+                        <li><a href="#" class="text-info icon-menu px-1">Budget Plan</a></li>
+                        <li><a href="#" class="text-info icon-menu px-1">Budget Plan</a></li>
                     </ul>
                 </div>
             </form>

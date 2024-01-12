@@ -30,27 +30,27 @@ class Login extends Component
         if(env('USE_CAPTCHA')==1){
             $response = Http::post('https://www.google.com/recaptcha/api/siteverify?secret='.env('CAPTCHA_SITE_SECRET').'&response='. $this->token);
             $response = $response->json();
-            
+
             if (!$response['success']) {
                 $this->message = 'Google thinks you are a bot, please refresh and try again';
             }else{
                 $credentials = ['email'=>$this->email,'password'=>$this->password];
-    
+
                 if (Auth::attempt($credentials)) {
                     \LogActivity::add('Login');
-                    return redirect('/booking-room');
+                    return redirect('/');
                 }
                 else $this->message = __('Email / Password incorrect please try again');
             }
         }else{
             $credentials = ['email'=>$this->email,'password'=>$this->password];
-    
+
             if (Auth::attempt($credentials)) {
                 \LogActivity::add('Login');
-                return redirect('/booking-room');
+                return redirect('/');
             }
             else $this->message = __('Email / Password incorrect please try again');
         }
-       
+
     }
 }
