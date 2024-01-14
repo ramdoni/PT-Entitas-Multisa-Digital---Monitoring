@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 12, 2024 at 02:44 AM
+-- Generation Time: Jan 14, 2024 at 10:48 AM
 -- Server version: 10.4.17-MariaDB
 -- PHP Version: 7.4.12
 
@@ -107,7 +107,7 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`id`, `customer_code`, `name`, `phone`, `address`, `provinsi_id`, `kabupaten_id`, `kecamatan_id`, `kelurahan_id`, `created_at`, `updated_at`) VALUES
-(1, NULL, 'PT EMPORE HEZER TAMA', '+62 21 2955 7450', NULL, NULL, NULL, NULL, NULL, '2024-01-12 01:43:56', '2024-01-12 01:43:56');
+(2, 'T001', 'PT EMPORE HEZER TAMA', '+62 21 2955 7450', NULL, 31, 3172, NULL, NULL, '2024-01-12 12:36:30', '2024-01-12 12:36:30');
 
 -- --------------------------------------------------------
 
@@ -130,7 +130,8 @@ CREATE TABLE `customer_pic` (
 --
 
 INSERT INTO `customer_pic` (`id`, `name`, `position`, `mobile`, `email`, `created_at`, `updated_at`) VALUES
-(1, 'MARGARETH SILVIA', 'DIREKTUR', '081808684803', 'silvia@empore.co.id', '2024-01-12 01:43:56', '2024-01-12 01:43:56');
+(1, 'MARGARETH SILVIA', 'DIREKTUR', '081808684803', 'silvia@empore.co.id', '2024-01-12 01:43:56', '2024-01-12 01:43:56'),
+(2, 'MARGARETH SILVIA', 'DIREKTUR', '081808684803', 'silvia@empore.co.id', '2024-01-12 12:36:30', '2024-01-12 12:36:30');
 
 -- --------------------------------------------------------
 
@@ -146,6 +147,33 @@ CREATE TABLE `failed_jobs` (
   `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoices`
+--
+
+CREATE TABLE `invoices` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `purchase_order_id` int(11) DEFAULT NULL,
+  `invoice_number` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `invoice_date` date DEFAULT NULL,
+  `invoice_sent` date DEFAULT NULL,
+  `invoice_receive` date DEFAULT NULL,
+  `due_date` date DEFAULT NULL,
+  `amount` bigint(20) DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
+  `tax` int(11) DEFAULT NULL,
+  `nett_amount` bigint(20) DEFAULT NULL,
+  `payment_received` bigint(20) DEFAULT NULL,
+  `outstanding_balance` bigint(20) DEFAULT NULL,
+  `payment_date` date DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 0,
+  `top_day` smallint(6) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -173,7 +201,7 @@ CREATE TABLE `jobs` (
 CREATE TABLE `kabupaten` (
   `id` char(4) NOT NULL,
   `provinsi_id` int(11) NOT NULL,
-  `name` tinytext NOT NULL,
+  `nama` tinytext NOT NULL,
   `id_jenis` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -181,7 +209,7 @@ CREATE TABLE `kabupaten` (
 -- Dumping data for table `kabupaten`
 --
 
-INSERT INTO `kabupaten` (`id`, `provinsi_id`, `name`, `id_jenis`) VALUES
+INSERT INTO `kabupaten` (`id`, `provinsi_id`, `nama`, `id_jenis`) VALUES
 ('1101', 11, 'KAB. ACEH SELATAN', 1),
 ('1102', 11, 'KAB. ACEH TENGGARA', 1),
 ('1103', 11, 'KAB. ACEH TIMUR', 1),
@@ -740,7 +768,33 @@ INSERT INTO `log_activities` (`id`, `subject`, `url`, `method`, `ip`, `agent`, `
 (17, 'Setting Update', 'http://localhost:8000/livewire/message/setting', 'POST', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-03 13:29:58', '2024-01-03 13:29:58', '{\"fingerprint\":{\"id\":\"FLItp0SOWWthitfTr5tp\",\"name\":\"setting\",\"locale\":\"id\",\"path\":\"setting\",\"method\":\"GET\",\"v\":\"acj\"},\"serverMemo\":{\"children\":[],\"errors\":[],\"htmlHash\":\"5e3c5012\",\"data\":{\"logoUrl\":\"http:\\/\\/localhost:8000\\/storage\\/logo20240103080813.png\",\"logo\":null,\"faviconUrl\":\"http:\\/\\/localhost:8000\\/storage\\/favicon20240103201026.png\",\"favicon\":null,\"message\":null,\"company\":\"Wirata Putra Otomasi\",\"email\":\"-\",\"phone\":\"-\",\"website\":\"-\",\"address\":\"-\"},\"dataMeta\":[],\"checksum\":\"9ef715bb784bb9a79001e8c059d3b17b1d486a3fde1ef7c956d7780f746b3c7c\"},\"updates\":[{\"type\":\"callMethod\",\"payload\":{\"id\":\"3y8x\",\"method\":\"updateBasic\",\"params\":[]}}]}'),
 (18, 'Login', 'http://localhost:8000/livewire/message/login', 'POST', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-11 12:10:26', '2024-01-11 12:10:26', '{\"fingerprint\":{\"id\":\"fLBRjIdy5F3xencr3zRe\",\"name\":\"login\",\"locale\":\"id\",\"path\":\"login\",\"method\":\"GET\",\"v\":\"acj\"},\"serverMemo\":{\"children\":[],\"errors\":[],\"htmlHash\":\"a6a382d3\",\"data\":{\"email\":null,\"password\":null,\"token\":null,\"message\":null},\"dataMeta\":[],\"checksum\":\"8d54efe1ef210a38eed85c39a35a9bcee94cc246ae8ca1ae67da85975d12022e\"},\"updates\":[{\"type\":\"syncInput\",\"payload\":{\"id\":\"hcez\",\"name\":\"email\",\"value\":\"admin@gmail.com\"}},{\"type\":\"syncInput\",\"payload\":{\"id\":\"em3tl\",\"name\":\"password\",\"value\":\"12345678\"}},{\"type\":\"callMethod\",\"payload\":{\"id\":\"gsxq\",\"method\":\"login\",\"params\":[]}}]}'),
 (19, 'Login', 'http://localhost:8000/livewire/message/login', 'POST', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-11 23:53:55', '2024-01-11 23:53:55', '{\"fingerprint\":{\"id\":\"IjQbSkHASpxovaLCWWN0\",\"name\":\"login\",\"locale\":\"id\",\"path\":\"login\",\"method\":\"GET\",\"v\":\"acj\"},\"serverMemo\":{\"children\":[],\"errors\":[],\"htmlHash\":\"ac227d8b\",\"data\":{\"email\":null,\"password\":null,\"token\":null,\"message\":null},\"dataMeta\":[],\"checksum\":\"8e917b02654bb149663a77666a02d47acc3d047e8659218f07bcf58d1e65ca14\"},\"updates\":[{\"type\":\"syncInput\",\"payload\":{\"id\":\"vup\",\"name\":\"email\",\"value\":\"admin@gmail.com\"}},{\"type\":\"syncInput\",\"payload\":{\"id\":\"wy0z\",\"name\":\"password\",\"value\":\"12345678\"}},{\"type\":\"callMethod\",\"payload\":{\"id\":\"m4rkg\",\"method\":\"login\",\"params\":[]}}]}'),
-(20, 'Setting', 'http://localhost:8000/setting', 'GET', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-12 01:28:54', '2024-01-12 01:28:54', '');
+(20, 'Setting', 'http://localhost:8000/setting', 'GET', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-12 01:28:54', '2024-01-12 01:28:54', ''),
+(21, 'Login', 'http://localhost:8000/livewire/message/login', 'POST', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-12 12:09:09', '2024-01-12 12:09:09', '{\"fingerprint\":{\"id\":\"6UtiCI8PrAglGlY0kdcA\",\"name\":\"login\",\"locale\":\"id\",\"path\":\"login\",\"method\":\"GET\",\"v\":\"acj\"},\"serverMemo\":{\"children\":[],\"errors\":[],\"htmlHash\":\"d8eac29f\",\"data\":{\"email\":null,\"password\":null,\"token\":null,\"message\":null},\"dataMeta\":[],\"checksum\":\"83b8d564ee0d6ab943cad736f9e8415cb20388a174003759876e9946a515b609\"},\"updates\":[{\"type\":\"syncInput\",\"payload\":{\"id\":\"dxhw\",\"name\":\"email\",\"value\":\"admin@gmail.com\"}},{\"type\":\"syncInput\",\"payload\":{\"id\":\"99pl\",\"name\":\"password\",\"value\":\"12345678\"}},{\"type\":\"callMethod\",\"payload\":{\"id\":\"gc75\",\"method\":\"login\",\"params\":[]}}]}'),
+(22, 'Login', 'http://localhost:8000/livewire/message/login', 'POST', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-13 10:25:38', '2024-01-13 10:25:38', '{\"fingerprint\":{\"id\":\"Xqc8VxmRQMFVuRUy2dKD\",\"name\":\"login\",\"locale\":\"id\",\"path\":\"login\",\"method\":\"GET\",\"v\":\"acj\"},\"serverMemo\":{\"children\":[],\"errors\":[],\"htmlHash\":\"00a890b0\",\"data\":{\"email\":null,\"password\":null,\"token\":null,\"message\":null},\"dataMeta\":[],\"checksum\":\"1a42c13814130c3fcd3274ec3736948879149428818d47f2cfdef057b9a875d1\"},\"updates\":[{\"type\":\"syncInput\",\"payload\":{\"id\":\"yic4\",\"name\":\"email\",\"value\":\"admin@gmail.com\"}},{\"type\":\"syncInput\",\"payload\":{\"id\":\"dff4\",\"name\":\"password\",\"value\":\"12345678\"}},{\"type\":\"callMethod\",\"payload\":{\"id\":\"11zy\",\"method\":\"login\",\"params\":[]}}]}'),
+(23, 'Setting', 'http://localhost:8000/setting', 'GET', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-13 12:33:02', '2024-01-13 12:33:02', ''),
+(24, 'Update Logo', 'http://localhost:8000/livewire/message/setting', 'POST', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-13 12:33:18', '2024-01-13 12:33:18', '{\"fingerprint\":{\"id\":\"5YfbTnknbrJhZf9StClU\",\"name\":\"setting\",\"locale\":\"id\",\"path\":\"setting\",\"method\":\"GET\",\"v\":\"acj\"},\"serverMemo\":{\"children\":[],\"errors\":[],\"htmlHash\":\"5e3c5012\",\"data\":{\"logoUrl\":\"http:\\/\\/localhost:8000\\/storage\\/logo20240103080813.png\",\"logo\":\"livewire-file:ndbS1zuMkqpK5C23PCk64mQr6n362Z-metac3lzdGVtLnBuZw==-.png\",\"faviconUrl\":\"http:\\/\\/localhost:8000\\/storage\\/favicon20240103201026.png\",\"favicon\":\"livewire-file:uMwuY5vXupcjh1QvxijcMm11O3OWN0-metac3lzdGVtLnBuZw==-.png\",\"message\":null,\"company\":\"Wirata Putra Otomasi\",\"email\":\"-\",\"phone\":\"-\",\"website\":\"-\",\"address\":\"-\"},\"dataMeta\":[],\"checksum\":\"3018d4ae4c01704c9545eb74f09d5e4bfb65e27668b7a4e7c3c57959ea878aed\"},\"updates\":[{\"type\":\"callMethod\",\"payload\":{\"id\":\"30xy\",\"method\":\"save\",\"params\":[]}}]}'),
+(25, 'Update Favicon', 'http://localhost:8000/livewire/message/setting', 'POST', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-13 12:33:18', '2024-01-13 12:33:18', '{\"fingerprint\":{\"id\":\"5YfbTnknbrJhZf9StClU\",\"name\":\"setting\",\"locale\":\"id\",\"path\":\"setting\",\"method\":\"GET\",\"v\":\"acj\"},\"serverMemo\":{\"children\":[],\"errors\":[],\"htmlHash\":\"5e3c5012\",\"data\":{\"logoUrl\":\"http:\\/\\/localhost:8000\\/storage\\/logo20240103080813.png\",\"logo\":\"livewire-file:ndbS1zuMkqpK5C23PCk64mQr6n362Z-metac3lzdGVtLnBuZw==-.png\",\"faviconUrl\":\"http:\\/\\/localhost:8000\\/storage\\/favicon20240103201026.png\",\"favicon\":\"livewire-file:uMwuY5vXupcjh1QvxijcMm11O3OWN0-metac3lzdGVtLnBuZw==-.png\",\"message\":null,\"company\":\"Wirata Putra Otomasi\",\"email\":\"-\",\"phone\":\"-\",\"website\":\"-\",\"address\":\"-\"},\"dataMeta\":[],\"checksum\":\"3018d4ae4c01704c9545eb74f09d5e4bfb65e27668b7a4e7c3c57959ea878aed\"},\"updates\":[{\"type\":\"callMethod\",\"payload\":{\"id\":\"30xy\",\"method\":\"save\",\"params\":[]}}]}'),
+(26, 'Setting', 'http://localhost:8000/setting', 'GET', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-13 12:33:18', '2024-01-13 12:33:18', ''),
+(27, 'Setting', 'http://localhost:8000/setting', 'GET', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-13 12:33:39', '2024-01-13 12:33:39', ''),
+(28, 'Login', 'http://localhost:8000/livewire/message/login', 'POST', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-13 19:12:42', '2024-01-13 19:12:42', '{\"fingerprint\":{\"id\":\"OcK3tWwWBxfVC8zdUX1N\",\"name\":\"login\",\"locale\":\"id\",\"path\":\"login\",\"method\":\"GET\",\"v\":\"acj\"},\"serverMemo\":{\"children\":[],\"errors\":[],\"htmlHash\":\"ec95eab0\",\"data\":{\"email\":null,\"password\":null,\"token\":null,\"message\":null},\"dataMeta\":[],\"checksum\":\"5b933c1f4ac4bcfb8dbab87da008559b6707c3a182f61eed34b55eb99e7fc78f\"},\"updates\":[{\"type\":\"syncInput\",\"payload\":{\"id\":\"hwx7\",\"name\":\"email\",\"value\":\"admin@gmail.com\"}},{\"type\":\"syncInput\",\"payload\":{\"id\":\"bh19\",\"name\":\"password\",\"value\":\"12345678\"}},{\"type\":\"callMethod\",\"payload\":{\"id\":\"nhyv\",\"method\":\"login\",\"params\":[]}}]}'),
+(29, 'Login', 'http://localhost:8000/livewire/message/login', 'POST', '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 4, '2024-01-14 09:25:30', '2024-01-14 09:25:30', '{\"fingerprint\":{\"id\":\"AvupJS0zKqjYwuQgKq4P\",\"name\":\"login\",\"locale\":\"id\",\"path\":\"login\",\"method\":\"GET\",\"v\":\"acj\"},\"serverMemo\":{\"children\":[],\"errors\":[],\"htmlHash\":\"be5c64bb\",\"data\":{\"email\":null,\"password\":null,\"token\":null,\"message\":null},\"dataMeta\":[],\"checksum\":\"02d5b9a80582c2040d6e6498a4bb0c3d65be23693f611118bc92de8ad0204de9\"},\"updates\":[{\"type\":\"syncInput\",\"payload\":{\"id\":\"x4fj\",\"name\":\"email\",\"value\":\"admin@gmail.com\"}},{\"type\":\"syncInput\",\"payload\":{\"id\":\"zxr\",\"name\":\"password\",\"value\":\"12345678\"}},{\"type\":\"callMethod\",\"payload\":{\"id\":\"moakh\",\"method\":\"login\",\"params\":[]}}]}');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `materials`
+--
+
+CREATE TABLE `materials` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `brand` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `model_code_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uom` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1025,7 +1079,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (270, '2023_07_04_155837_add_field_is_rate_to_polis', 202),
 (271, '2023_08_11_223455_create_table_klaim_file', 203),
 (272, '2023_12_07_084115_create_rooms', 204),
-(273, '2024_01_11_193059_create_table_customer', 205);
+(273, '2024_01_11_193059_create_table_customer', 205),
+(274, '2024_01_12_194350_create_table_vendor', 206),
+(275, '2024_01_12_202151_create_table_tracking', 207),
+(276, '2024_01_14_164537_create_table_material_part', 208);
 
 -- --------------------------------------------------------
 
@@ -2122,6 +2179,50 @@ INSERT INTO `provinsi` (`id`, `nama`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `purchase_orders`
+--
+
+CREATE TABLE `purchase_orders` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `quotation_id` int(11) DEFAULT NULL,
+  `po_number` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `po_date` date DEFAULT NULL,
+  `amount` bigint(20) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quotations`
+--
+
+CREATE TABLE `quotations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `project_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `responsibility` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `project_code` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `project_name` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `quotation_number` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `quotation_date` date DEFAULT NULL,
+  `submitted_id` int(11) DEFAULT NULL,
+  `amount` bigint(20) DEFAULT NULL,
+  `discount` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ppn` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pph` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `net_amount` bigint(20) DEFAULT NULL,
+  `aging` int(11) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT 0,
+  `remarks` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `rooms`
 --
 
@@ -2161,7 +2262,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('LGU33bOl13oiwWIy1S1Mx82XJIvMZUC4hESpD8pJ', 4, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiSGtzaUdib2JJRVQ1dHpaMFFPbFh4Z210RlRYSmJIQWFvdHR6SGFsWCI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozNzoiaHR0cDovL2xvY2FsaG9zdDo4MDAwL2N1c3RvbWVyL2luc2VydCI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjMwOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvY3VzdG9tZXIiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo0O3M6MTc6InBhc3N3b3JkX2hhc2hfd2ViIjtzOjYwOiIkMnkkMTAkU0tSY0lzV2tTT1J4VTczVDNHd3ZVdXJCYjh2UWczZTY0RXlZNzBDNE5wdDlhVEdLdUc2TlMiO30=', 1705023840);
+('xvyYokWexESRgOB9SYjstAnBqeCHLytgXV259RGl', 4, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoidm14UTd2RUEzWm4wOHUwVzJoRVJyZHVBYlA5WWhub210UUEzbmpBMyI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozODoiaHR0cDovL2xvY2FsaG9zdDo4MDAwL3F1b3RhdGlvbi9jcmVhdGUiO31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozODoiaHR0cDovL2xvY2FsaG9zdDo4MDAwL3F1b3RhdGlvbi9jcmVhdGUiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTo0O3M6MTc6InBhc3N3b3JkX2hhc2hfd2ViIjtzOjYwOiIkMnkkMTAkU0tSY0lzV2tTT1J4VTczVDNHd3ZVdXJCYjh2UWczZTY0RXlZNzBDNE5wdDlhVEdLdUc2TlMiO30=', 1705173498),
+('ZrBZV2hHFcDg9yuw2v8rKBURQqiZmSF00Z8ZfFf7', 4, '127.0.0.1', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiOVBtcHhTY2I0WE51VFBJRVFVQ2IxdzV6a1hJdXJxd1d5THVqZURqRSI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozODoiaHR0cDovL2xvY2FsaG9zdDo4MDAwL3F1b3RhdGlvbi9jcmVhdGUiO31zOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozMDoiaHR0cDovL2xvY2FsaG9zdDo4MDAwL21hdGVyaWFsIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6NDtzOjE3OiJwYXNzd29yZF9oYXNoX3dlYiI7czo2MDoiJDJ5JDEwJFNLUmNJc1drU09SeFU3M1QzR3d2VXVyQmI4dlFnM2U2NEV5WTcwQzROcHQ5YVRHS3VHNk5TIjt9', 1705225500);
 
 -- --------------------------------------------------------
 
@@ -2182,13 +2284,13 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `key`, `value`, `created_at`, `updated_at`) VALUES
-(1, 'logo', 'logo20240103080813.png', '2020-11-03 17:34:55', '2024-01-03 13:08:13'),
+(1, 'logo', 'logo20240113073318.png', '2020-11-03 17:34:55', '2024-01-13 12:33:18'),
 (2, 'company', 'Wirata Putra Otomasi', '2020-11-03 17:38:50', '2024-01-03 13:07:42'),
 (3, 'address', '-', '2020-11-03 18:01:31', '2024-01-03 13:29:58'),
 (4, 'email', '-', '2020-11-03 18:03:48', '2023-12-06 12:58:53'),
 (5, 'phone', '-', '2020-11-03 18:03:48', '2023-12-06 12:58:53'),
 (6, 'website', '-', '2020-11-03 18:03:48', '2023-12-06 12:58:53'),
-(7, 'favicon', 'favicon20240103201026.png', '2020-11-19 00:57:10', '2024-01-03 13:10:26'),
+(7, 'favicon', 'favicon20240113193318.png', '2020-11-19 00:57:10', '2024-01-13 12:33:18'),
 (8, 'running_surat', '900', '2022-08-08 17:00:00', '2023-11-17 09:11:37');
 
 -- --------------------------------------------------------
@@ -2252,6 +2354,37 @@ INSERT INTO `user_access` (`id`, `name`, `description`, `created_at`, `updated_a
 (4, 'Marketing', '-', '2024-01-12 01:37:13', '2024-01-12 01:37:13'),
 (5, 'Project Manager', '-', '2024-01-12 01:37:29', '2024-01-12 01:37:29');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vendors`
+--
+
+CREATE TABLE `vendors` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `vendor_code` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `person` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `position` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `mobile` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `proposed` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rekening` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `bank` varchar(90) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `account_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `vendors`
+--
+
+INSERT INTO `vendors` (`id`, `vendor_code`, `name`, `phone`, `address`, `person`, `position`, `mobile`, `email`, `proposed`, `rekening`, `bank`, `account_name`, `created_at`, `updated_at`) VALUES
+(1, 'V0001', 'PT. TIGA MANUNGGAL TEKNOLOGI INDONESIA (WABLAS.ID)', NULL, 'Ruko Green Garden Blok A14 Nomor 36, Kedoya Utara, Kebon Jeruk, Jakarta Barat - 11520.', NULL, NULL, '', 'sales@wablas.com', 'WA API', NULL, NULL, NULL, '2024-01-12 13:17:45', '2024-01-12 13:17:45');
+
 --
 -- Indexes for dumped tables
 --
@@ -2288,6 +2421,12 @@ ALTER TABLE `failed_jobs`
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
+-- Indexes for table `invoices`
+--
+ALTER TABLE `invoices`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `jobs`
 --
 ALTER TABLE `jobs`
@@ -2304,6 +2443,12 @@ ALTER TABLE `kabupaten`
 -- Indexes for table `log_activities`
 --
 ALTER TABLE `log_activities`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `materials`
+--
+ALTER TABLE `materials`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2336,6 +2481,18 @@ ALTER TABLE `personal_access_tokens`
 -- Indexes for table `provinsi`
 --
 ALTER TABLE `provinsi`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `purchase_orders`
+--
+ALTER TABLE `purchase_orders`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `quotations`
+--
+ALTER TABLE `quotations`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2372,6 +2529,12 @@ ALTER TABLE `user_access`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `vendors`
+--
+ALTER TABLE `vendors`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -2391,18 +2554,24 @@ ALTER TABLE `convert_pdf`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `customer_pic`
 --
 ALTER TABLE `customer_pic`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `invoices`
+--
+ALTER TABLE `invoices`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -2415,13 +2584,19 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `log_activities`
 --
 ALTER TABLE `log_activities`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+
+--
+-- AUTO_INCREMENT for table `materials`
+--
+ALTER TABLE `materials`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=274;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=277;
 
 --
 -- AUTO_INCREMENT for table `migration_data`
@@ -2433,6 +2608,18 @@ ALTER TABLE `migration_data`
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `purchase_orders`
+--
+ALTER TABLE `purchase_orders`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `quotations`
+--
+ALTER TABLE `quotations`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -2458,6 +2645,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_access`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `vendors`
+--
+ALTER TABLE `vendors`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

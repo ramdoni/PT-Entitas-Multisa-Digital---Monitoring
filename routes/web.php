@@ -44,5 +44,13 @@ Route::group(['middleware' => ['auth','access:1']], function(){
     Route::get('customer/insert',App\Http\Livewire\Customer\Insert::class)->name('customer.insert');
 
     Route::get('vendor',App\Http\Livewire\Vendor\Index::class)->name('vendor.index');
+    Route::get('vendor/create',App\Http\Livewire\Vendor\Create::class)->name('vendor.create');
+
     Route::get('tracking',App\Http\Livewire\Tracking\Index::class)->name('tracking.index');
+    Route::get('tracking/create',App\Http\Livewire\Tracking\Create::class)->name('tracking.create');
+
+    Route::get('quotation',App\Http\Livewire\Quotation\Index::class)->name('quotation.index');
+    Route::get('quotation/create',App\Http\Livewire\Quotation\Create::class)->name('quotation.create');
+
+    Route::get('material',App\Http\Livewire\Material\Index::class)->name('material.index');
 });

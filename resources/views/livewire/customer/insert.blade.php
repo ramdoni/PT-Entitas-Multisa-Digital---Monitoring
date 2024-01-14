@@ -8,6 +8,13 @@
                 <form id="basic-form" method="post" wire:submit.prevent="save">
                     <div class="row">
                         <div class="form-group col-md-6">
+                            <label>{{ __('Customer ID') }}</label>
+                            <input type="text" class="form-control" wire:model="customer_id" >
+                            @error('customer_id')
+                                <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-6">
                             <label>{{ __('Name') }}</label>
                             <input type="text" class="form-control" wire:model="name" >
                             @error('name')
@@ -28,30 +35,27 @@
                                 <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                             @enderror
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="form-group col-md-6">
                             <label>{{ __('Provinsi') }}</label>
-                            <select class="form-control" wire:model="user_access_id">
-                                <option value="">--- Select ---</option>
-                                @foreach(\App\Models\Provinsi::all() as $i)
-                                    <option value="{{$i->id}}">{{$i->nama}}</option>
+                            <select class="form-control" wire:model="provinsi_id">
+                                <option value=""> -- Select -- </option>
+                                @foreach(\App\Models\Provinsi::orderBy('nama')->get() as $item)
+                                    <option value="{{$item->id}}">{{$item->nama}}</option>
                                 @endforeach
                             </select>
-                            @error('address')
+                            @error('provinsi_id')
                                 <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                             @enderror
                         </div>
                         <div class="form-group col-md-6">
                             <label>{{ __('Kabupaten') }}</label>
-                            <select class="form-control" wire:model="user_access_id">
-                                <option value="">--- Select ---</option>
-                                @foreach(\App\Models\Provinsi::all() as $i)
-                                    <option value="{{$i->id}}">{{$i->nama}}</option>
+                            <select class="form-control" wire:model="kabupaten_id">
+                                <option value=""> -- Select -- </option>
+                                @foreach($kabupaten as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                             </select>
-                            @error('address')
+                            @error('provinsi_id')
                                 <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                             @enderror
                         </div>

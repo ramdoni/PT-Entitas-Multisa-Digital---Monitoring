@@ -38,7 +38,15 @@
                             @foreach($data as $k => $item)
                             <tr>
                                 <td style="width: 50px;">{{$k+1}}</td>
-                                <td>{{$item->email}}</td>
+                                <td>{{$item->customer_code}}</td>
+                                <td>{{$item->name}}</td>
+                                <td>{{$item->address}}</td>
+                                <td>{{isset($item->provinsi->nama) ? $item->provinsi->nama : '-'}}</td>
+                                <td>{{isset($item->kabupaten->nama) ? $item->kabupaten->nama : '-'}}</td>
+                                <td>{{$item->phone}}</td>
+                                <td>
+                                    <a href="javascript:void(0)" wire:click="delete({{$item->id}})"><i class="fa fa-trash text-danger"></i></a>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>

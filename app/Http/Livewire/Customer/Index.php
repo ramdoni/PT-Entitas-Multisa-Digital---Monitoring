@@ -13,4 +13,9 @@ class Index extends Component
 
         return view('livewire.customer.index')->with(['data'=>$data->paginate(100)]);
     }
+
+    public function delete($id)
+    {
+        Customer::find($id)->delete();
+    }
 }

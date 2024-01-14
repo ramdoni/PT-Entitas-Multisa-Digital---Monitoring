@@ -1,5 +1,5 @@
-@section('title', 'Vendor')
-@section('sub-title', 'Management Vendor')
+@section('title', 'Material')
+@section('sub-title', 'Management Material')
 <div class="clearfix row">
     <div class="col-lg-12">
         <div class="card">
@@ -17,11 +17,10 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Vendor ID</th>
                                 <th>Name</th>
-                                <th>Address</th>
-                                <th>Phone</th>
-                                <th>Person</th>
+                                <th>Brand</th>
+                                <th>Model Code Type</th>
+                                <th>UOM</th>
                                 <th>Position</th>
                                 <th>Mobile</th>
                                 <th>Email</th>
