@@ -33,31 +33,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($data as $k => $item)
-                            <tr>
-                                <td style="width: 50px;">{{$k+1}}</td>
-                                <td>{{$item->vendor_code}}</td>
-                                <td>{{$item->name}}</td>
-                                <td>{{$item->address}}</td>
-                                <td>{{$item->phone}}</td>
-                                <td>{{$item->person}}</td>
-                                <td>{{$item->position}}</td>
-                                <td>{{$item->mobile}}</td>
-                                <td>{{$item->email}}</td>
-                                <td>{{$item->proposed}}</td>
-                                <td>{{$item->rekening}}</td>
-                                <td>{{$item->bank}}</td>
-                                <td>{{$item->account_name}}</td>
-                                <td>
-                                    <a href="javascript:void(0)" wire:click="delete({{$item->id}})"><i class="fa fa-trash text-danger"></i></a>
-                                </td>
-                            </tr>
-                            @endforeach
+                           
                         </tbody>
                     </table>
                 </div>
                 <br />
-                {{$data->links()}}
             </div>
         </div>
     </div>

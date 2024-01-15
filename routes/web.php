@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth','access:1']], function(){
 
     Route::get('vendor',App\Http\Livewire\Vendor\Index::class)->name('vendor.index');
     Route::get('vendor/create',App\Http\Livewire\Vendor\Create::class)->name('vendor.create');
+    Route::get('vendor/edit/{id}',App\Http\Livewire\Vendor\Edit::class)->name('vendor.edit');
 
     Route::get('tracking',App\Http\Livewire\Tracking\Index::class)->name('tracking.index');
     Route::get('tracking/create',App\Http\Livewire\Tracking\Create::class)->name('tracking.create');

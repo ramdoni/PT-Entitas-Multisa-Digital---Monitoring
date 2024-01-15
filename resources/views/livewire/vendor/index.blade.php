@@ -17,6 +17,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
+                                <th>Type</th>
                                 <th>Vendor ID</th>
                                 <th>Name</th>
                                 <th>Address</th>
@@ -25,6 +26,7 @@
                                 <th>Position</th>
                                 <th>Mobile</th>
                                 <th>Email</th>
+                                <th>Description</th>
                                 <th>Proposed</th>
                                 <th>Rekening</th>
                                 <th>Bank</th>
@@ -36,7 +38,10 @@
                             @foreach($data as $k => $item)
                             <tr>
                                 <td style="width: 50px;">{{$k+1}}</td>
-                                <td>{{$item->vendor_code}}</td>
+                                <td>{{$item->type==1?'Material' : 'Services'}}</td>
+                                <td>
+                                    <a href="{{route('vendor.edit',$item->id)}}">{{$item->vendor_code}}</a>
+                                </td>
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->address}}</td>
                                 <td>{{$item->phone}}</td>
@@ -44,6 +49,7 @@
                                 <td>{{$item->position}}</td>
                                 <td>{{$item->mobile}}</td>
                                 <td>{{$item->email}}</td>
+                                <td>{{$item->description}}</td>
                                 <td>{{$item->proposed}}</td>
                                 <td>{{$item->rekening}}</td>
                                 <td>{{$item->bank}}</td>

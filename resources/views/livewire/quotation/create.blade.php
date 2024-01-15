@@ -17,19 +17,8 @@
             <div class="body">
                 <div class="icon text-warning"><i class="fa fa-area-chart"></i> </div>
                 <div class="content">
-                    <div class="text">Factor</div>
+                    <div class="text">Factor ({{$form['factor']}}%)</div>
                     <h6 class="number">{{format_idr($form['factor_amount'])}}</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-2 col-md-6">
-        <div class="card top_counter">
-            <div class="body">
-                <div class="icon text-warning"><i class="fa fa-area-chart"></i> </div>
-                <div class="content">
-                    <div class="text">Ujroh</div>
-                    <h6 class="number">{{format_idr($form['ujrah_amount'])}}</h6>
                 </div>
             </div>
         </div>
@@ -40,7 +29,7 @@
                 <div class="icon text-danger"><i class="fa fa-shopping-cart"></i> </div>
                 <div class="content">
                     <div class="text">Tabbaru</div>
-                    <h6 class="number">0</h6>
+                    <h6 class="number">{{format_idr($form['tabbaru'])}}</h6>
                 </div>
             </div>
         </div>
@@ -48,10 +37,22 @@
     <div class="col-lg-2 col-md-6">
         <div class="card top_counter">
             <div class="body">
+                <div class="icon text-warning"><i class="fa fa-area-chart"></i> </div>
+                <div class="content">
+                    <div class="text">Ujroh ({{$form['ujrah']}}%)</div>
+                    <h6 class="number">{{format_idr($form['ujrah_amount'])}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-2 col-md-6">
+        <div class="card top_counter">
+            <div class="body">
                 <div class="icon"><i class="fa fa-tag"></i> </div>
                 <div class="content">
                     <div class="text">Grand Total</div>
-                    <h6 class="number">0</h6>
+                    <h6 class="number">{{format_idr($form['grand_total'])}}</h6>
                 </div>
             </div>
         </div>
@@ -119,20 +120,6 @@
                         <div class="col-md-4">
                             <div class="row">
                                 <div class="form-group col-md-5">
-                                    <label>Ujrah (%)</label>
-                                    <input type="number" class="form-control" wire:model="form.ujrah" />
-                                    @error('form.ujrah')
-                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                    @enderror
-                                </div>
-                                <div class="form-group col-md-7">
-                                    <label>Ujrah (Rp)</label>
-                                    <input type="number" class="form-control" wire:model="form.ujrah_amount" />
-                                    @error('form.ujrah_amount')
-                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                    @enderror
-                                </div>
-                                <div class="form-group col-md-5">
                                     <label>Factor (%)</label>
                                     <input type="number" class="form-control" wire:model="form.factor" />
                                     @error('form.ujrah')
@@ -146,6 +133,21 @@
                                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                                     @enderror
                                 </div>
+                                <div class="form-group col-md-5">
+                                    <label>Ujrah (%)</label>
+                                    <input type="number" class="form-control" wire:model="form.ujrah" />
+                                    @error('form.ujrah')
+                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <label>Ujrah (Rp)</label>
+                                    <input type="number" class="form-control" wire:model="form.ujrah_amount" />
+                                    @error('form.ujrah_amount')
+                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                    @enderror
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -166,42 +168,54 @@
                         <tr>
                             <th>No</th>
                             <th>Description</th>
+                            <th></th>
                             <th>Brand</th>
                             <th>Model Code Type</th>
-                            <th>Total / QTY</th>
+                            <th class="text-right">Total / QTY</th>
                             <th>Unit</th>
-                            <th>Unit Price List(IDR)</th>
-                            <th>Sub Total(IDR)</th>
+                            <th class="text-right">Unit Price List(IDR)</th>
+                            <th class="text-right">Sub Total(IDR)</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
+                        @php($total_part_qty=0)
+                        @php($total_part_sub_total=0)
+                        @php($total_part_total=0)
                         @foreach($arr_parts as $k => $item)
                             <tr wire:key="item{{$k}}">
                                 <td>{{$k+1}}</td>
                                 <td>{{$item['name']}}</td>
                                 <td>{{$item['brand']}}</td>
                                 <td>{{$item['modelcode']}}</td>
-                                <td>
-                                    <input type="number" class="form-control" style="width: 100px;" wire:model="arr_parts.{{$k}}.qty" />
+                                <td class="text-right">
+                                    <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="arr_parts.{{$k}}.qty" />
                                 </td>
                                 <td>{{$item['uom']}}</td>
-                                <td>{{format_idr($item['price'])}}</td>
-                                <td>{{format_idr($item['total'])}}</td>
+                                <td class="text-right">{{format_idr($item['price'])}}</td>
+                                <td class="text-right">{{format_idr($item['total'])}}</td>
                                 <td>
                                     <a href="javascript:void(0)" class="text-danger" wire:click="delete_part({{$k}})"><i class="fa fa-close"></i></a>
                                 </td>
                             </tr>
+                            @php($total_part_qty += $item['qty'])
+                            @php($total_part_sub_total += $item['price'])
+                            @php($total_part_total += $item['total'])
                         @endforeach
-                        <tr>
+                        <tr wire:key="item_row_part">
                             <td></td>
-                            <td wire:ignore>
-                                <select class="form-control" id="material_id">
-                                    <option value=""> -- Select -- </option>
-                                    @foreach($materials as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
-                                    @endforeach
-                                </select>
+                            <td>
+                                <div wire:ignore>
+                                    <select class="form-control" id="material_id">
+                                        <option value=""> -- Select -- </option>
+                                        @foreach($materials as $item)
+                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="{{route('material.create')}}" title="Create New Material" target="_blank"><i class="fa fa-plus"></i></a>
                             </td>
                             <td>
                                 @if($material_selected)
@@ -214,7 +228,7 @@
                                 @endif
                             </td>
                             <td>
-                                <input type="number" class="form-control" style="width: 100px;" wire:model="material_qty" />
+                                <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="material_qty" />
                             </td>
                             <td>
                                 @if($material_selected)
@@ -238,6 +252,16 @@
                             </td>
                         </tr>
                     </tbody>
+                    <tfoot style="background:#eee;">
+                        <tr wire:key="tr_total_part">
+                            <th colspan="5" class="text-right">Total</th>
+                            <th class="text-right">{{format_idr($total_part_qty)}}</th>
+                            <th></th>
+                            <th class="text-right">{{format_idr($total_part_sub_total)}}</th>
+                            <th class="text-right">{{format_idr($total_part_total)}}</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -251,17 +275,91 @@
                     <thead style="background:#eee;">
                         <tr>
                             <th>No</th>
-                            <th>Description</th>
-                            <th>Brand</th>
-                            <th>Model Code Type</th>
-                            <th>Total / QTY</th>
+                            <th>Subcontractor</th>
+                            <th></th>
+                            <th>Type</th>
+                            <th class="text-right">Total / QTY</th>
                             <th>Unit</th>
-                            <th>Unit Price List(IDR)</th>
-                            <th>Sub Total(IDR)</th>
+                            <th class="text-right">Unit Price List(IDR)</th>
+                            <th class="text-right">Sub Total(IDR)</th>
+                            <th></th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @php($total_vendor_qty=0)
+                        @php($total_vendor_sub_total=0)
+                        @php($total_vendor_total=0)
+                        @foreach($arr_vendor as $k => $item)
+                            <tr wire:key="item{{$k}}">
+                                <td>{{$k+1}}</td>
+                                <td>{{$item['name']}}</td>
+                                <td>{{$item['description']}}</td>
+                                <td class="text-right">
+                                    <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="arr_vendor.{{$k}}.qty" />
+                                </td>
+                                <td>{{$item['unit']}}</td>
+                                <td class="text-right">{{format_idr($item['price'])}}</td>
+                                <td class="text-right">{{format_idr($item['total'])}}</td>
+                                <td>
+                                    <a href="javascript:void(0)" class="text-danger" wire:click="delete_vendor({{$k}})"><i class="fa fa-close"></i></a>
+                                </td>
+                            </tr>
+                            @php($total_vendor_qty += $item['qty'])
+                            @php($total_vendor_sub_total += $item['price'])
+                            @php($total_vendor_total += $item['total'])
+                        @endforeach
+                        <tr wire:key="item_row_engineering">
+                            <td></td>
+                            <td>
+                                <div wire:ignore>
+                                    <select class="form-control" id="vendor_id">
+                                        <option value=""> -- Select -- </option>
+                                        @foreach($vendors as $item)
+                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="{{route('vendor.create')}}" title="Create New Vendor" target="_blank"><i class="fa fa-plus"></i></a>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" wire:model="engineer_description" />
+                            </td>
+                            <td>
+                                <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="engineer_qty" />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" wire:model="engineer_unit" />
+                            </td>
+                            <td>
+                                <input type="number" class="form-control float-right text-right" wire:model="engineer_price" />
+                            </td>
+                            <td class="text-right">
+                                @if($engineer_qty>0 and $engineer_price>0) 
+                                    {{format_idr($engineer_qty * $engineer_price)}}
+                                @else
+                                    0
+                                @endif
+                            </td>
+                            <td>
+                                @if($vendor_selected)
+                                    <button type="button" class="btn btn-info" wire:click="assign_engineer"><i class="fa fa-plus"></i></button>
+                                @endif
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot style="background:#eee;">
+                        <tr wire:key="tr_total_vendor">
+                            <th colspan="4" class="text-right">Total</th>
+                            <th class="text-right">{{format_idr($total_vendor_qty)}}</th>
+                            <th></th>
+                            <th class="text-right">{{format_idr($total_vendor_sub_total)}}</th>
+                            <th class="text-right">{{format_idr($total_vendor_total)}}</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
                 </table>
-                <a href="javascript:void(0)"><i class="fa fa-plus"></i> Tambah</a>
             </div>
         </div>
     </div>
@@ -275,6 +373,7 @@
                         <tr>
                             <th>No</th>
                             <th>Description</th>
+                            <th></th>
                             <th>Brand</th>
                             <th>Model Code Type</th>
                             <th>Total / QTY</th>
@@ -283,13 +382,52 @@
                             <th>Sub Total(IDR)</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <tr wire:key="item_row_service">
+                            <td></td>
+                            <td>
+                                <select class="form-control" id="vendor_id">
+                                    <option value=""> -- Select -- </option>
+                                    @foreach(\App\Models\Services::orderBy('name','ASC')->get() as $item)
+                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_add_service"><i class="fa fa-plus"></i></a>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" wire:model="engineer_description" />
+                            </td>
+                            <td>
+                                <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="engineer_qty" />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" wire:model="engineer_unit" />
+                            </td>
+                            <td>
+                                <input type="number" class="form-control float-right text-right" wire:model="engineer_price" />
+                            </td>
+                            <td class="text-right">
+                                @if($engineer_qty>0 and $engineer_price>0) 
+                                    {{format_idr($engineer_qty * $engineer_price)}}
+                                @else
+                                    0
+                                @endif
+                            </td>
+                            <td>
+                                @if($vendor_selected)
+                                    <button type="button" class="btn btn-info" wire:click="assign_engineer"><i class="fa fa-plus"></i></button>
+                                @endif
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
-                <a href="javascript:void(0)"><i class="fa fa-plus"></i> Tambah</a>
             </div>
         </div>
     </div>
 </div>
-
+@livewire('quotation.services')
 @push('after-scripts')
     <link rel="stylesheet" href="{{ asset('assets/vendor/select2/css/select2.min.css') }}"/>
     <script src="{{ asset('assets/vendor/select2/js/select2.min.js') }}"></script>
@@ -304,6 +442,12 @@
         $('#material_id').on('change', function (e) {
             var data = $(this).select2("val");
             @this.set('material_selected_id', data);
+        });
+
+        select__vendor = $('#vendor_id').select2();
+        $('#vendor_id').on('change', function (e) {
+            var data = $(this).select2("val");
+            @this.set('vendor_selected_id', data);
         });
     </script>
 @endpush

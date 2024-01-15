@@ -2,21 +2,34 @@
 
 namespace App\Http\Livewire\Vendor;
 
-use Livewire\Component;
 use App\Models\Vendor;
+use Livewire\Component;
 
-class Create extends Component
+class Edit extends Component
 {
-    public $vendor_id,$name,$phone,$address,$person,$position,$mobile,$email,$proposed,$rekening,$bank,$account_name,$type=1;
+    public $data,$vendor_id,$name,$phone,$address,$person,$position,$mobile,$email,$proposed,$rekening,$bank,$account_name,$type;
     public $description;
     public function render()
     {
-        return view('livewire.vendor.create');
+        return view('livewire.vendor.edit');
     }
 
-    public function mount()
+    public function mount(Vendor $id)
     {
-        $this->vendor_id = 'V'.str_pad((Vendor::count()+1),4, '0', STR_PAD_LEFT);
+        $this->data = $id;
+
+        $this->type =$this->data->type;
+        $this->name =$this->data->name;
+        $this->address =$this->data->address;
+        $this->person =$this->data->person;
+        $this->position =$this->data->position;
+        $this->mobile =$this->data->mobile;
+        $this->email =$this->data->email;
+        $this->proposed =$this->data->proposed;
+        $this->rekening =$this->data->rekening;
+        $this->bank =$this->data->bank;
+        $this->account_name =$this->data->account_name;
+        $this->description =$this->data->description;
     }
 
     public function save()
@@ -28,9 +41,8 @@ class Create extends Component
             'type'=>'required'
         ]);
 
-        Vendor::create([
+        $this->data->update([
             'type'=>$this->type,
-            'vendor_code'=>$this->vendor_id,
             'name'=>$this->name,
             'address'=>$this->address,
             'person'=>$this->person,
@@ -41,7 +53,7 @@ class Create extends Component
             'rekening'=>$this->rekening,
             'bank'=>$this->bank,
             'account_name'=>$this->account_name,
-            'description'=>$this->description
+            'description'=>$this->description,
         ]);
 
         session()->flash('message-success',__('Data saved successfully'));
