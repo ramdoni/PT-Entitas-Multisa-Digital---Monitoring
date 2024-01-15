@@ -53,4 +53,5 @@ Route::group(['middleware' => ['auth','access:1']], function(){
     Route::get('quotation/create',App\Http\Livewire\Quotation\Create::class)->name('quotation.create');
 
     Route::get('material',App\Http\Livewire\Material\Index::class)->name('material.index');
+    Route::get('material/create',App\Http\Livewire\Material\Create::class)->name('material.create');
 });

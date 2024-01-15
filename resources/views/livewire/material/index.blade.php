@@ -8,7 +8,7 @@
                     <input type="text" class="form-control" wire:model="keyword" placeholder="Searching..." />
                 </div>
                 <div class="col-md-1">
-                    <a href="{{route('vendor.create')}}" class="btn btn-primary"><i class="fa fa-plus"></i> Vendor</a>
+                    <a href="{{route('material.create')}}" class="btn btn-primary"><i class="fa fa-plus"></i> Material</a>
                 </div>
             </div>
             <div class="body">
@@ -17,17 +17,11 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Name</th>
+                                <th>Material / Part</th>
                                 <th>Brand</th>
                                 <th>Model Code Type</th>
                                 <th>UOM</th>
-                                <th>Position</th>
-                                <th>Mobile</th>
-                                <th>Email</th>
-                                <th>Proposed</th>
-                                <th>Rekening</th>
-                                <th>Bank</th>
-                                <th>Account Name</th>
+                                <th>Price</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -35,18 +29,11 @@
                             @foreach($data as $k => $item)
                             <tr>
                                 <td style="width: 50px;">{{$k+1}}</td>
-                                <td>{{$item->vendor_code}}</td>
                                 <td>{{$item->name}}</td>
-                                <td>{{$item->address}}</td>
-                                <td>{{$item->phone}}</td>
-                                <td>{{$item->person}}</td>
-                                <td>{{$item->position}}</td>
-                                <td>{{$item->mobile}}</td>
-                                <td>{{$item->email}}</td>
-                                <td>{{$item->proposed}}</td>
-                                <td>{{$item->rekening}}</td>
-                                <td>{{$item->bank}}</td>
-                                <td>{{$item->account_name}}</td>
+                                <td>{{$item->brand ? $item->brand->name : '-'}}</td>
+                                <td>{{$item->modelcode ? $item->modelcode->name : '-'}}</td>
+                                <td>{{$item->uom ? $item->uom->name : '-'}}</td>
+                                <td>{{format_idr($item->price)}}</td>
                                 <td>
                                     <a href="javascript:void(0)" wire:click="delete({{$item->id}})"><i class="fa fa-trash text-danger"></i></a>
                                 </td>
