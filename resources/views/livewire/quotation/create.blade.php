@@ -1,46 +1,57 @@
 @section('title', 'Quotaton')
 @section('sub-title', 'Create')
 <div class="row clearfix">
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-6">
         <div class="card top_counter">
             <div class="body">
                 <div class="icon text-info"><i class="fa fa-building"></i> </div>
                 <div class="content">
                     <div class="text">Total Quotation</div>
-                    <h5 class="number">{{format_idr($total_quotation)}}</h5>
+                    <h6 class="number">{{format_idr($form['total_quotation'])}}</h6>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-6">
+        <div class="card top_counter">
+            <div class="body">
+                <div class="icon text-warning"><i class="fa fa-area-chart"></i> </div>
+                <div class="content">
+                    <div class="text">Factor</div>
+                    <h6 class="number">{{format_idr($form['factor_amount'])}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-6">
         <div class="card top_counter">
             <div class="body">
                 <div class="icon text-warning"><i class="fa fa-area-chart"></i> </div>
                 <div class="content">
                     <div class="text">Ujroh</div>
-                    <h5 class="number">0</h5>
+                    <h6 class="number">{{format_idr($form['ujrah_amount'])}}</h6>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-6">
         <div class="card top_counter">
             <div class="body">
                 <div class="icon text-danger"><i class="fa fa-shopping-cart"></i> </div>
                 <div class="content">
                     <div class="text">Tabbaru</div>
-                    <h5 class="number">0</h5>
+                    <h6 class="number">0</h6>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-6">
         <div class="card top_counter">
             <div class="body">
                 <div class="icon"><i class="fa fa-tag"></i> </div>
                 <div class="content">
                     <div class="text">Grand Total</div>
-                    <h5 class="number">0</h5>
+                    <h6 class="number">0</h6>
                 </div>
             </div>
         </div>
@@ -117,6 +128,20 @@
                                 <div class="form-group col-md-7">
                                     <label>Ujrah (Rp)</label>
                                     <input type="number" class="form-control" wire:model="form.ujrah_amount" />
+                                    @error('form.ujrah_amount')
+                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <label>Factor (%)</label>
+                                    <input type="number" class="form-control" wire:model="form.factor" />
+                                    @error('form.ujrah')
+                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <label>Factor (Rp)</label>
+                                    <input type="number" class="form-control" wire:model="form.factor_amount" />
                                     @error('form.ujrah_amount')
                                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                                     @enderror

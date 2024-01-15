@@ -8,7 +8,13 @@ use App\Models\Material;
 
 class Create extends Component
 {
-    public $form=[],$material_selected_id,$arr_part=[],$materials=[],$material_selected,$material_qty=0,$arr_parts=[],$total_quotation=0,
+    public $form=[
+        'total_quotation'=>0,
+        'ujrah'=>0,
+        'ujrah_amount'=>0,
+        'factor'=>0,
+        'factor_amount'=>0
+    ],$material_selected_id,$arr_part=[],$materials=[],$material_selected,$material_qty=0,$arr_parts=[],$total_quotation=0,
             $ujrah=0,$ujrah_amount=0;
     public function render()
     {
@@ -31,7 +37,9 @@ class Create extends Component
             $this->form['project_code'] = $this->form['responsibility'] .'/'.str_pad(( Quotation::count()+1),4, '0', STR_PAD_LEFT);;
         }
         if($propertyName=='form.ujrah'){
-            if($this->ujrah and $this->total)
+            if($this->form['ujrah'] and $this->form['total_quotation']){
+                $this->form['ujrah_amount'] = $this->form['ujrah'] /100 * $this->form['total_quotation'];
+            }
         }
     }
 
@@ -68,10 +76,10 @@ class Create extends Component
 
     public function calculate()
     {
-        $this->total_quotation = 0;
+        $this->form['total_quotation'] = 0;
         foreach($this->arr_parts as $k=>$i){
             $this->arr_parts[$k]['total'] = ($this->arr_parts[$k]['price'] and $this->arr_parts[$k]['qty']>0) ? ($this->arr_parts[$k]['price'] * $this->arr_parts[$k]['qty']) : 0;
-            $this->total_quotation += $this->arr_parts[$k]['total'];
+            $this->form['total_quotation'] += $this->arr_parts[$k]['total'];
         }
     }
 
