@@ -105,6 +105,24 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="form-group col-md-5">
+                                    <label>Ujrah (%)</label>
+                                    <input type="number" class="form-control" wire:model="form.ujrah" />
+                                    @error('form.ujrah')
+                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <label>Ujrah (Rp)</label>
+                                    <input type="number" class="form-control" wire:model="form.ujrah_amount" />
+                                    @error('form.ujrah_amount')
+                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <hr>
                     <a href="{{route('quotation.index')}}"><i class="fa fa-arrow-left"></i> {{ __('Back') }}</a>

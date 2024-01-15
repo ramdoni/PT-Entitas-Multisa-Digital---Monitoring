@@ -8,8 +8,8 @@ use App\Models\Material;
 
 class Create extends Component
 {
-    public $form=[],$material_selected_id,$arr_part=[],$materials=[],$material_selected,$material_qty=0,$arr_parts=[],$total_quotation=0;
-
+    public $form=[],$material_selected_id,$arr_part=[],$materials=[],$material_selected,$material_qty=0,$arr_parts=[],$total_quotation=0,
+            $ujrah=0,$ujrah_amount=0;
     public function render()
     {
         return view('livewire.quotation.create');
@@ -29,6 +29,9 @@ class Create extends Component
 
         if($propertyName=='form.responsibility'){
             $this->form['project_code'] = $this->form['responsibility'] .'/'.str_pad(( Quotation::count()+1),4, '0', STR_PAD_LEFT);;
+        }
+        if($propertyName=='form.ujrah'){
+            if($this->ujrah and $this->total)
         }
     }
 
