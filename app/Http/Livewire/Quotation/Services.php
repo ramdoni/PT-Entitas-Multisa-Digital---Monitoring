@@ -22,7 +22,7 @@ class Services extends Component
         ModelsServices::create([
             'name'=>$this->name
         ]);
-
+        $this->reset('name');
         $this->emit('reload');$this->emit('modal','hide');
     }
 }

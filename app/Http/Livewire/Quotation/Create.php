@@ -2,9 +2,11 @@
 
 namespace App\Http\Livewire\Quotation;
 
+use App\Models\QuotationEngineering;
 use Livewire\Component;
 use App\Models\Quotation;
 use App\Models\Material;
+use App\Models\QuotationMaterial;
 use App\Models\Vendor;
 
 class Create extends Component
@@ -18,12 +20,13 @@ class Create extends Component
         'factor'=>0,
         'factor_amount'=>0,
         'grand_total'=>0,
-        'tabbaru'=>0
+        'tabbaru'=>0,
+        'responsibility'=>'ENTIGI'
     ];
     public $material_selected_id,$arr_part=[],$materials=[],$material_selected,$material_qty=0,$arr_parts=[],$total_quotation=0,
             $ujrah=0,$ujrah_amount=0;
     public $vendors=[],$arr_vendor=[],$vendor_selected,$vendor_selected_id,$engineer_description,$engineer_qty,$engineer_price,$engineer_unit;
-
+    public $is_generate_number=false;
     public function render()
     {
         return view('livewire.quotation.create');
@@ -33,6 +36,15 @@ class Create extends Component
     {
         $this->materials = Material::orderBy('name','ASC')->get();
         $this->vendors = Vendor::where('type',2)->orderBy('name','ASC')->get();
+        $this->form['project_code'] = $this->form['responsibility'] .'/'.str_pad(( Quotation::count()+1),4, '0', STR_PAD_LEFT);
+        $this->form['quotation_date'] = date('Y-m-d');
+    }
+
+    public function generate_quotation()
+    {
+        // 0001/VIII/23/WIPO/GM
+        $this->form['quotation_number'] = str_pad((Quotation::count()+1),4, '0', STR_PAD_LEFT)."/".numberToRomawi(date('m'))."/".date('d')."/" . $this->form['responsibility']."/".strtoupper(substr(\Auth::user()->name,0,2));
+        $this->is_generate_number = true;
     }
 
     public function updated($propertyName)
@@ -43,14 +55,17 @@ class Create extends Component
         }
 
         if($propertyName=='form.responsibility'){
-            $this->form['project_code'] = $this->form['responsibility'] .'/'.str_pad(( Quotation::count()+1),4, '0', STR_PAD_LEFT);;
+            $this->form['project_code'] = $this->form['responsibility'] .'/'.str_pad(( Quotation::count()+1),4, '0', STR_PAD_LEFT);
+            
+            if($this->is_generate_number){
+                $this->generate_quotation();
+            }
         }   
 
         if($propertyName=='vendor_selected_id'){
             $this->vendor_selected = Vendor::find($this->vendor_selected_id);
             $this->engineer_qty = 1;
         }
-
         $this->calculate();
     }
 
@@ -155,10 +170,43 @@ class Create extends Component
     public function save()
     {
         $this->validate([
-            'form.project_type'=>'required'
+            'form.project_type'=>'required',
+            'form.quotation_number'=>'required'
         ]);
+        
+        $this->form['submitted_id'] = \Auth::user()->id;
 
-        Quotation::create($this->form);
+        $quot = Quotation::create($this->form);
+
+        if(count($this->arr_parts)>0){
+            foreach($this->arr_parts as $k=>$item){
+                $material = Material::find($item['id']);
+                QuotationMaterial::create([
+                    'quotation_id'=>$quot->id,
+                    'material_id'=>$item['id'],
+                    'qty'=>$item['qty'],
+                    'price'=>$item['price'],
+                    'total'=>$item['total'],
+                    'material_detail'=>json_encode($material)
+                ]);
+            }
+        }
+
+        if(count($this->arr_vendor)>0){
+            foreach($this->arr_vendor as $k=>$item){
+                $vendor = Vendor::find($item['id']);
+                QuotationEngineering::create([
+                    'quotation_id'=>$quot->id,
+                    'vendor_id'=>$item['id'],
+                    'description'=>$item['description'],
+                    'unit'=>$item['unit'],
+                    'qty'=>$item['qty'],
+                    'price'=>$item['price'],
+                    'total'=>$item['total'],
+                    'vendor_detail'=>json_encode($vendor)
+                ]);
+            }
+        }
 
         session()->flash('message-success',__('Data saved successfully'));
 

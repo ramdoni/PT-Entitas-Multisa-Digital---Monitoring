@@ -43,19 +43,19 @@
                                     <a href="{{route('vendor.edit',$item->id)}}">{{$item->vendor_code}}</a>
                                 </td>
                                 <td>{{$item->name}}</td>
-                                <td>{{$item->address}}</td>
+                                <td>{{Str::limit($item->address,30)}}</td>
                                 <td>{{$item->phone}}</td>
                                 <td>{{$item->person}}</td>
                                 <td>{{$item->position}}</td>
                                 <td>{{$item->mobile}}</td>
                                 <td>{{$item->email}}</td>
-                                <td>{{$item->description}}</td>
+                                <td>{{Str::limit($item->description,30)}}</td>
                                 <td>{{$item->proposed}}</td>
                                 <td>{{$item->rekening}}</td>
                                 <td>{{$item->bank}}</td>
                                 <td>{{$item->account_name}}</td>
                                 <td>
-                                    <a href="javascript:void(0)" wire:click="delete({{$item->id}})"><i class="fa fa-trash text-danger"></i></a>
+                                    <!-- <a href="javascript:void(0)" wire:click="delete({{$item->id}})"><i class="fa fa-trash text-danger"></i></a> -->
                                 </td>
                             </tr>
                             @endforeach
