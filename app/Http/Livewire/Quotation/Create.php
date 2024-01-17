@@ -8,6 +8,7 @@ use App\Models\Quotation;
 use App\Models\Material;
 use App\Models\QuotationMaterial;
 use App\Models\Vendor;
+use App\Models\Customer;
 
 class Create extends Component
 {
@@ -21,10 +22,13 @@ class Create extends Component
         'factor_amount'=>0,
         'grand_total'=>0,
         'tabbaru'=>0,
-        'responsibility'=>'ENTIGI'
+        'responsibility'=>'ENTIGI',
+        'project_code'=>'',
+        'use_tax'=>1,
+        'tax_amount'=>0
     ];
     public $material_selected_id,$arr_part=[],$materials=[],$material_selected,$material_qty=0,$arr_parts=[],$total_quotation=0,
-            $ujrah=0,$ujrah_amount=0;
+            $ujrah=0,$ujrah_amount=0,$customer_code;
     public $vendors=[],$arr_vendor=[],$vendor_selected,$vendor_selected_id,$engineer_description,$engineer_qty,$engineer_price,$engineer_unit;
     public $is_generate_number=false;
     public function render()
@@ -43,7 +47,7 @@ class Create extends Component
     public function generate_quotation()
     {
         // 0001/VIII/23/WIPO/GM
-        $this->form['quotation_number'] = str_pad((Quotation::count()+1),4, '0', STR_PAD_LEFT)."/".numberToRomawi(date('m'))."/".date('d')."/" . $this->form['responsibility']."/".strtoupper(substr(\Auth::user()->name,0,2));
+        $this->form['quotation_number'] = "QT/".$this->form['project_code']."/".date('dY',strtotime($this->form['quotation_date']))."/".numberToRomawi(date('m',strtotime($this->form['quotation_date'])))."/" . $this->customer_code;
         $this->is_generate_number = true;
     }
 
@@ -56,16 +60,22 @@ class Create extends Component
 
         if($propertyName=='form.responsibility'){
             $this->form['project_code'] = $this->form['responsibility'] .'/'.str_pad(( Quotation::count()+1),4, '0', STR_PAD_LEFT);
-            
-            if($this->is_generate_number){
-                $this->generate_quotation();
-            }
-        }   
+        }
 
         if($propertyName=='vendor_selected_id'){
             $this->vendor_selected = Vendor::find($this->vendor_selected_id);
             $this->engineer_qty = 1;
         }
+
+        if($propertyName=='form.customer_id'){
+            $customer = Customer::find($this->form['customer_id']);
+            if($customer) $this->customer_code = $customer->customer_code;
+        }
+
+        if(in_array($propertyName,['form.quotation_date','form.customer_id','form.responsibility'])){
+            $this->generate_quotation();
+        }
+
         $this->calculate();
     }
 
@@ -105,7 +115,7 @@ class Create extends Component
         if($this->vendor_selected_id){
 
             $find = array_search($this->vendor_selected_id, array_column($this->arr_vendor, 'id'));
-            
+
             if($find!=""){
                 foreach($this->arr_vendor as $k=>$i){
                     if($i['id']==$this->vendor_selected_id) $this->arr_vendor[$k]['qty'] +=  $this->vendor_qty;
@@ -153,8 +163,13 @@ class Create extends Component
         if($this->form['ujrah'] and $this->form['tabbaru']){
             $this->form['ujrah_amount'] = $this->form['ujrah'] /100 * $this->form['tabbaru'];
         }
-        
+
         $this->form['grand_total'] = $this->form['tabbaru'] + $this->form['ujrah_amount'];
+
+        if($this->form['use_tax']==1 and $this->form['grand_total']>0){
+            $this->form['tax_amount'] = (11/100*$this->form['grand_total']);
+            $this->form['grand_total'] = $this->form['tax_amount'] + $this->form['grand_total'];
+        }
     }
 
     public function delete_part($key)
@@ -173,7 +188,7 @@ class Create extends Component
             'form.project_type'=>'required',
             'form.quotation_number'=>'required'
         ]);
-        
+
         $this->form['submitted_id'] = \Auth::user()->id;
 
         $quot = Quotation::create($this->form);

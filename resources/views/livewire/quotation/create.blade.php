@@ -6,7 +6,7 @@
             <div class="body">
                 <div class="icon text-info"><i class="fa fa-calculator"></i></div>
                 <div class="content">
-                    <div class="text">Total Quotation</div>
+                    <div class="text">Total BOM</div>
                     <h6 class="number">{{format_idr($form['total_quotation'])}}</h6>
                 </div>
             </div>
@@ -50,19 +50,18 @@
             <div class="body">
                 <div class="icon text-warning"><i class="fa fa-calculator"></i> </div>
                 <div class="content">
-                    <div class="text">Tax </div>
-                    <h6 class="number">0</h6>
+                    <div class="text">Tax Inclusive (11%)</div>
+                    <h6 class="number">{{format_idr($form['tax_amount'])}}</h6>
                 </div>
             </div>
         </div>
     </div>
-    
     <div class="col-lg-2 col-md-6">
         <div class="card top_counter">
             <div class="body">
                 <div class="icon"><i class="fa fa-tag"></i> </div>
                 <div class="content">
-                    <div class="text">Grand Total</div>
+                    <div class="text">Total Quotation</div>
                     <h6 class="number">{{format_idr($form['grand_total'])}}</h6>
                 </div>
             </div>
@@ -147,7 +146,7 @@
                                     <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                                 @enderror
                             </div>
-                            
+
                         </div>
                         <div class="col-md-4">
                             <div class="row">
@@ -171,11 +170,11 @@
                                     @error('form.ujrah')
                                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                                     @enderror
-                                </div> 
+                                </div>
                                 <div class="form-group col-md-4">
                                     <label>
-                                        <input type="checkbox" /> 
-                                        Tax 
+                                        <input type="checkbox" wire:model="form.use_tax" />
+                                        Tax Inclusives
                                     </label>
                                 </div>
                                 <div class="form-group col-md-12">
@@ -375,7 +374,7 @@
                                 <input type="number" class="form-control float-right text-right" wire:model="engineer_price" />
                             </td>
                             <td class="text-right">
-                                @if($engineer_qty>0 and $engineer_price>0) 
+                                @if($engineer_qty>0 and $engineer_price>0)
                                     {{format_idr($engineer_qty * $engineer_price)}}
                                 @else
                                     0
@@ -448,7 +447,7 @@
                                 <input type="number" class="form-control float-right text-right" wire:model="engineer_price" />
                             </td>
                             <td class="text-right">
-                                @if($engineer_qty>0 and $engineer_price>0) 
+                                @if($engineer_qty>0 and $engineer_price>0)
                                     {{format_idr($engineer_qty * $engineer_price)}}
                                 @else
                                     0
