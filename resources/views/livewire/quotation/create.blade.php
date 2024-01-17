@@ -223,6 +223,7 @@
                             <tr wire:key="item{{$k}}">
                                 <td>{{$k+1}}</td>
                                 <td>{{$item['name']}}</td>
+                                <td></td>
                                 <td>{{$item['brand']}}</td>
                                 <td>{{$item['modelcode']}}</td>
                                 <td class="text-right">
@@ -330,6 +331,7 @@
                             <tr wire:key="item{{$k}}">
                                 <td>{{$k+1}}</td>
                                 <td>{{$item['name']}}</td>
+                                <td></td>
                                 <td>{{$item['description']}}</td>
                                 <td class="text-right">
                                     <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="arr_vendor.{{$k}}.qty" />
