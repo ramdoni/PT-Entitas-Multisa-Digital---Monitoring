@@ -373,6 +373,7 @@
                                 <input type="number" class="form-control float-right text-right" wire:model="engineer_price" />
                             </td>
                             <td class="text-right">
+                                
                                 @if($engineer_qty>0 and $engineer_price>0) 
                                     {{format_idr($engineer_qty * $engineer_price)}}
                                 @else
