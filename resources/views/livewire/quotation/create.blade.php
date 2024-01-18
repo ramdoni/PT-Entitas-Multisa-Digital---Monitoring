@@ -454,7 +454,7 @@
                                 @endif
                             </td>
                             <td>
-                                @if($vendor_selected)
+                                @if($service_selected)
                                     <button type="button" class="btn btn-info" wire:click="assign_engineer"><i class="fa fa-plus"></i></button>
                                 @endif
                             </td>
@@ -486,6 +486,12 @@
         $('#vendor_id').on('change', function (e) {
             var data = $(this).select2("val");
             @this.set('vendor_selected_id', data);
+        });
+
+        select__vendor = $('#service_id').select2();
+        $('#service_id').on('change', function (e) {
+            var data = $(this).select2("val");
+            @this.set('service_selected_id', data);
         });
     </script>
 @endpush

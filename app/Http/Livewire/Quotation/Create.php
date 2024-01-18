@@ -8,6 +8,7 @@ use App\Models\Quotation;
 use App\Models\Material;
 use App\Models\QuotationMaterial;
 use App\Models\Vendor;
+use App\Models\Services;
 use App\Models\Customer;
 
 class Create extends Component
@@ -30,6 +31,7 @@ class Create extends Component
     public $material_selected_id,$arr_part=[],$materials=[],$material_selected,$material_qty=0,$arr_parts=[],$total_quotation=0,
             $ujrah=0,$ujrah_amount=0,$customer_code;
     public $vendors=[],$arr_vendor=[],$vendor_selected,$vendor_selected_id,$engineer_description,$engineer_qty,$engineer_price,$engineer_unit;
+    public $service_selected_id, $service_selected,$service_qty=0;
     public $is_generate_number=false;
     public function render()
     {
@@ -65,6 +67,11 @@ class Create extends Component
         if($propertyName=='vendor_selected_id'){
             $this->vendor_selected = Vendor::find($this->vendor_selected_id);
             $this->engineer_qty = 1;
+        }
+
+        if($propertyName=='service_selected_id'){
+            $this->vendor_selected = Services::find($this->service_selected_id);
+            $this->service_qty = 1;
         }
 
         if($propertyName=='form.customer_id'){
