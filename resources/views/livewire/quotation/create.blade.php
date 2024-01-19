@@ -410,52 +410,77 @@
                     <thead style="background:#eee;">
                         <tr>
                             <th>No</th>
-                            <th>Description</th>
+                            <th>Service</th>
                             <th></th>
-                            <th>Brand</th>
-                            <th>Model Code Type</th>
-                            <th>Total / QTY</th>
+                            <th>Description</th>
+                            <th class="text-right">Total / QTY</th>
                             <th>Unit</th>
-                            <th>Unit Price List(IDR)</th>
-                            <th>Sub Total(IDR)</th>
+                            <th class="text-right">Unit Price List(IDR)</th>
+                            <th class="text-right">Sub Total(IDR)</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($arr_services as $k=>$item)
+                            <tr>
+                                <td>{{$k+1}}</td>
+                                <td>{{$item['name']}}</td>
+                                <td></td>
+                                <td>
+                                    <input type="text" class="form-control float-right text-right" wire:model="arr_services.{{$k}}.description" />
+                                </td>
+                                <td class="text-right">
+                                    <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="arr_services.{{$k}}.qty" />
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control float-right text-right" wire:model="arr_services.{{$k}}.unit" />
+                                </td>
+                                <td class="text-right">
+                                    <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="arr_services.{{$k}}.price" />
+                                </td>
+                                <td class="text-right">{{format_idr($item['total'])}}</td>
+                                <td>
+                                    <a href="javascript:void(0)" class="text-danger" wire:click="delete_service({{$k}})"><i class="fa fa-close"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
                         <tr wire:key="item_row_service">
                             <td></td>
                             <td>
-                                <select class="form-control" id="vendor_id">
-                                    <option value=""> -- Select -- </option>
-                                    @foreach(\App\Models\Services::orderBy('name','ASC')->get() as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
-                                    @endforeach
-                                </select>
+                                <div wire:ignore>
+                                    <select class="form-control" id="service_id">
+                                        <option value=""> -- Select -- </option>
+                                        @foreach(\App\Models\Services::orderBy('name','ASC')->get() as $item)
+                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </td>
                             <td>
                                 <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_add_service"><i class="fa fa-plus"></i></a>
                             </td>
                             <td>
-                                <input type="text" class="form-control" wire:model="engineer_description" />
+                                <input type="text" class="form-control" wire:model="service_description" />
                             </td>
                             <td>
-                                <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="engineer_qty" />
+                                <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="service_qty" />
                             </td>
                             <td>
-                                <input type="text" class="form-control" wire:model="engineer_unit" />
+                                <input type="text" class="form-control" wire:model="service_unit" />
                             </td>
                             <td>
-                                <input type="number" class="form-control float-right text-right" wire:model="engineer_price" />
+                                <input type="number" class="form-control float-right text-right" wire:model="service_price" />
                             </td>
                             <td class="text-right">
-                                @if($engineer_qty>0 and $engineer_price>0)
-                                    {{format_idr($engineer_qty * $engineer_price)}}
+                                @if($service_qty>0 and $service_price>0)
+                                    {{format_idr($service_qty * $service_price)}}
                                 @else
                                     0
                                 @endif
                             </td>
                             <td>
                                 @if($service_selected)
-                                    <button type="button" class="btn btn-info" wire:click="assign_engineer"><i class="fa fa-plus"></i></button>
+                                    <button type="button" class="btn btn-info" wire:click="assign_service"><i class="fa fa-plus"></i></button>
                                 @endif
                             </td>
                         </tr>

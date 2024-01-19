@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Quotation;
 use App\Models\Material;
 use App\Models\QuotationMaterial;
+use App\Models\QuotationService;
 use App\Models\Vendor;
 use App\Models\Services;
 use App\Models\Customer;
@@ -31,7 +32,7 @@ class Create extends Component
     public $material_selected_id,$arr_part=[],$materials=[],$material_selected,$material_qty=0,$arr_parts=[],$total_quotation=0,
             $ujrah=0,$ujrah_amount=0,$customer_code;
     public $vendors=[],$arr_vendor=[],$vendor_selected,$vendor_selected_id,$engineer_description,$engineer_qty,$engineer_price,$engineer_unit;
-    public $service_selected_id, $service_selected,$service_qty=0;
+    public $service_selected_id, $service_selected,$service_qty=0,$service_price=0,$arr_services=[],$service_unit,$service_description;
     public $is_generate_number=false;
     public function render()
     {
@@ -70,7 +71,7 @@ class Create extends Component
         }
 
         if($propertyName=='service_selected_id'){
-            $this->vendor_selected = Services::find($this->service_selected_id);
+            $this->service_selected = Services::find($this->service_selected_id);
             $this->service_qty = 1;
         }
 
@@ -148,6 +149,34 @@ class Create extends Component
         }
     }
 
+    public function assign_service()
+    {
+        if($this->service_selected_id){
+            $find = array_search($this->service_selected_id, array_column($this->arr_services, 'id'));
+
+            if($find!=""){
+                foreach($this->arr_services as $k=>$i){
+                    if($i['id']==$this->service_selected_id) $this->arr_services[$k]['qty'] +=  $this->service_qty;
+
+                    $this->arr_services[$k]['total'] = ($this->arr_services[$k]['price'] and $this->arr_services[$k]['qty']>0) ? ($this->arr_services[$k]['price'] * $this->arr_services[$k]['qty']) : 0;
+                }
+            }else{
+                $this->arr_services[] = [
+                    'service_detail'=>json_encode($this->service_selected),
+                    'id'=>$this->service_selected_id,
+                    'name'=>$this->service_selected->name,
+                    'description'=>$this->service_description,
+                    'qty'=>$this->service_qty,
+                    'unit'=>$this->service_unit,
+                    'price'=>$this->service_price,
+                    'total'=>($this->service_price and $this->service_qty>0) ? ($this->service_price * $this->service_qty) : 0,
+                ];
+            }
+
+            $this->calculate();
+        }
+    }
+
     public function calculate()
     {
         $this->form['total_quotation'] = 0;
@@ -189,6 +218,11 @@ class Create extends Component
         unset($this->arr_vendor[$key]);
     }
 
+    public function delete_service($key)
+    {
+        unset($this->arr_services[$key]);
+    }
+
     public function save()
     {
         $this->validate([
@@ -226,6 +260,22 @@ class Create extends Component
                     'price'=>$item['price'],
                     'total'=>$item['total'],
                     'vendor_detail'=>json_encode($vendor)
+                ]);
+            }
+        }
+
+        if(count($this->arr_services)>0){
+            foreach($this->arr_services as $k=>$item){
+                $service = Services::find($item['id']);
+                QuotationService::create([
+                    'quotation_id'=>$quot->id,
+                    'service_id'=>$item['id'],
+                    'description'=>$item['description'],
+                    'unit'=>$item['unit'],
+                    'qty'=>$item['qty'],
+                    'price'=>$item['price'],
+                    'total'=>$item['total'],
+                    'service_detail'=>json_encode($service)
                 ]);
             }
         }

@@ -56,4 +56,8 @@ Route::group(['middleware' => ['auth','access:1']], function(){
 
     Route::get('material',App\Http\Livewire\Material\Index::class)->name('material.index');
     Route::get('material/create',App\Http\Livewire\Material\Create::class)->name('material.create');
+    Route::get('purchase-order/create/{id}',App\Http\Livewire\PurchaseOrder\Create::class)->name('purchase-order.create');
+
+    Route::get('company',App\Http\Livewire\Company\Index::class)->name('company.index');
+
 });

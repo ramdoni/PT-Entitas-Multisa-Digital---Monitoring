@@ -12,12 +12,19 @@
             <form id="navbar-search" class="navbar-form search-form col-md-9">
                 <div id="navbar-menu float-left">
                     <ul class="nav navbar-nav">
-                        @if(\Auth::user()->user_access_id==1)
-                            <li><a href="{{ route('users.index') }}" class="text-info icon-menu px-1">Users</a></li>
-                        @endif
-                        <li><a href="{{ route('material.index') }}" class="text-info icon-menu px-1">Material / Part</a></li>
-                        <li><a href="{{ route('customer.index') }}" class="text-info icon-menu px-1">Customer</a></li>
-                        <li><a href="{{ route('vendor.index') }}" class="text-info icon-menu px-1">Vendor / Supplier</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="text-info dropdown-toggle icon-menu px-1" data-toggle="dropdown">Data Master</a>
+                            <ul class="dropdown-menu user-menu menu-icon">
+                                @if(\Auth::user()->user_access_id==1)
+                                    <li><a href="{{ route('users.index') }}">Users</a></li>
+                                @endif
+                                <li><a href="{{ route('material.index') }}">Material / Part</a></li>
+                                <li><a href="{{ route('customer.index') }}">Customer</a></li>
+                                <li><a href="{{ route('vendor.index') }}">Vendor / Supplier</a></li>
+                                <li><a href="{{ route('company.index') }}">Company</a></li>
+                            </ul>
+                        </li>
+
                         <li><a href="{{ route('quotation.index') }}" class="text-info icon-menu px-1">Quotation</a></li>
                         <li><a href="#" class="text-info icon-menu px-1">Purchase Order</a></li>
                         <li><a href="#" class="text-info icon-menu px-1">Invoices</a></li>
