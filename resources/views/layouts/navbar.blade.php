@@ -26,7 +26,7 @@
                         </li>
 
                         <li><a href="{{ route('quotation.index') }}" class="text-info icon-menu px-1">Quotation</a></li>
-                        <li><a href="#" class="text-info icon-menu px-1">Purchase Order</a></li>
+                        <li><a href="{{ route('purchase-order.index') }}" class="text-info icon-menu px-1">Purchase Order</a></li>
                         <li><a href="#" class="text-info icon-menu px-1">Invoices</a></li>
                         <li><a href="#" class="text-info icon-menu px-1">Tracking</a></li>
                     </ul>

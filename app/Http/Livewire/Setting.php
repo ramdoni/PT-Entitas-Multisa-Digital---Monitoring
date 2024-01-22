@@ -53,11 +53,11 @@ class Setting extends Component
     {
         if($this->logo!=""){
             $this->validate([
-                'logo' => 'image:max:1024', // 1Mb Max
+                'logo' => 'image:max:1024,image', // 1Mb Max
             ]);
             $name = 'logo'.date('Ymdhis').'.'.$this->logo->extension();
             $this->logo->storePubliclyAs('public',$name);
-            
+
             \LogActivity::add("Update Logo");
 
             update_setting('logo',$name);
@@ -65,7 +65,7 @@ class Setting extends Component
 
         if($this->favicon!=""){
             $this->validate([
-                'favicon' => 'max:1024', // 1Mb Max
+                'favicon' => 'max:1024,image', // 1Mb Max
             ]);
             $name = 'favicon'.date('YmdHis').'.'.$this->favicon->extension();
             $this->favicon->storePubliclyAs('public',$name);

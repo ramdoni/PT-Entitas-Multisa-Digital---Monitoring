@@ -19,4 +19,14 @@ class Quotation extends Model
     {
         return $this->hasOne(User::class,'id','submitted_id');
     }
+
+    public function company()
+    {
+        return $this->hasOne(Company::class,'id','company_id');
+    }
+
+    public function parts()
+    {
+        return $this->hasMany(QuotationMaterial::class,'quotation_id','id');
+    }
 }

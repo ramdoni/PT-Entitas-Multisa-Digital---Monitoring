@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PurchaseOrder extends Model
 {
     use HasFactory;
+
+    public function vendor()
+    {
+        return $this->hasOne(Vendor::class,'id','vendor_id');
+    }
 }

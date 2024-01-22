@@ -11,6 +11,7 @@ use App\Models\QuotationService;
 use App\Models\Vendor;
 use App\Models\Services;
 use App\Models\Customer;
+use App\Models\Company;
 
 class Create extends Component
 {
@@ -24,7 +25,7 @@ class Create extends Component
         'factor_amount'=>0,
         'grand_total'=>0,
         'tabbaru'=>0,
-        'responsibility'=>'ENTIGI',
+        'responsibility'=>'',
         'project_code'=>'',
         'use_tax'=>1,
         'tax_amount'=>0
@@ -33,7 +34,7 @@ class Create extends Component
             $ujrah=0,$ujrah_amount=0,$customer_code;
     public $vendors=[],$arr_vendor=[],$vendor_selected,$vendor_selected_id,$engineer_description,$engineer_qty,$engineer_price,$engineer_unit;
     public $service_selected_id, $service_selected,$service_qty=0,$service_price=0,$arr_services=[],$service_unit,$service_description;
-    public $is_generate_number=false;
+    public $is_generate_number=false,$companies = [];
     public function render()
     {
         return view('livewire.quotation.create');
@@ -45,6 +46,7 @@ class Create extends Component
         $this->vendors = Vendor::where('type',2)->orderBy('name','ASC')->get();
         $this->form['project_code'] = $this->form['responsibility'] .'/'.str_pad(( Quotation::count()+1),4, '0', STR_PAD_LEFT);
         $this->form['quotation_date'] = date('Y-m-d');
+        $this->companies = Company::orderBy('name','ASC')->get();
     }
 
     public function generate_quotation()
@@ -78,6 +80,12 @@ class Create extends Component
         if($propertyName=='form.customer_id'){
             $customer = Customer::find($this->form['customer_id']);
             if($customer) $this->customer_code = $customer->customer_code;
+        }
+
+        if($propertyName=='form.company_id'){
+            $company = Company::find($this->form['company_id']);
+            $this->form['company_detail'] = $company;
+            $this->form['responsibility'] = $company->code;
         }
 
         if(in_array($propertyName,['form.quotation_date','form.customer_id','form.responsibility'])){

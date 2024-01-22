@@ -108,12 +108,16 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>Resonsibility</label>
-                                    <select class="form-control" wire:model="form.responsibility">
-                                        <option>ENTIGI</option>
+                                    <select class="form-control" wire:model="form.company_id">
+                                        <option value=""> -- Select -- </option>
+                                        @foreach($companies as $item)
+                                            <option value="{{$item->id}}">{{$item->code}}</option>
+                                        @endforeach
+                                        <!-- <option>ENTIGI</option>
                                         <option>WIPO</option>
-                                        <option>STLV</option>
+                                        <option>STLV</option> -->
                                     </select>
-                                    @error('form.responsibility')
+                                    @error('form.company_id')
                                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                                     @enderror
                                 </div>

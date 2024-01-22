@@ -11,4 +11,7 @@ class QuotationMaterial extends Model
 
     protected $guarded = [],$table = 'quotation_material';
 
+    protected $casts = [
+        'material_detail' => 'array'
+    ];
 }

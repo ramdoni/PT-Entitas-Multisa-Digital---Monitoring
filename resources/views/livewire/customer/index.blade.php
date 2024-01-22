@@ -38,7 +38,7 @@
                             @foreach($data as $k => $item)
                             <tr>
                                 <td style="width: 50px;">{{$k+1}}</td>
-                                <td>{{$item->customer_code}}</td>
+                                <td><a href="{{route('customer.edit',$item->id)}}">{{$item->customer_code}}</a></td>
                                 <td>{{$item->name}}</td>
                                 <td>{{$item->address}}</td>
                                 <td>{{isset($item->provinsi->nama) ? $item->provinsi->nama : '-'}}</td>

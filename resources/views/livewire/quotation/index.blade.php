@@ -120,7 +120,7 @@
                                 <td class="text-right">{{format_idr($item->grand_total)}}</td>
                                 <td>{{$item->remarks}}</td>
                                 <td>
-                                    <!-- <a href="javascript:void(0)" wire:click="delete({{$item->id}})"><i class="fa fa-trash text-danger"></i></a> -->
+                                    <a href="{{route('print.quotation',$item->id)}}" target="_blank"><i class="fa fa-print"></i> Print</a>
                                     <a href="{{route('purchase-order.create',$item->id)}}" class="badge badge-info badge-active"><i  class="fa fa-plus"></i> Create PO</a>
                                 </td>
                             </tr>
