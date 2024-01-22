@@ -12,6 +12,7 @@ class PrintController extends Controller
     {
         $param['data'] = $data;
         $param['company'] = $data->company;
+        $param['materials'] = $data->parts;
 
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadView('livewire.quotation.print', $param);

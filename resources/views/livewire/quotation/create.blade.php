@@ -74,7 +74,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="row">
-                                <div class="form-group col-md-7">
+                                <div class="form-group col-md-6">
                                     <label>Quotation Number</label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -86,26 +86,31 @@
                                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-5">
+                                <div class="form-group col-md-6">
                                     <label>Date</label>
                                     <input type="date" class="form-control" wire:model="form.quotation_date" />
                                     @error('form.quotation_date')
                                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                                     @enderror
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Project Type</label>
-                                <select class="form-control" wire:model="form.project_type">
-                                    <option value=""> -- Select -- </option>
-                                    <option>Control System</option>
-                                    <option>Software</option>
-                                </select>
-                                @error('form.project_type')
-                                    <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                @enderror
-                            </div>
-                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Project Type</label>
+                                    <select class="form-control" wire:model="form.project_type">
+                                        <option value=""> -- Select -- </option>
+                                        <option>Control System</option>
+                                        <option>Software</option>
+                                    </select>
+                                    @error('form.project_type')
+                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Valid Until</label>
+                                    <input type="date" class="form-control" wire:model="form.valid_until" />
+                                    @error('form.valid_until')
+                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                    @enderror
+                                </div>
                                 <div class="form-group col-md-6">
                                     <label>Resonsibility</label>
                                     <select class="form-control" wire:model="form.company_id">
@@ -147,6 +152,18 @@
                                     @endforeach
                                 </select>
                                 @error('form.customer_id')
+                                    <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label>PIC Customer</label>
+                                <select class="form-control" wire:model="form.customer_pic_id">
+                                    <option value=""> -- Select -- </option>
+                                    @foreach($customer_pics as $item)
+                                        <option value="{{$item->id}}">{{$item->name}} / {{$item->position}}</option>
+                                    @endforeach
+                                </select>
+                                @error('form.customer_pic_id')
                                     <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                                 @enderror
                             </div>

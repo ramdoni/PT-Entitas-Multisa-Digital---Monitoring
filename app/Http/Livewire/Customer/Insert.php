@@ -41,6 +41,7 @@ class Insert extends Component
 
         foreach($this->pic as $k => $item){
             CustomerPic::create([
+                'customer_id'=>$data->id,
                 'name'=>$item['name'],
                 'position'=>$item['position'],
                 'mobile'=>$item['mobile'],

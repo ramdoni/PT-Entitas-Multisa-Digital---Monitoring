@@ -1,7 +1,13 @@
 <?php
+use App\Models\Uom;
 use App\Models\User;
 use App\Models\UserOtp;
 
+function get_uom($id)
+{
+    $find = Uom::find($id);
+    if($find) return $find->name;
+}
 
 function toFixed($number, $decimals) {
     return number_format($number, $decimals, '.', "");
@@ -35,7 +41,7 @@ function terbilang($nilai) {
         $temp = terbilang($nilai/1000000000) . " Milyar" . terbilang(fmod($nilai,1000000000));
     } else if ($nilai < 1000000000000000) {
         $temp = terbilang($nilai/1000000000000) . " Trilyun" . terbilang(fmod($nilai,1000000000000));
-    }     
+    }
     return $temp;
 }
 function numberToRomawi($number)
@@ -74,12 +80,12 @@ function countDay($now,$end)
     $datediff = $now - $your_date;
 
     return round($datediff / (60 * 60 * 24));
-} 
+}
 
 function hitung_masa($start,$end){
     $birthDate = new \DateTime($start);
 	$today = new \DateTime($end);
-	if ($birthDate > $today) { 
+	if ($birthDate > $today) {
 	    return 0;
     }
     $tahun = $today->diff($birthDate)->y;
@@ -95,7 +101,7 @@ function hitung_masa_bulan($start,$end,$masa_asuransi=1){
 
     $bulan = $today->diff($birthDate)->m;
     if($tahun>0) $bulan += $tahun*12;
-    
+
     $hari = $today->diff($birthDate)->d;
 
     if($masa_asuransi==2) $today->modify('+1 day');
@@ -108,13 +114,13 @@ function hitung_masa_bulan($start,$end,$masa_asuransi=1){
 
 function hitung_umur($tanggal_lahir,$pembulatan=1,$today=''){
     $birthDate = new \DateTime($tanggal_lahir);
-    
+
     if($today)
 	    $today = new \DateTime($today);
     else
 	    $today = new \DateTime("today");
 
-	if ($birthDate > $today) { 
+	if ($birthDate > $today) {
 	    return 0;
     }
     $tahun = $today->diff($birthDate)->y;
@@ -126,7 +132,7 @@ function hitung_umur($tanggal_lahir,$pembulatan=1,$today=''){
             $tahun++;
     }
     if($pembulatan==2 and $today->diff($birthDate)->m > 12) $tahun++; // Actual Birthday
-    
+
     if($pembulatan==3) return $today->diff($birthDate)->y .' Tahun '. $today->diff($birthDate)->m .' Bulan '. $today->diff($birthDate)->d.' Hari';
     if($pembulatan==4) return $today->diff($birthDate)->days;
 
@@ -141,7 +147,7 @@ function gl_number($item)
 function general_ledger_number()
 {
     $count = \App\Models\GeneralLedger::count()+1;
-    
+
     return 'GL-'.str_pad($count,6, '0', STR_PAD_LEFT).'/'.date('m').'/'.date('Y');
 }
 
@@ -190,8 +196,8 @@ function send_wa($param)
     $message = $message;
     $number = str_replace_first('0','62', $param['phone']);
     $number = str_replace('-', '', $number);
-    
-    $curl = curl_init(); 
+
+    $curl = curl_init();
     $token = "HioVXgQTselUx6alx9GmtfcJgpySCDnH3FCZh2tARb0C7vRtQon5shmOwx0KmGl1";
     $data = [
         'phone' => $number,
@@ -264,7 +270,7 @@ function calculate_aging($date,$end_date)
 {
     $start_date = new \DateTime($date);
     $today = new \DateTime($end_date);
-    if ($start_date > $today) { 
+    if ($start_date > $today) {
         return 0;
     }
 
@@ -282,7 +288,7 @@ function sum_journal_cashflow_by_group($month,$year,$group)
 function sum_journal_cashflow($year,$month,$cashflow)
 {
     $sum = \App\Models\Journal::whereYear('date_journal',$year)->whereMonth('date_journal',$month)->where('code_cashflow_id',$cashflow)->sum('saldo');
-    
+
     return ($sum ? $sum : 0);
 }
 function month()
@@ -309,7 +315,7 @@ function get_group_cashflow($key="")
 {
     $data = [1=>'Operation Activities',2=>'Investment Activities',3=>'Financing Activities'];
     if($key!="") return @$data[$key];
-    
+
     return $data;
 }
 
@@ -317,7 +323,7 @@ function generate_no_voucher_konven_underwriting($coa_id)
 {
     $coa = \App\Models\Coa::find($coa_id);
     $count = \App\Models\KonvenUnderwriting::whereMonth('created_at',date('m'))->whereYear('created_at',date('Y'))->count()+1;
-    
+
     if($coa) return $coa->code_voucher.'-'.str_pad($count,3, '0', STR_PAD_LEFT).'/'.date('m').'/'.date('Y');
 
     return '';
@@ -326,16 +332,16 @@ function generate_no_voucher_konven_underwriting($coa_id)
 function generate_no_voucer_journal($type="AP"){
 
     $count = \App\Models\Finance\Journal::count();
-    
+
     return "{$type}-".str_pad($count,3, '0', STR_PAD_LEFT).'/'.date('m').'/'.date('Y');
 }
 
 function generate_no_voucher($coa_id="",$count="")
 {
     $coa = \App\Models\Coa::find($coa_id);
-    if(empty($count)) 
+    if(empty($count))
         $count = \App\Models\Journal::whereMonth('created_at',date('m'))->whereYear('created_at',date('Y'))->count()+1;
-    if($coa) 
+    if($coa)
         return $coa->code_voucher.'-'.str_pad($count,3, '0', STR_PAD_LEFT).'/'.date('m').'/'.date('Y');
 
     return '';

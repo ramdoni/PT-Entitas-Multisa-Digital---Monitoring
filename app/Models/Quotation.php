@@ -15,6 +15,11 @@ class Quotation extends Model
         return $this->hasOne(Customer::class,'id','customer_id');
     }
 
+    public function customer_pic()
+    {
+        return $this->hasOne(CustomerPic::class,'id','customer_pic_id');
+    }
+
     public function submitter()
     {
         return $this->hasOne(User::class,'id','submitted_id');

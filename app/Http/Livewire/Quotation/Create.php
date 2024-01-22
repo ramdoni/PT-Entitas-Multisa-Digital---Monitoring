@@ -11,6 +11,7 @@ use App\Models\QuotationService;
 use App\Models\Vendor;
 use App\Models\Services;
 use App\Models\Customer;
+use App\Models\CustomerPic;
 use App\Models\Company;
 
 class Create extends Component
@@ -34,7 +35,7 @@ class Create extends Component
             $ujrah=0,$ujrah_amount=0,$customer_code;
     public $vendors=[],$arr_vendor=[],$vendor_selected,$vendor_selected_id,$engineer_description,$engineer_qty,$engineer_price,$engineer_unit;
     public $service_selected_id, $service_selected,$service_qty=0,$service_price=0,$arr_services=[],$service_unit,$service_description;
-    public $is_generate_number=false,$companies = [];
+    public $is_generate_number=false,$companies=[],$customer_pics=[];
     public function render()
     {
         return view('livewire.quotation.create');
@@ -80,6 +81,7 @@ class Create extends Component
         if($propertyName=='form.customer_id'){
             $customer = Customer::find($this->form['customer_id']);
             if($customer) $this->customer_code = $customer->customer_code;
+            $this->customer_pic = CustomerPic::where('customer_id',$this->form['customer_id'])->get();
         }
 
         if($propertyName=='form.company_id'){
@@ -235,7 +237,8 @@ class Create extends Component
     {
         $this->validate([
             'form.project_type'=>'required',
-            'form.quotation_number'=>'required'
+            'form.quotation_number'=>'required',
+            'form.valid_until'=>'required',
         ]);
 
         $this->form['submitted_id'] = \Auth::user()->id;
