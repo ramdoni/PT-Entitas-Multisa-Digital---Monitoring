@@ -92,7 +92,7 @@
                         </thead>
                         <tbody>
                             @foreach($data as $k => $item)
-                            <tr>
+                              <tr wire:key="{{$item->id}}">
                                 <td style="width: 50px;">{{$k+1}}</td>
                                 <td class="text-center">
                                     @if($item->status==0)
@@ -120,6 +120,13 @@
                                 <td class="text-right">{{format_idr($item->grand_total)}}</td>
                                 <td>{{$item->remarks}}</td>
                                 <td>
+                                    @if(isset($is_delete))
+                                        <a href="javascript:void(0)" wire:click="delete({{$item->id}})" wire:loading.remove wire:target="delete({{$item->id}})" class="text-danger"><i  class="fa fa-trash"></i></a>
+                                        <span wire:loading wire:target="delete({{$item->id}})">
+                                            <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+                                            <span class="sr-only">{{ __('Loading...') }}</span>
+                                        </span>
+                                    @endif
                                     <a href="{{route('print.quotation',$item->id)}}" target="_blank"><i class="fa fa-print"></i> Print</a>
                                     <a href="{{route('purchase-order.create',$item->id)}}" class="badge badge-info badge-active"><i  class="fa fa-plus"></i> Create PO</a>
                                 </td>

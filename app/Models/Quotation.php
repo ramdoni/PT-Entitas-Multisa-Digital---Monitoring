@@ -9,7 +9,11 @@ class Quotation extends Model
 {
     use HasFactory;
     protected $guarded = [];
-
+    protected $casts = [
+        'company_detail'=>'array',
+        'system_requirement'=>'array',
+        'term_and_conditions'=>'array'
+    ];
     public function customer()
     {
         return $this->hasOne(Customer::class,'id','customer_id');

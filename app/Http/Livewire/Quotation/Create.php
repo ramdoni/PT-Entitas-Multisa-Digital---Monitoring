@@ -35,12 +35,12 @@ class Create extends Component
             $ujrah=0,$ujrah_amount=0,$customer_code;
     public $vendors=[],$arr_vendor=[],$vendor_selected,$vendor_selected_id,$engineer_description,$engineer_qty,$engineer_price,$engineer_unit;
     public $service_selected_id, $service_selected,$service_qty=0,$service_price=0,$arr_services=[],$service_unit,$service_description;
-    public $is_generate_number=false,$companies=[],$customer_pics=[];
+    public $is_generate_number=false,$companies=[],$customer_pics=[],$system_requirement=[],$term_and_conditions=[];
+    public $text_system_requirement,$text_term_and_conditions;
     public function render()
     {
         return view('livewire.quotation.create');
     }
-
     public function mount()
     {
         $this->materials = Material::orderBy('name','ASC')->get();
@@ -81,7 +81,7 @@ class Create extends Component
         if($propertyName=='form.customer_id'){
             $customer = Customer::find($this->form['customer_id']);
             if($customer) $this->customer_code = $customer->customer_code;
-            $this->customer_pic = CustomerPic::where('customer_id',$this->form['customer_id'])->get();
+            $this->customer_pics = CustomerPic::where('customer_id',$this->form['customer_id'])->get();
         }
 
         if($propertyName=='form.company_id'){
@@ -95,6 +95,28 @@ class Create extends Component
         }
 
         $this->calculate();
+    }
+
+    public function add_system_requirement()
+    {
+        $this->system_requirement[] = nl2br($this->text_system_requirement);
+        $this->reset('text_system_requirement');
+    }
+
+    public function delete_system_requirement($k)
+    {
+        unset($this->system_requirement[$k]);
+    }
+
+    public function add_term_and_conditions()
+    {
+        $this->term_and_conditions[] = nl2br($this->text_term_and_conditions);
+        $this->reset('text_term_and_conditions');
+    }
+
+    public function delete_term_and_conditions($k)
+    {
+        unset($this->term_and_conditions[$k]);
     }
 
     public function assign_part()
@@ -242,6 +264,8 @@ class Create extends Component
         ]);
 
         $this->form['submitted_id'] = \Auth::user()->id;
+        $this->form['system_requirement'] = $this->system_requirement;
+        $this->form['term_and_conditions'] = $this->term_and_conditions;
 
         $quot = Quotation::create($this->form);
 
@@ -254,7 +278,7 @@ class Create extends Component
                     'qty'=>$item['qty'],
                     'price'=>$item['price'],
                     'total'=>$item['total'],
-                    'material_detail'=>json_encode($material)
+                    'material_detail'=>$material
                 ]);
             }
         }
@@ -270,7 +294,7 @@ class Create extends Component
                     'qty'=>$item['qty'],
                     'price'=>$item['price'],
                     'total'=>$item['total'],
-                    'vendor_detail'=>json_encode($vendor)
+                    'vendor_detail'=>$vendor
                 ]);
             }
         }
@@ -286,7 +310,7 @@ class Create extends Component
                     'qty'=>$item['qty'],
                     'price'=>$item['price'],
                     'total'=>$item['total'],
-                    'service_detail'=>json_encode($service)
+                    'service_detail'=>$service
                 ]);
             }
         }

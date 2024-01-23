@@ -207,6 +207,47 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-12"><hr /></div>
+                        <div class="form-group col-md-6">
+                            <label>System Requirements</label>
+                            <ol style="padding-left:15px;">
+                                @foreach($system_requirement as $k=>$item)
+                                    <li>{!!$item!!} <a href="javascript:void(0)" wire:click="delete_system_requirement({{$k}})" class="text-danger"><i class="fa fa-trash"></i></a></li>
+                                @endforeach
+                                <li>
+                                    <span wire:loading wire:target="add_system_requirement">
+                                        <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                                        <span class="sr-only">{{ __('Loading...') }}</span>
+                                    </span>
+                                    <div class="input-group mb-3" wire:loading.remove wire:target="add_system_requirement">
+                                        <textarea class="form-control" wire:model="text_system_requirement" placeholder="Typing here..."></textarea>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><a href="javascript:void(0)" wire:click="add_system_requirement"><i class="fa fa-plus"></i></a></span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Terms & Conditions</label>
+                            <ol style="padding-left:15px;">
+                                @foreach($term_and_conditions as $k=>$item)
+                                    <li>{!!$item!!} <a href="javascript:void(0)" wire:click="delete_term_and_conditions({{$k}})" class="text-danger"><i class="fa fa-trash"></i></a></li>
+                                @endforeach
+                                <li>
+                                    <span wire:loading wire:target="add_term_and_conditions">
+                                        <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                                        <span class="sr-only">{{ __('Loading...') }}</span>
+                                    </span>
+                                    <div class="input-group mb-3" wire:loading.remove wire:target="add_term_and_conditions">
+                                        <textarea class="form-control" wire:model="text_term_and_conditions" placeholder="Typing here..."></textarea>
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><a href="javascript:void(0)" wire:click="add_term_and_conditions"><i class="fa fa-plus"></i></a></span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
                     </div>
                     <hr>
                     <a href="{{route('quotation.index')}}"><i class="fa fa-arrow-left"></i> {{ __('Back') }}</a>

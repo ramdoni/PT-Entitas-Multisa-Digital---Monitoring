@@ -2,12 +2,15 @@
 
 namespace App\Http\Livewire\Quotation;
 
+use App\Models\QuotationEngineering;
+use App\Models\QuotationMaterial;
 use Livewire\Component;
 use App\Models\Quotation;
+use App\Models\QuotationService;
 
 class Index extends Component
 {
-    public $filter=[];
+    public $filter=[],$is_delete=false;
     public function render()
     {
         $data = $this->data();
@@ -26,6 +29,11 @@ class Index extends Component
         ]);
     }
 
+    public function mount()
+    {
+        if(isset($_GET['delete'])) $this->is_delete=true;
+    }
+
     public function data()
     {
         $data = Quotation::orderBy('id','DESC');
@@ -40,5 +48,15 @@ class Index extends Component
         }
 
         return $data;
+    }
+
+    public function delete($id)
+    {
+        Quotation::find($id)->delete();
+        QuotationService::where('quotation_id',$id)->delete();
+        QuotationMaterial::where('quotation_id',$id)->delete();
+        QuotationEngineering::where('quotation_id',$id)->delete();
+
+        $this->emit('message-success','deleted');
     }
 }

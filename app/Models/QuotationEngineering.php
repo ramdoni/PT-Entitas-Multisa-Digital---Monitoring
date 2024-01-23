@@ -10,4 +10,7 @@ class QuotationEngineering extends Model
     use HasFactory;
     protected $guarded = [],$table='quotation_engineering';
 
+    protected $casts = [
+        'vendor_detail' => 'array'
+    ];
 }

@@ -11,4 +11,7 @@ class QuotationService extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'service_detail' => 'array'
+    ];
 }

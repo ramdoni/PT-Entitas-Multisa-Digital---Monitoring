@@ -20,15 +20,18 @@
         }
         table {
             border-collapse: separate;
-            border-spacing: 0em;s
+            border-spacing: 1px;
         }
         table.table-material {
-            border:1px solid;
+            border: 1px solid;
         }
         table.table-material tr th {
-            border-right:1px solid;
+            border-right:1px solid #000;
             padding-top:5px;
             padding-bottom:5px;
+            background-color: #eee;
+            padding-left: 5px;
+            padding-right: 5px;
         }
         table.table-material tr td {
             border-right:1px solid;
@@ -37,9 +40,9 @@
             padding-bottom:5px;
             padding-left:10px;
         }
-        table.table-material tr th:nth-last-child(){
+        /* table.table-material tr th:last-child{
             border-right: 0;
-        }
+        } */
     </style>
 </head>
 <body>
@@ -96,14 +99,16 @@
             {{$data->customer->address}}
         </p>
         <table style="width:100%;" class="table-material">
-            <tr style="background: #eee;">
-                <th class="text-center">QTY</th>
-                <th>UNIT</th>
-                <th>DESCRIPTION</th>
-                <th class="text-right">UNIT PRICE</th>
-                <th class="text-right">DISC</th>
-                <th class="text-right">AMOUNT</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th class="text-center">QTY</th>
+                    <th>UNIT</th>
+                    <th>DESCRIPTION</th>
+                    <th class="text-right">UNIT PRICE</th>
+                    <th class="text-right">DISC</th>
+                    <th class="text-right">AMOUNT</th>
+                </tr>
+            </thead>
             <tbody>
                 @foreach($materials as $k=>$item)
                     <tr>
@@ -119,7 +124,57 @@
         </table>
         <p>
             <strong>System Requirements</strong><br />
+            <ol>
+                @foreach($data->system_requirement as $item)
+                    <li>{!! $item !!}</li>
+                @endforeach
+            </ol>
         </p>
+        <p>
+            <strong>Term & Conditions</strong><br />
+            <ol>
+                @foreach($data->term_and_conditions as $item)
+                    <li>{!! $item !!}</li>
+                @endforeach
+            </ol>
+        </p>
+        <br>
+        <table style="width: 100%;">
+            <tr>
+                <th>
+                    <p>
+                        Accepted<br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        (
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        )<br />
+                        Authorized Person
+                    </p>
+                </th>
+                <th>
+                    <p>
+                        Proposed by
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        (
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        )<br />
+                    </p>
+                </th>
+            </tr>
+        </table>
     </div>
 </body>
 </html>
