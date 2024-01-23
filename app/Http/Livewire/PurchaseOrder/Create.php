@@ -48,6 +48,8 @@ class Create extends Component
         }
     }
 
+    
+
     public function generate_po()
     {
         $this->form['po_number'] = $this->quotation->responsibility .'/'.date('m/Y/').$this->vendor_code."/".$this->quotation->customer->customer_code;
