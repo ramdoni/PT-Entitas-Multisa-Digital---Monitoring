@@ -5,13 +5,19 @@ namespace App\Http\Livewire\Material;
 use Livewire\Component;
 use App\Models\Material;
 
-class Create extends Component
+class Edit extends Component
 {
-    public $form;
-    protected $listeners = ['reload'=>'$refresh'];
+    public $data,$form=[];
+
     public function render()
     {
-        return view('livewire.material.create');
+        return view('livewire.material.edit');
+    }
+
+    public function mount(Material $data)
+    {
+        $this->data = $data;
+        $this->form = $data->toArray();
     }
 
     public function save()
@@ -23,11 +29,11 @@ class Create extends Component
             'form.uom_id'=>'required',
             'form.price'=>'required',
         ]);
-
-        Material::create($this->form);
+        
+        $this->data->update($this->form);
 
         session()->flash('message-success',__('Data saved successfully'));
 
-        return redirect()->route('material.index');
+        return redirect()->route('material.edit',$this->data->id);
     }
 }

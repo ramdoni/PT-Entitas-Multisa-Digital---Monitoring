@@ -1,29 +1,26 @@
 @section('title', 'Quotation')
 @section('sub-title', 'Management Quotation')
 <div class="clearfix row">
-    <div class="col-lg-2 col-md-6">
+    <div class="col-lg-3 col-md-6">
         <div class="card top_counter">
             <div class="body">
                 <div class="icon text-info"><i class="fa fa-building"></i> </div>
                 <div class="content">
-                    <div class="text">Material(IDR)</div>
-                    <h6 class="number">{{format_idr($total_amount_material)}}</h6>
+                    <div class="row">
+                        <div class="text col-md-4 px-0">BOM</div>
+                        <h6 class="number text-right col-md-8">{{format_idr($total_amount_material)}}</h6>
+                    </div>
+                    <div class="row">
+                        <p class="px-0 col-md-6 mb-0">Material</p>
+                        <span class="text-primary col-md-6 text-right pb-0">{{format_idr($total_amount_material)}}</span>
+                        <p class="px-0 col-md-6">Services</p>
+                        <span class="text-success col-md-6 text-right">{{format_idr($total_amount_services)}}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-2 col-md-6">
-        <div class="card top_counter">
-            <div class="body">
-                <div class="icon text-info"><i class="fa fa-building"></i> </div>
-                <div class="content">
-                    <div class="text">Services(IDR)</div>
-                    <h6 class="number">{{format_idr($total_amount_services)}}</h6>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-2 col-md-6">
+    <div class="col-lg-3 col-md-6">
         <div class="card top_counter">
             <div class="body">
                 <div class="icon text-info"><i class="fa fa-building"></i> </div>
@@ -150,7 +147,7 @@
                                         </span>
                                     @endif
                                     <a href="{{route('print.quotation',$item->id)}}" target="_blank"><i class="fa fa-print"></i> Print</a>
-                                    <a href="{{route('purchase-order.create',$item->id)}}" class="badge badge-info badge-active"><i  class="fa fa-plus"></i> Create PO</a>
+                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_po_success" wire:click="$emit('set_id',{{$item->id}})" class="badge badge-success badge-active"><i  class="fa fa-check"></i> Success</a>
                                 </td>
                             </tr>
                             @endforeach
@@ -163,3 +160,5 @@
         </div>
     </div>
 </div>
+
+@livewire('quotation.po-success')

@@ -92,6 +92,7 @@ class Create extends Component
             $company = Company::find($this->form['company_id']);
             $this->form['company_detail'] = $company;
             $this->form['responsibility'] = $company->code;
+            $this->form['project_code'] = $this->form['responsibility'] .'/'.str_pad(( Quotation::count()+1),4, '0', STR_PAD_LEFT);
         }
 
         if(in_array($propertyName,['form.quotation_date','form.customer_id','form.responsibility'])){
@@ -263,6 +264,7 @@ class Create extends Component
     public function save()
     {
         $this->validate([
+            'form.company_id'=>'required',
             'form.project_type'=>'required',
             'form.quotation_number'=>'required',
             'form.valid_until'=>'required',

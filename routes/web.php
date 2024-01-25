@@ -21,7 +21,6 @@ Route::get('login', App\Http\Livewire\Login::class)->name('login');
 Route::group(['middleware' => ['auth']], function(){
     Route::get('profile',App\Http\Livewire\Profile::class)->name('profile');
     Route::get('back-to-admin',[App\Http\Controllers\IndexController::class,'backtoadmin'])->name('back-to-admin');
-
     Route::get('plc',App\Http\Livewire\Plc\Index::class)->name('plc.index');
 });
 
@@ -38,6 +37,7 @@ Route::group(['middleware' => ['auth','access:1']], function(){
     Route::get('users',App\Http\Livewire\User\Index::class)->name('users.index');
     Route::get('users/edit/{id}',App\Http\Livewire\User\Edit::class)->name('users.edit');
     Route::post('users/autologin/{id}',[App\Http\Livewire\User\Index::class,'autologin'])->name('users.autologin');
+
     Route::get('log-activity',App\Http\Livewire\LogActivity\Index::class)->name('log-activity');
 
     Route::get('customer',App\Http\Livewire\Customer\Index::class)->name('customer.index');
@@ -56,9 +56,10 @@ Route::group(['middleware' => ['auth','access:1']], function(){
     Route::get('quotation/edit/{data}',App\Http\Livewire\Quotation\Edit::class)->name('quotation.edit');
     Route::get('quotation/print/{data}',[\App\Http\Controllers\PrintController::class,'quotation'])->name('print.quotation');
 
-
     Route::get('material',App\Http\Livewire\Material\Index::class)->name('material.index');
     Route::get('material/create',App\Http\Livewire\Material\Create::class)->name('material.create');
+    Route::get('material/edit/{data}',App\Http\Livewire\Material\Edit::class)->name('material.edit');
+
     Route::get('purchase-order',App\Http\Livewire\PurchaseOrder\Index::class)->name('purchase-order.index');
     Route::get('purchase-order/create/{quotation}',App\Http\Livewire\PurchaseOrder\Create::class)->name('purchase-order.create');
 

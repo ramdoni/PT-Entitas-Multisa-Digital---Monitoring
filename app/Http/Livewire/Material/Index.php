@@ -13,4 +13,11 @@ class Index extends Component
 
         return view('livewire.material.index')->with(['data'=>$data->paginate(100)]);
     }
+
+    public function delete($id)
+    {
+        Material::find($id)->delete();
+        
+        $this->emit('message-success','Deleted');
+    }
 }

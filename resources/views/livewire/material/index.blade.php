@@ -29,7 +29,7 @@
                             @foreach($data as $k => $item)
                             <tr>
                                 <td style="width: 50px;">{{$k+1}}</td>
-                                <td>{{$item->name}}</td>
+                                <td><a href="{{route('material.edit',$item->id)}}">{{$item->name}}</a></td>
                                 <td>{{$item->brand ? $item->brand->name : '-'}}</td>
                                 <td>{{$item->modelcode ? $item->modelcode->name : '-'}}</td>
                                 <td>{{$item->uom ? $item->uom->name : '-'}}</td>

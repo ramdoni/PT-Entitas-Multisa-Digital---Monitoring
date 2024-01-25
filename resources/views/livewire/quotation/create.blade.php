@@ -463,7 +463,8 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12">
+    
+    <!-- <div class="col-md-12">
         <div class="card">
             <div class="body">
                 <h6>Service</h6>
@@ -550,7 +551,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 @livewire('quotation.services')
 @push('after-scripts')
