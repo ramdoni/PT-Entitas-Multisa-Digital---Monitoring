@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth','access:1']], function(){
     Route::get('purchase-order',App\Http\Livewire\PurchaseOrder\Index::class)->name('purchase-order.index');
     Route::get('purchase-order/create/{quotation}',App\Http\Livewire\PurchaseOrder\Create::class)->name('purchase-order.create');
 
+    Route::get('purchase-order-in',App\Http\Livewire\PurchaseOrderIn\Index::class)->name('purchase-order-in.index');
+
     Route::get('company',App\Http\Livewire\Company\Index::class)->name('company.index');
     Route::get('company/create',App\Http\Livewire\Company\Create::class)->name('company.create');
     Route::get('company/edit/{data}',App\Http\Livewire\Company\Edit::class)->name('company.edit');

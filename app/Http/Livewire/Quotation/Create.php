@@ -150,6 +150,8 @@ class Create extends Component
                 ];
             }
 
+            sendVfdData($item->name,format_idr($item->price));
+
             $this->calculate();
         }
         $this->reset('material_selected','material_selected_id','material_qty');

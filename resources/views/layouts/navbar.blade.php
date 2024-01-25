@@ -28,7 +28,7 @@
                         <li class="dropdown">
                             <a href="#" class="text-info dropdown-toggle icon-menu px-1" data-toggle="dropdown">Purchase Order</a>
                             <ul class="dropdown-menu user-menu menu-icon">
-                                <li><a href="{{ route('company.index') }}">Purchase Order IN</a></li>
+                                <li><a href="{{ route('purchase-order-in.index') }}">Purchase Order IN</a></li>
                                 <li><a href="{{ route('purchase-order.index') }}">Purchase Order OUT</a></li>
                             </ul>
                         </li>

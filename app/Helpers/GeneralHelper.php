@@ -44,6 +44,33 @@ function terbilang($nilai) {
     }
     return $temp;
 }
+
+function sendVfdData($msg,$msg2='')
+{
+    // Konfigurasi port serial
+    $serial_port = 'COM9'; // Sesuaikan dengan port serial yang Anda gunakan
+    $baud_rate = 9600; // Sesuaikan dengan baud rate yang diperlukan
+
+    // Buka koneksi serial
+    $serial_handle = fopen($serial_port, 'w+');
+
+    if ($serial_handle==true) {
+        try {
+
+            fwrite($serial_handle, "\x0C");
+            
+            usleep(500000); // 100,000 mikrodetik (0.1 detik)
+
+            fwrite($serial_handle, $msg);
+
+            if($msg2) fwrite($serial_handle, "\r\n".$msg2);
+
+        } finally {
+            // Tutup koneksi serial saat selesai
+            fclose($serial_handle);
+        }
+    }
+}
 function numberToRomawi($number)
 {
     $solution = '';

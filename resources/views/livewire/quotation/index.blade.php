@@ -139,7 +139,7 @@
                                 <td class="text-right">{{format_idr($item->grand_total)}}</td>
                                 <td>{{$item->remarks}}</td>
                                 <td>
-                                    @if(isset($is_delete))
+                                    @if($is_delete)
                                         <a href="javascript:void(0)" wire:click="delete({{$item->id}})" wire:loading.remove wire:target="delete({{$item->id}})" class="text-danger"><i  class="fa fa-trash"></i></a>
                                         <span wire:loading wire:target="delete({{$item->id}})">
                                             <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
@@ -147,7 +147,10 @@
                                         </span>
                                     @endif
                                     <a href="{{route('print.quotation',$item->id)}}" target="_blank"><i class="fa fa-print"></i> Print</a>
-                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_po_success" wire:click="$emit('set_id',{{$item->id}})" class="badge badge-success badge-active"><i  class="fa fa-check"></i> Success</a>
+                                    
+                                    @if($item->status==0)
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_po_success" wire:click="$emit('set_id',{{$item->id}})" class="badge badge-success badge-active"><i  class="fa fa-check"></i> Success</a>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
