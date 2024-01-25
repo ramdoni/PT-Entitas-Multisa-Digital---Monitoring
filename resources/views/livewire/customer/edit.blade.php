@@ -52,7 +52,7 @@
                             <select class="form-control" wire:model="form.kabupaten_id">
                                 <option value=""> -- Select -- </option>
                                 @foreach($kabupaten as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                    <option value="{{$item->id}}">{{$item->nama}}</option>
                                 @endforeach
                             </select>
                             @error('form.kabupaten_id')
@@ -84,6 +84,18 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($data->pics as $k => $item)
+                            <tr>
+                                <td>{{$k+1}}</td>
+                                <td>{{$item->name}}</td>
+                                <td>{{$item->position}}</td>
+                                <td>{{$item->mobile}}</td>
+                                <td>{{$item->email}}</td>
+                                <td>
+                                    <a href="javascript:void(0)" class="text-danger" wire:click="deletePic({{$item->id}})"><i class="fa fa-close"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
                         @foreach($pic as $k => $item)
                             <tr>
                                 <td>{{$k+1}}</td>
@@ -92,33 +104,30 @@
                                 <td>{{$item['mobile']}}</td>
                                 <td>{{$item['email']}}</td>
                                 <td>
-                                    <a href="javascript:void(0)" class="text-danger" wire:click="deletePic({{$k}})"><i class="fa fa-close"></i></a>
+                                    <a href="javascript:void(0)" class="text-danger" wire:click="deleteArr({{$k}})"><i class="fa fa-close"></i></a>
                                 </td>
                             </tr>
                         @endforeach
-                        @if($insert_pic)
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <input type="text" class="form-control" wire:model="arr_form.name" />
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" wire:model="arr_form.position" />
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" wire:model="arr_form.mobile" />
-                                </td>
-                                <td>
-                                    <input type="email" class="form-control" wire:model="arr_form.email" />
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0)" wire:click="addPic"><i class="fa fa-save"></i></a>
-                                </td>
-                            </tr>
-                        @endif
+                        <tr>
+                            <td></td>
+                            <td>
+                                <input type="text" class="form-control" wire:model="arr_form.name" />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" wire:model="arr_form.position" />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" wire:model="arr_form.mobile" />
+                            </td>
+                            <td>
+                                <input type="email" class="form-control" wire:model="arr_form.email" />
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)" wire:click="addPic" class="btn btn-info"><i class="fa fa-save"></i></a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                <a href="javascript:void(0)" wire:click="$set('insert_pic',true)"><i class="fa fa-plus"></i> Tambah</a>
             </div>
         </div>
     </div>

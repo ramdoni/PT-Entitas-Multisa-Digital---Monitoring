@@ -24,4 +24,9 @@ class Customer extends Model
     {
         return $this->hasOne(Kabupaten::class,'id','kabupaten_id');
     }
+
+    public function pics()
+    {
+        return $this->hasMany(CustomerPic::class,'customer_id','id');
+    }
 }

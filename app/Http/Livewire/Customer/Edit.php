@@ -4,10 +4,13 @@ namespace App\Http\Livewire\Customer;
 
 use Livewire\Component;
 use App\Models\Customer;
+use App\Models\CustomerPic;
+use App\Models\Kabupaten;
 
 class Edit extends Component
 {
-    public $data,$form=[],$kabupaten=[],$pic=[],$insert_pic=false;
+    public $data,$form=[],$kabupaten=[],$pic=[],$insert_pic=false,$arr_form=[];
+    protected $listeners = ['reload'=>'$refresh'];
     public function render()
     {
         return view('livewire.customer.edit');
@@ -17,6 +20,33 @@ class Edit extends Component
     {
         $this->data = $data;
         $this->form = $data->toArray();
+        if($data->provinsi_id)
+         $this->kabupaten = Kabupaten::where('provinsi_id',$data->provinsi_id)->get();
+    }
+
+    public function updated($propertyName)
+    {
+        if($propertyName=='provinsi_id'){
+            $this->kabupaten = Kabupaten::where('provinsi_id',$this->provinsi_id)->get();
+        }
+    }
+
+    public function addPic()
+    {
+        $this->pic[] = $this->arr_form;
+        $this->arr_form = [];
+        $this->insert_pic = false;
+    }
+
+    public function deletePic($id)
+    {
+        CustomerPic::find($id)->delete();
+        $this->emit('message-success','Deleted');$this->emit('reload');
+    }
+
+    public function deleteArr($id)
+    {
+        unset($this->pic[$id]);
     }
 
     public function save()
@@ -35,15 +65,15 @@ class Edit extends Component
             'kabupaten_id'=>$this->form['kabupaten_id']
         ]);
 
-        // foreach($this->pic as $k => $item){
-        //     CustomerPic::create([
-        //         'customer_id'=>$data->id,
-        //         'name'=>$item['name'],
-        //         'position'=>$item['position'],
-        //         'mobile'=>$item['mobile'],
-        //         'email'=>$item['email'],
-        //     ]);
-        // }
+        foreach($this->pic as $k => $item){
+            CustomerPic::create([
+                'customer_id'=>$this->data->id,
+                'name'=>$item['name'],
+                'position'=>$item['position'],
+                'mobile'=>$item['mobile'],
+                'email'=>$item['email'],
+            ]);
+        }
 
         session()->flash('message-success',__('Data saved successfully'));
 

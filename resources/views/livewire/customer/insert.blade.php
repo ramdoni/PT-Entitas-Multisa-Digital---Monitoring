@@ -52,7 +52,7 @@
                             <select class="form-control" wire:model="kabupaten_id">
                                 <option value=""> -- Select -- </option>
                                 @foreach($kabupaten as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                    <option value="{{$item->id}}">{{$item->nama}}</option>
                                 @endforeach
                             </select>
                             @error('provinsi_id')
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <hr>
-                    <a href="{{route('users.index')}}"><i class="fa fa-arrow-left"></i> {{ __('Back') }}</a>
+                    <a href="{{route('customer.index')}}"><i class="fa fa-arrow-left"></i> {{ __('Back') }}</a>
                     <button type="submit" class="btn btn-primary ml-3"><i class="fa fa-save"></i> {{ __('Save') }}</button>
                 </form>
             </div>
