@@ -24,9 +24,14 @@
                                 <li><a href="{{ route('company.index') }}">Company</a></li>
                             </ul>
                         </li>
-
                         <li><a href="{{ route('quotation.index') }}" class="text-info icon-menu px-1">Quotation</a></li>
-                        <li><a href="{{ route('purchase-order.index') }}" class="text-info icon-menu px-1">Purchase Order</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="text-info dropdown-toggle icon-menu px-1" data-toggle="dropdown">Purchase Order</a>
+                            <ul class="dropdown-menu user-menu menu-icon">
+                                <li><a href="{{ route('company.index') }}">Purchase Order IN</a></li>
+                                <li><a href="{{ route('purchase-order.index') }}">Purchase Order OUT</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#" class="text-info icon-menu px-1">Invoices</a></li>
                         <li><a href="#" class="text-info icon-menu px-1">Tracking</a></li>
                     </ul>

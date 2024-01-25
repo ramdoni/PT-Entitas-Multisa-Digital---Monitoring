@@ -87,7 +87,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Date</label>
+                                    <label>Date <small>*Today</small></label>
                                     <input type="date" class="form-control" wire:model="form.quotation_date" />
                                     @error('form.quotation_date')
                                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
@@ -105,7 +105,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>Valid Until</label>
+                                    <label>Valid Until <small>*Auto 30 days</small></label>
                                     <input type="date" class="form-control" wire:model="form.valid_until" />
                                     @error('form.valid_until')
                                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
@@ -118,9 +118,6 @@
                                         @foreach($companies as $item)
                                             <option value="{{$item->id}}">{{$item->code}}</option>
                                         @endforeach
-                                        <!-- <option>ENTIGI</option>
-                                        <option>WIPO</option>
-                                        <option>STLV</option> -->
                                     </select>
                                     @error('form.company_id')
                                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
@@ -260,6 +257,9 @@
         <div class="card">
             <div class="body">
                 <h6>Part</h6>
+                @error('arr_parts')
+                    <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                @enderror
                 <hr>
                 <table class="table ">
                     <thead style="background:#eee;">

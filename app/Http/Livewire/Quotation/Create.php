@@ -29,7 +29,9 @@ class Create extends Component
         'responsibility'=>'',
         'project_code'=>'',
         'use_tax'=>1,
-        'tax_amount'=>0
+        'tax_amount'=>0,
+        'total_material'=>0,
+        'total_services'=>0
     ];
     public $material_selected_id,$arr_part=[],$materials=[],$material_selected,$material_qty=0,$arr_parts=[],$total_quotation=0,
             $ujrah=0,$ujrah_amount=0,$customer_code;
@@ -47,6 +49,8 @@ class Create extends Component
         $this->vendors = Vendor::where('type',2)->orderBy('name','ASC')->get();
         $this->form['project_code'] = $this->form['responsibility'] .'/'.str_pad(( Quotation::count()+1),4, '0', STR_PAD_LEFT);
         $this->form['quotation_date'] = date('Y-m-d');
+        $this->form['valid_until'] = date('Y-m-d',strtotime("+30 Days"));
+        $this->generate_quotation();
         $this->companies = Company::orderBy('name','ASC')->get();
     }
 
@@ -211,16 +215,17 @@ class Create extends Component
 
     public function calculate()
     {
-        $this->form['total_quotation'] = 0;
+        $this->form['total_quotation'] = 0;$this->form['total_material']=0;$this->form['total_services']=0;
         foreach($this->arr_parts as $k=>$i){
             $this->arr_parts[$k]['total'] = ($this->arr_parts[$k]['price'] and $this->arr_parts[$k]['qty']>0) ? ($this->arr_parts[$k]['price'] * $this->arr_parts[$k]['qty']) : 0;
             $this->form['total_quotation'] += $this->arr_parts[$k]['total'];
+            $this->form['total_material'] += $this->arr_parts[$k]['total'];
         }
 
         foreach($this->arr_vendor as $k=>$i){
             $this->arr_vendor[$k]['total'] = ($this->arr_vendor[$k]['price'] and $this->arr_vendor[$k]['qty']>0) ? ($this->arr_vendor[$k]['price'] * $this->arr_vendor[$k]['qty']) : 0;
             $this->form['total_quotation'] += $this->arr_vendor[$k]['total'];
-        }
+        }                                            
 
         if($this->form['factor'] and $this->form['total_quotation']){
             $this->form['factor_amount'] = $this->form['factor'] /100 * $this->form['total_quotation'];
@@ -261,6 +266,7 @@ class Create extends Component
             'form.project_type'=>'required',
             'form.quotation_number'=>'required',
             'form.valid_until'=>'required',
+            'arr_parts'=>'required|array'
         ]);
 
         $this->form['submitted_id'] = \Auth::user()->id;

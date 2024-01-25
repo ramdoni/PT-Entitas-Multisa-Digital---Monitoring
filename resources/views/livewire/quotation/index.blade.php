@@ -1,40 +1,62 @@
 @section('title', 'Quotation')
 @section('sub-title', 'Management Quotation')
 <div class="clearfix row">
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-6">
         <div class="card top_counter">
             <div class="body">
                 <div class="icon text-info"><i class="fa fa-building"></i> </div>
                 <div class="content">
-                    <div class="text">Total Quotation ({{format_idr($total)}})</div>
-                    <h5 class="number">{{format_idr($total_amount)}}</h5>
+                    <div class="text">Material(IDR)</div>
+                    <h6 class="number">{{format_idr($total_amount_material)}}</h6>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-6">
+        <div class="card top_counter">
+            <div class="body">
+                <div class="icon text-info"><i class="fa fa-building"></i> </div>
+                <div class="content">
+                    <div class="text">Services(IDR)</div>
+                    <h6 class="number">{{format_idr($total_amount_services)}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-6">
+        <div class="card top_counter">
+            <div class="body">
+                <div class="icon text-info"><i class="fa fa-building"></i> </div>
+                <div class="content">
+                    <div class="text">Quotation ({{format_idr($total)}})</div>
+                    <h6 class="number">{{format_idr($total_amount)}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-2 col-md-6">
         <div class="card top_counter">
             <div class="body">
                 <div class="icon text-warning"><i class="fa fa-area-chart"></i> </div>
                 <div class="content">
                     <div class="text">Proposed</div>
-                    <h5 class="number">{{format_idr($proposed)}}</h5>
+                    <h6 class="number">{{format_idr($proposed)}}</h6>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-6">
         <div class="card top_counter">
             <div class="body">
                 <div class="icon text-danger"><i class="fa fa-shopping-cart"></i> </div>
                 <div class="content">
                     <div class="text">Success</div>
-                    <h5 class="number">{{format_idr($success)}}</h5>
+                    <h6 class="number">{{format_idr($success)}}</h6>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6">
+    <div class="col-lg-2 col-md-6">
         <div class="card top_counter">
             <div class="body">
                 <div class="icon text-warning"><i class="fa fa-area-chart"></i> </div>

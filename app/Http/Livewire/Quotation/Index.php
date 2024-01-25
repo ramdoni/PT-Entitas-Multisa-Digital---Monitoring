@@ -19,6 +19,8 @@ class Index extends Component
         $success = clone $data;
         $reject = clone $data;
         $proposed = clone $data;
+        $total_amount_material = clone $data;
+        $total_amount_services = clone $data;
 
         return view('livewire.quotation.index')->with(['data'=>$data->paginate(100),
             'total'=>$total->count(),
@@ -26,6 +28,8 @@ class Index extends Component
             'proposed'=>$proposed->where('status',0)->sum('total_quotation'),
             'success'=>$success->where('status',1)->sum('total_quotation'),
             'reject'=>$reject->where('status',2)->sum('total_quotation'),
+            'total_amount_material'=>$total_amount_material->sum('total_material'),
+            'total_amount_services'=>$total_amount_services->sum('total_services')
         ]);
     }
 
