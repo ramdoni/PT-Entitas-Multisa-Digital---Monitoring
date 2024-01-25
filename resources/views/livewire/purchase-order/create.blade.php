@@ -117,16 +117,40 @@
                     <table class="table ">
                         <thead style="background:#eee;">
                             <tr>
+                                <th>No</th>
                                 <th>Description</th>
                                 <th>Detail</th>
                                 <th>Qty</th>
                                 <th class="text-right">Harga</th>
                                 <th class="text-right">Total Harga</th>
                                 <th class="text-center"></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            @foreach($parts as $k=>$item)
+                                <tr>
+                                    <td>{{$k+1}}</td>
+                                    <td>{{$item->material_detail['name']}}</td>
+                                    <td>
+                                        <input type="text" class="form-control" wire:model="row_materials.{{$k}}.detail" />
+                                    </td>
+                                    <td class="text-right">
+                                        <select class="form-control" wire:model="row_materials.{{$k}}.qty">
+                                            <option value="0">0</option>
+                                            @for($num=1;$num<=$item->qty;$num++)
+                                                <option>{{$num}}</option>
+                                            @endfor
+                                        </select>
+                                    </td>
+                                    <td class="text-right">
+                                        <input type="number" class="form-control text-right" wire:model="row_materials.{{$k}}.price" />
+                                    </td>
+                                    <td class="text-right">{{format_idr($row_materials[$k]['total'])}}</td>
+                                </tr>
+                            @endforeach
+                            <!-- <tr wire:key="row_insert">
+                                <td></td>
                                 <td>
                                     <select class="form-control" wire:model="row_material_id">
                                         <option value=""> -- Select -- </option>
@@ -136,7 +160,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" />
+                                    <input type="text" class="form-control" wire:model="row_material_detail" />
                                 </td>
                                 <td class="text-right">
                                     @if($selected_material)
@@ -149,12 +173,12 @@
                                 </td>
                                 <td class="text-right">
                                     @if($selected_material)
-                                        {{format_idr($selected_material->price)}}
+                                        <input type="number" class="form-control text-right" wire:model="row_material_price" />
                                     @endif
                                 </td>
                                 <td class="text-right">
                                     @if($selected_material)
-                                        {{format_idr($selected_material->price * $row_material_qty)}}
+                                        {{format_idr($row_material_price * $row_material_qty)}}
                                     @endif
                                 </td>
                                 <td class="text-center">
@@ -162,18 +186,10 @@
                                         <button type="button" class="btn btn-info" wire:click="assign_part"><i class="fa fa-plus"></i></button>
                                     @endif
                                 </td>
-                            </tr>
+                                <td></td>
+                            </tr> -->
                         </tbody>
                     </table>
-                </div>
-                <hr />
-                <div class="mt-3">
-                    <h6>Condition</h6>
-                    <table class="table ">
-                        <thead style="background:#eee;">
-                        </thead>
-                    </table>
-                    <a href="javascript:void(0)" wire:click="add_condition"><i class="fa fa-plus"></i> Add Condition</a>
                 </div>
                 <hr />
                 <div class="form-group">
