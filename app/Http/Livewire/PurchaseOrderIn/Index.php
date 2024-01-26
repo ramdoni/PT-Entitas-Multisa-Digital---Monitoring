@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\PurchaseOrderIn;
 
 use App\Models\PurchaseOrder;
+use App\Models\PurchaseOrderMaterial;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -29,5 +30,15 @@ class Index extends Component
         $data = PurchaseOrder::orderBy("created_at","desc");
 
         return $data;
+    }
+
+    public function delete($id)
+    {
+        PurchaseOrder::find($id)->delete();
+        PurchaseOrderMaterial::where('purchase_order_id',$id)->delete();
+
+        session()->flash('message-success','Purchase Order deleted.');
+
+        return redirect()->route('purchase-order-in.index');
     }
 }

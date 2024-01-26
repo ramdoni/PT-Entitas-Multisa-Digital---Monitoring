@@ -14,4 +14,9 @@ class PurchaseOrder extends Model
     {
         return $this->hasOne(Vendor::class,'id','vendor_id');
     }
+
+    public function quotation()
+    {
+        return $this->hasOne(Quotation::class,'id','quotation_id');
+    }
 }

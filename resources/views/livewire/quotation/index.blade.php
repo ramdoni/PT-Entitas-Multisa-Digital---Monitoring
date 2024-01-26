@@ -123,6 +123,9 @@
                                     @if($item->status==2)
                                         <span class="badge badge-danger">REJECT</span>
                                     @endif
+                                    @if($item->status==3)
+                                        <span class="badge badge-warning">CANCEL</span>
+                                    @endif
                                 </td>
                                 <td>{{$item->project_type}}</td>
                                 <td>{{$item->responsibility}}</td>
@@ -150,6 +153,8 @@
                                     
                                     @if($item->status==0)
                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_po_success" wire:click="$emit('set_id',{{$item->id}})" class="badge badge-success badge-active"><i  class="fa fa-check"></i> Success</a>
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_reject" wire:click="$emit('set_id',{{$item->id}})" class="badge badge-warning badge-active"><i  class="fa fa-times"></i> Reject</a>
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_cancel" wire:click="$emit('set_id',{{$item->id}})" class="badge badge-danger badge-active"><i  class="fa fa-times"></i> Cancel</a>
                                     @endif
                                 </td>
                             </tr>
@@ -165,3 +170,5 @@
 </div>
 
 @livewire('quotation.po-success')
+@livewire('quotation.reject')
+@livewire('quotation.cancel')

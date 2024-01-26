@@ -2,6 +2,7 @@
 use App\Models\Uom;
 use App\Models\User;
 use App\Models\UserOtp;
+use Illuminate\Support\Str;
 
 function get_uom($id)
 {
@@ -50,6 +51,8 @@ function sendVfdData($msg,$msg2='')
     // Konfigurasi port serial
     $serial_port = 'COM9'; // Sesuaikan dengan port serial yang Anda gunakan
     $baud_rate = 9600; // Sesuaikan dengan baud rate yang diperlukan
+    
+    exec("mode COM9: BAUD=9600 PARITY=n DATA=8 STOP=1 to=off dtr=off rts=off");
 
     // Buka koneksi serial
     $serial_handle = fopen($serial_port, 'w+');
@@ -60,10 +63,12 @@ function sendVfdData($msg,$msg2='')
             fwrite($serial_handle, "\x0C");
             
             usleep(500000); // 100,000 mikrodetik (0.1 detik)
+            if($msg2=="")
+                fwrite($serial_handle, Str::limit($msg,40,''));
+            else
+                fwrite($serial_handle, Str::limit($msg,20,''));
 
-            fwrite($serial_handle, $msg);
-
-            if($msg2) fwrite($serial_handle, "\r\n".$msg2);
+            if($msg2) fwrite($serial_handle, "\r\n".Str::limt($msg2,20,''));
 
         } finally {
             // Tutup koneksi serial saat selesai

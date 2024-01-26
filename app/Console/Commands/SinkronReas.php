@@ -13,7 +13,7 @@ class SinkronReas extends Command
      *
      * @var string
      */
-    protected $signature = 'sinkron:reas';
+    protected $signature = 'date';
 
     /**
      * The console command description.
@@ -39,18 +39,35 @@ class SinkronReas extends Command
      */
     public function handle()
     {
-        foreach(Reas::get() as $item){
-            echo "No Pengajuan : {$item->no_pengajuan}\n";
-            // rate
-            $rate = ReasuradurRate::find($item->reasuradur_rate_id);
-            if($rate){
-                echo "OR : {$rate->or}\n";
-                echo "Reas : {$rate->reas}\n";
-                $item->or = $rate->or;
-                $item->reas = $rate->reas;
-                $item->save();
+        $serial_port = 'COM9'; // Sesuaikan dengan port serial yang Anda gunakan
+        $baud_rate = 9600; // Sesuaikan dengan baud rate yang diperlukan
+        
+        exec("mode COM9: BAUD=9600 PARITY=n DATA=8 STOP=1 to=off dtr=off rts=off");
+
+        // Buka koneksi serial
+        $serial_handle = fopen($serial_port, 'w+');
+
+        if ($serial_handle==true) {
+            try {
+                fwrite($serial_handle, "\x0C");
+                while(true){
+                    
+                    // fwrite($serial_handle, "\x0C");
+                    usleep(1000000); // 100,000 mikrodetik (0.1 detik)
+                    // sendVfdData(date('d M Y H:i:s'));
+                    
+                    $date = date('d-M-Y');
+                    fwrite($serial_handle, $date."      \r\n".date("H:i:s")."            ");
+                    // fwrite($serial_handle,  "\r".$date."\r\n".date("H:i:s"));
+
+                    $this->info($date . date(' H:i:s'));
+                }
+                
+
+            } finally {
+                // Tutup koneksi serial saat selesai
+                fclose($serial_handle);
             }
-            echo "--------------------------------------\n";
         }
     }
 }

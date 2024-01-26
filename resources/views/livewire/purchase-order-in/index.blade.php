@@ -41,13 +41,15 @@
                             <tr>
                                 <th>No</th>
                                 <th class="text-center">Status</th>
+                                <th>Quotation No</th>
                                 <th>Purchase Order No</th>
                                 <th>Date</th>
-                                <th>Amount</th>
-                                <th>Inclusive Taxes</th>
-                                <th>Grand Total</th>
+                                <th class="text-right">Amount</th>
+                                <th class="text-right">Inclusive Taxes</th>
+                                <th class="text-right">Grand Total</th>
                                 <th>Bast Number</th>
                                 <th>Bast Date</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,13 +67,21 @@
                                         <span class="badge badge-danger">REJECT</span>
                                     @endif
                                 </td>
+                                <td>
+                                    @if($item->quotation)
+                                        <a href="{{route('quotation.edit',$item->quotation_id)}}">{{$item->quotation?$item->quotation->quotation_number:''}}</a>
+                                    @endif
+                                </td>
                                 <td>{{$item->po_number}}</td>
                                 <td>{{date('d-M-Y',strtotime($item->po_date))}}</td>
-                                <td>{{format_idr($item->amount)}}</td>
-                                <td>{{format_idr($item->inclusive_taxes_amount)}}</td>
-                                <td>{{format_idr($item->grand_total)}}</td>
+                                <td class="text-right">{{format_idr($item->amount)}}</td>
+                                <td class="text-right">{{format_idr($item->inclusive_taxes_amount)}}</td>
+                                <td class="text-right">{{format_idr($item->grand_total)}}</td>
                                 <td></td>
                                 <td></td>
+                                <td>
+                                    <a href="javascript:void(0)" wire:click="delete({{$item->id}})" wire:loading.remove wire:target="delete({{$item->id}})" class="text-danger"><i  class="fa fa-trash"></i></a>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
