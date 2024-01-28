@@ -12,7 +12,8 @@ class Quotation extends Model
     protected $casts = [
         'company_detail'=>'array',
         'system_requirement'=>'array',
-        'term_and_conditions'=>'array'
+        'term_and_conditions'=>'array',
+        'customer_detail'=>'array'
     ];
     public function customer()
     {

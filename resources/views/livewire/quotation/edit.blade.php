@@ -75,77 +75,107 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="row">
-                                <div class="form-group col-md-7">
+                                <div class="form-group col-md-6">
                                     <label>Quotation Number</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" title="Generate Quotation Number" style="cursor:pointer;" wire:click="generate_quotation"><i class="fa fa-refresh"></i></span>
+                                    @if($is_revisi)
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" title="Generate Quotation Number" style="cursor:pointer;" wire:click="generate_quotation"><i class="fa fa-refresh"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" wire:model="form.quotation_number">
                                         </div>
-                                        <input type="text" class="form-control" wire:model="form.quotation_number">
-                                    </div>
-                                    @error('form.quotation_number')
-                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                    @enderror
+                                        @error('form.quotation_number')
+                                            <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                        @enderror
+                                    @else
+                                        <br />{{$form['quotation_number']}}
+                                    @endif
                                 </div>
-                                <div class="form-group col-md-5">
+                                <div class="form-group col-md-6">
                                     <label>Date</label>
-                                    <input type="date" class="form-control" wire:model="form.quotation_date" />
-                                    @error('form.quotation_date')
-                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                    @enderror
+                                    @if($is_revisi)
+                                        <input type="date" class="form-control" wire:model="form.quotation_date" />
+                                        @error('form.quotation_date')
+                                            <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                        @enderror
+                                    @else
+                                        <br />{{date('d-M-Y',strtotime($form['quotation_date']))}}
+                                    @endif
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Project Type</label>
-                                <select class="form-control" wire:model="form.project_type">
-                                    <option value=""> -- Select -- </option>
-                                    <option>Control System</option>
-                                    <option>Software</option>
-                                </select>
-                                @error('form.project_type')
-                                    <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                @enderror
-                            </div>
-                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Project Type</label>
+                                    @if($is_revisi)
+                                        <select class="form-control" wire:model="form.project_type">
+                                            <option value=""> -- Select -- </option>
+                                            <option>Control System</option>
+                                            <option>Software</option>
+                                        </select>
+                                        @error('form.project_type')
+                                            <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                        @enderror
+                                    @else
+                                        <br />{{$form['project_type']}}
+                                    @endif
+                                </div>
+                            <!-- </div>
+                            <div class="row"> -->
                                 <div class="form-group col-md-6">
                                     <label>Resonsibility</label>
-                                    <select class="form-control" wire:model="form.responsibility">
-                                        <option>ENTIGI</option>
-                                        <option>WIPO</option>
-                                        <option>STLV</option>
-                                    </select>
-                                    @error('form.responsibility')
-                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                    @enderror
+                                    @if($is_revisi)
+                                        <select class="form-control" wire:model="form.responsibility">
+                                            <option>ENTIGI</option>
+                                            <option>WIPO</option>
+                                            <option>STLV</option>
+                                        </select>
+                                        @error('form.responsibility')
+                                            <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                        @enderror
+                                    @else
+                                        <br />{{$form['responsibility']}}
+                                    @endif
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Project Code <small>*Auto Generate</small></label>
-                                    <input type="text" class="form-control" readonly="true" wire:model="form.project_code" />
-                                    @error('form.project_code')
-                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                    @enderror
+                                    @if($is_revisi)
+                                        <input type="text" class="form-control" readonly="true" wire:model="form.project_code" />
+                                        @error('form.project_code')
+                                            <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                        @enderror
+                                    @else
+                                        <br />{{$form['project_code']}}
+                                    @endif
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Project Name</label>
-                                <input type="text" class="form-control" wire:model="form.project_name" />
-                                @error('form.project_name')
-                                    <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                @enderror
+                                @if($is_revisi)
+                                    <input type="text" class="form-control" wire:model="form.project_name" />
+                                    @error('form.project_name')
+                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                    @enderror
+                                @else
+                                    <br />{{$form['project_name']}}
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label>Customer</label>
-                                <select class="form-control" wire:model="form.customer_id">
-                                    <option value=""> -- Select -- </option>
-                                    @foreach(\App\Models\Customer::get() as $k => $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
-                                    @endforeach
-                                </select>
-                                @error('form.customer_id')
-                                    <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                @enderror
+                                @if($is_revisi)
+                                    <select class="form-control" wire:model="form.customer_id">
+                                        <option value=""> -- Select -- </option>
+                                        @foreach(\App\Models\Customer::get() as $k => $item)
+                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('form.customer_id')
+                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                    @enderror
+                                @else
+                                    @if(isset($form['customer']['customer_detail']))
+                                        {{$form['customer']['customer_detail']['name']}}
+                                    @endif
+                                @endif
                             </div>
                             
                         </div>
@@ -153,10 +183,14 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>Factor (%)</label>
-                                    <input type="number" class="form-control" wire:model="form.factor" />
-                                    @error('form.ujrah')
-                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                    @enderror
+                                    @if($is_revisi)
+                                        <input type="number" class="form-control" wire:model="form.factor" />
+                                        @error('form.factor')
+                                            <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                        @enderror
+                                    @else
+                                        <br />{{$form['factor']}}%
+                                    @endif
                                 </div>
                                 <!-- <div class="form-group col-md-7">
                                     <label>Factor (Rp)</label>
@@ -167,10 +201,14 @@
                                 </div> -->
                                 <div class="form-group col-md-6">
                                     <label>Ujrah (%)</label>
-                                    <input type="number" class="form-control" wire:model="form.ujrah" />
-                                    @error('form.ujrah')
-                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                    @enderror
+                                    @if($is_revisi)
+                                        <input type="number" class="form-control" wire:model="form.ujrah" />
+                                        @error('form.ujrah')
+                                            <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                        @enderror
+                                    @else
+                                        <br />{{$form['ujrah']}}%
+                                    @endif
                                 </div> 
                                 <div class="form-group col-md-4">
                                     <label>
@@ -180,17 +218,26 @@
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label>Remark</label>
-                                    <input type="text" class="form-control" wire:model="form.remarks" />
-                                    @error('form.remarks')
-                                        <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
-                                    @enderror
+                                    @if($is_revisi)
+                                        <input type="text" class="form-control" wire:model="form.remarks" />
+                                        @error('form.remarks')
+                                            <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                                        @enderror
+                                    @else
+                                        <br />{{$form['remarks']}}
+                                    @endif
                                 </div>
                             </div>
                         </div>
                     </div>
                     <hr>
                     <a href="{{route('quotation.index')}}"><i class="fa fa-arrow-left"></i> {{ __('Back') }}</a>
-                    <button type="submit" class="btn btn-primary ml-3"><i class="fa fa-save"></i> {{ __('Submit Quotation') }}</button>
+                    @if($is_revisi)
+                        <button type="submit" class="btn btn-primary ml-3"><i class="fa fa-save"></i> {{ __('Submit Quotation') }}</button>
+                        <a href="javascript:void(0)" class="text-danger ml-2" wire:click="$set('is_revisi',false)"><i class="fa fa-times"></i> Cancel</a>
+                    @else
+                        <button type="button" class="btn btn-warning ml-3" wire:click="$set('is_revisi',true)"><i class="fa fa-edit"></i> {{ __('Revisi Quotation') }}</button>
+                    @endif
                 </form>
             </div>
         </div>
@@ -198,7 +245,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="body">
-                <h6>Part</h6>
+                <h6>Material</h6>
                 <hr>
                 <table class="table ">
                     <thead style="background:#eee;">
@@ -216,6 +263,12 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($data->parts as $k=>$item)
+                            <tr>
+                                <td>{{$k+1}}</td>
+                                <td>{{$item['material['']']}}</td>
+                            </tr>
+                        @endforeach
                         @php($total_part_qty=0)
                         @php($total_part_sub_total=0)
                         @php($total_part_total=0)

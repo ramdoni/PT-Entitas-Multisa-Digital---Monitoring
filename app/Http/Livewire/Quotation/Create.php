@@ -84,7 +84,10 @@ class Create extends Component
 
         if($propertyName=='form.customer_id'){
             $customer = Customer::find($this->form['customer_id']);
-            if($customer) $this->customer_code = $customer->customer_code;
+            if($customer) {
+                $this->customer_code = $customer->customer_code;
+                $this->form['customer_detail'] = $customer->toArray();
+            }
             $this->customer_pics = CustomerPic::where('customer_id',$this->form['customer_id'])->get();
         }
 

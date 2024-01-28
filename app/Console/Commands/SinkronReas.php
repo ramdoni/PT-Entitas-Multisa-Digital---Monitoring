@@ -32,6 +32,11 @@ class SinkronReas extends Command
         parent::__construct();
     }
 
+    public function convert($size)
+    {
+        $unit=array('b','kb','mb','gb','tb','pb');
+        return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+    }
     /**
      * Execute the console command.
      *
@@ -50,18 +55,32 @@ class SinkronReas extends Command
         if ($serial_handle==true) {
             try {
                 fwrite($serial_handle, "\x0C");
-                while(true){
-                    
-                    // fwrite($serial_handle, "\x0C");
-                    usleep(1000000); // 100,000 mikrodetik (0.1 detik)
-                    // sendVfdData(date('d M Y H:i:s'));
-                    
-                    $date = date('d-M-Y');
-                    fwrite($serial_handle, $date."      \r\n".date("H:i:s")."            ");
-                    // fwrite($serial_handle,  "\r".$date."\r\n".date("H:i:s"));
+                
+                $space="";
+                for($num=0;$num<=28;$num++){
+                    fwrite($serial_handle, "\x0C");
+                    $space .= " ";
+                    fwrite($serial_handle,$space."Aksa & Ganes");
 
-                    $this->info($date . date(' H:i:s'));
+                    usleep(1000000); // 100,000 mikrodetik (0.1 detik)
+                    if($num>=28){
+                        $num=0;
+                        $space = "";
+                    }
                 }
+
+                // while(true){
+                    
+                //     // fwrite($serial_handle, "\x0C");
+                //     usleep(1000000); // 100,000 mikrodetik (0.1 detik)
+                //     // sendVfdData(date('d M Y H:i:s'));
+                    
+                //     $date = date('d-M-Y');
+                //     fwrite.($serial_handle, $date."      \r\n".date("H:i:s")."            ");
+                //     // fwrite($serial_handle,  "\r".$date."\r\n".date("H:i:s"));
+
+                //     $this->info($date . date(' H:i:s'));
+                // }
                 
 
             } finally {
