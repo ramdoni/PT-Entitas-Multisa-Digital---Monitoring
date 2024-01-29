@@ -211,10 +211,14 @@
                                     @endif
                                 </div> 
                                 <div class="form-group col-md-4">
-                                    <label>
-                                        <input type="checkbox" /> 
-                                        Tax 
-                                    </label>
+                                    @if($is_revisi)
+                                        <label>
+                                            <input type="checkbox" /> 
+                                            Tax 
+                                        </label>
+                                    @else
+                                        Tax {{$form['tax_amount']>0?format_idr($form['tax_amount']) : 0}}
+                                    @endif
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label>Remark</label>
