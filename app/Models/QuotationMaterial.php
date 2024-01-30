@@ -14,4 +14,9 @@ class QuotationMaterial extends Model
     protected $casts = [
         'material_detail' => 'array'
     ];
+
+    public function material()
+    {
+        return $this->hasONe(Material::class,'id','material_id');
+    }
 }

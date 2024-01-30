@@ -50,30 +50,33 @@ function sendVfdData($msg,$msg2='')
 {
     // Konfigurasi port serial
     $serial_port = 'COM9'; // Sesuaikan dengan port serial yang Anda gunakan
-    $baud_rate = 9600; // Sesuaikan dengan baud rate yang diperlukan
-    
-    exec("mode COM9: BAUD=9600 PARITY=n DATA=8 STOP=1 to=off dtr=off rts=off");
 
     // Buka koneksi serial
-    $serial_handle = fopen($serial_port, 'w+');
+    try{
+        exec("mode COM9: BAUD=9600 PARITY=n DATA=8 STOP=1 to=off dtr=off rts=off");
 
-    if ($serial_handle==true) {
-        try {
+        $serial_handle = fopen($serial_port, 'w+');
 
-            fwrite($serial_handle, "\x0C");
-            
-            usleep(500000); // 100,000 mikrodetik (0.1 detik)
-            if($msg2=="")
-                fwrite($serial_handle, Str::limit($msg,40,''));
-            else
-                fwrite($serial_handle, Str::limit($msg,20,''));
+        if ($serial_handle==true) {
+            try {
 
-            if($msg2) fwrite($serial_handle, "\r\n".Str::limt($msg2,20,''));
+                fwrite($serial_handle, "\x0C");
+                
+                usleep(500000); // 100,000 mikrodetik (0.1 detik)
+                if($msg2=="")
+                    fwrite($serial_handle, Str::limit($msg,40,''));
+                else
+                    fwrite($serial_handle, Str::limit($msg,20,''));
 
-        } finally {
-            // Tutup koneksi serial saat selesai
-            fclose($serial_handle);
+                if($msg2) fwrite($serial_handle, "\r\n".Str::limit($msg2,20,''));
+
+            } finally {
+                // Tutup koneksi serial saat selesai
+                fclose($serial_handle);
+            }
         }
+    } catch(Exception $e){
+        // code here 
     }
 }
 function numberToRomawi($number)

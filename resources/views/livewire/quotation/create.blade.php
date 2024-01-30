@@ -68,7 +68,7 @@
         </div>
     </div>
     <div class="col-md-12">
-        <div class="card">
+        <div class="card mb-3">
             <div class="body">
                 <form id="basic-form" method="post" wire:submit.prevent="save">
                     <div class="row">
@@ -254,9 +254,9 @@
         </div>
     </div>
     <div class="col-md-12">
-        <div class="card">
+        <div class="card mb-3">
             <div class="body">
-                <h6>Part</h6>
+                <h6>Material / Part</h6>
                 @error('arr_parts')
                     <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                 @enderror
@@ -327,7 +327,9 @@
                                 @endif
                             </td>
                             <td>
-                                <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="material_qty" />
+                                @if($material_selected)
+                                    <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="material_qty" />
+                                @endif
                             </td>
                             <td>
                                 @if($material_selected)
@@ -365,7 +367,8 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12">
+    
+    <!-- <div class="col-md-12">
         <div class="card">
             <div class="body">
                 <h6>Engineering</h6>
@@ -463,8 +466,8 @@
             </div>
         </div>
     </div>
-    
-    <!-- <div class="col-md-12">
+     -->
+    <div class="col-md-12">
         <div class="card">
             <div class="body">
                 <h6>Service</h6>
@@ -551,7 +554,7 @@
                 </table>
             </div>
         </div>
-    </div> -->
+    </div>
 </div>
 @livewire('quotation.services')
 @push('after-scripts')

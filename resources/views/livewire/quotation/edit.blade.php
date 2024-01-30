@@ -211,14 +211,10 @@
                                     @endif
                                 </div> 
                                 <div class="form-group col-md-4">
-                                    @if($is_revisi)
-                                        <label>
-                                            <input type="checkbox" /> 
-                                            Tax 
-                                        </label>
-                                    @else
-                                        Tax {{$form['tax_amount']>0?format_idr($form['tax_amount']) : 0}}
-                                    @endif
+                                    <label>
+                                        <input type="checkbox" /> 
+                                        Tax 
+                                    </label>
                                 </div>
                                 <div class="form-group col-md-12">
                                     <label>Remark</label>
@@ -256,7 +252,6 @@
                         <tr>
                             <th>No</th>
                             <th>Description</th>
-                            <th></th>
                             <th>Brand</th>
                             <th>Model Code Type</th>
                             <th class="text-right">Total / QTY</th>
@@ -270,7 +265,24 @@
                         @foreach($data->parts as $k=>$item)
                             <tr>
                                 <td>{{$k+1}}</td>
-                                <td>{{$item['material['']']}}</td>
+                                <td>
+                                    @if($item->material_detail)
+                                        {{$item->material_detail['name']}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($item->material->brand)
+                                        {{$item->material->brand->name}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($item->material->modelcode)
+                                        {{$item->material->modelcode->name}}
+                                    @endif
+                                </td>
+                                <td class="text-right">{{format_idr($item->qty)}}</td>
+                                <td class="text-right">{{format_idr($item->price)}}</td>
+                                <td class="text-right">{{format_idr($item->total)}}</td>
                             </tr>
                         @endforeach
                         @php($total_part_qty=0)
@@ -296,59 +308,63 @@
                             @php($total_part_sub_total += $item['price'])
                             @php($total_part_total += $item['total'])
                         @endforeach
-                        <tr wire:key="item_row_part">
-                            <td></td>
-                            <td>
-                                <div wire:ignore>
-                                    <select class="form-control" id="material_id">
-                                        <option value=""> -- Select -- </option>
-                                        @foreach($materials as $item)
-                                            <option value="{{$item->id}}">{{$item->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <a href="{{route('material.create')}}" title="Create New Material" target="_blank"><i class="fa fa-plus"></i></a>
-                            </td>
-                            <td>
-                                @if($material_selected)
-                                    {{$material_selected->brand?$material_selected->brand->name:'-'}}
-                                @endif
-                            </td>
-                            <td>
-                                @if($material_selected)
-                                    {{$material_selected->modelcode?$material_selected->modelcode->name:'-'}}
-                                @endif
-                            </td>
-                            <td>
-                                <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="material_qty" />
-                            </td>
-                            <td>
-                                @if($material_selected)
-                                    {{$material_selected->uom?$material_selected->uom->name:'-'}}
-                                @endif
-                            </td>
-                            <td>
-                                @if($material_selected)
-                                    {{$material_selected->price?format_idr($material_selected->price):'-'}}
-                                @endif
-                            </td>
-                            <td>
-                                @if($material_selected and $material_qty>0)
-                                    {{$material_selected->price?format_idr($material_selected->price*$material_qty):'-'}}
-                                @endif
-                            </td>
-                            <td>
-                                @if($material_selected)
-                                    <button type="button" class="btn btn-info" wire:click="assign_part"><i class="fa fa-plus"></i></button>
-                                @endif
-                            </td>
-                        </tr>
+                        @if($is_revisi)
+                            <tr wire:key="item_row_part">
+                                <td></td>
+                                <td>
+                                    <div wire:ignore>
+                                        <select class="form-control" id="material_id">
+                                            <option value=""> -- Select -- </option>
+                                            @foreach($materials as $item)
+                                                <option value="{{$item->id}}">{{$item->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="{{route('material.create')}}" title="Create New Material" target="_blank"><i class="fa fa-plus"></i></a>
+                                </td>
+                                <td>
+                                    @if($material_selected)
+                                        {{$material_selected->brand?$material_selected->brand->name:'-'}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($material_selected)
+                                        {{$material_selected->modelcode?$material_selected->modelcode->name:'-'}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($material_selected)
+                                        <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="material_qty" />
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($material_selected)
+                                        {{$material_selected->uom?$material_selected->uom->name:'-'}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($material_selected)
+                                        {{$material_selected->price?format_idr($material_selected->price):'-'}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($material_selected and $material_qty>0)
+                                        {{$material_selected->price?format_idr($material_selected->price*$material_qty):'-'}}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($material_selected)
+                                        <button type="button" class="btn btn-info" wire:click="assign_part"><i class="fa fa-plus"></i></button>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                     <tfoot style="background:#eee;">
                         <tr wire:key="tr_total_part">
-                            <th colspan="5" class="text-right">Total</th>
+                            <th colspan="4" class="text-right">Total</th>
                             <th class="text-right">{{format_idr($total_part_qty)}}</th>
                             <th></th>
                             <th class="text-right">{{format_idr($total_part_sub_total)}}</th>
@@ -360,7 +376,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
         <div class="card">
             <div class="body">
                 <h6>Engineering</h6>
@@ -457,7 +473,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="col-md-12">
         <div class="card">
             <div class="body">
@@ -467,55 +483,69 @@
                     <thead style="background:#eee;">
                         <tr>
                             <th>No</th>
-                            <th>Description</th>
+                            <th class="text-left">Service</th>
                             <th></th>
-                            <th>Brand</th>
-                            <th>Model Code Type</th>
-                            <th>Total / QTY</th>
+                            <th class="text-left">Description</th>
+                            <th class="text-right">Total / QTY</th>
                             <th>Unit</th>
-                            <th>Unit Price List(IDR)</th>
-                            <th>Sub Total(IDR)</th>
+                            <th class="text-right">Unit Price List(IDR)</th>
+                            <th class="text-right">Sub Total(IDR)</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr wire:key="item_row_service">
-                            <td></td>
-                            <td>
-                                <select class="form-control" id="vendor_id">
-                                    <option value=""> -- Select -- </option>
-                                    @foreach(\App\Models\Services::orderBy('name','ASC')->get() as $item)
-                                        <option value="{{$item->id}}">{{$item->name}}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_add_service"><i class="fa fa-plus"></i></a>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" wire:model="engineer_description" />
-                            </td>
-                            <td>
-                                <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="engineer_qty" />
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" wire:model="engineer_unit" />
-                            </td>
-                            <td>
-                                <input type="number" class="form-control float-right text-right" wire:model="engineer_price" />
-                            </td>
-                            <td class="text-right">
-                                @if($engineer_qty>0 and $engineer_price>0) 
-                                    {{format_idr($engineer_qty * $engineer_price)}}
-                                @else
-                                    0
-                                @endif
-                            </td>
-                            <td>
-                                @if($vendor_selected)
-                                    <button type="button" class="btn btn-info" wire:click="assign_engineer"><i class="fa fa-plus"></i></button>
-                                @endif
-                            </td>
-                        </tr>
+                        @foreach($data->services as $k=>$item)
+                            <tr>
+                                <td>{{$k+1}}</td>
+                                <td>{{$item->service_detail['name']}}</td>
+                                <td></td>
+                                <td>{{$item->description}}</td>
+                                <td class="text-right">{{$item->qty}}</td>
+                                <td>{{$item->unit}}</td>
+                                <td class="text-right">{{format_idr($item->price)}}</td>
+                                <td class="text-right">{{format_idr($item->total)}}</td>
+                            </tr>
+                        @endforeach
+                        @if($is_revisi)
+                            <tr wire:key="item_row_service">
+                                <td></td>
+                                <td>
+                                    <select class="form-control" id="vendor_id">
+                                        <option value=""> -- Select -- </option>
+                                        @foreach(\App\Models\Services::orderBy('name','ASC')->get() as $item)
+                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_add_service"><i class="fa fa-plus"></i></a>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" wire:model="engineer_description" />
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="engineer_qty" />
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" wire:model="engineer_unit" />
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control float-right text-right" wire:model="engineer_price" />
+                                </td>
+                                <td class="text-right">
+                                    @if($engineer_qty>0 and $engineer_price>0) 
+                                        {{format_idr($engineer_qty * $engineer_price)}}
+                                    @else
+                                        0
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($vendor_selected)
+                                        <button type="button" class="btn btn-info" wire:click="assign_engineer"><i class="fa fa-plus"></i></button>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

@@ -39,4 +39,8 @@ class Quotation extends Model
     {
         return $this->hasMany(QuotationMaterial::class,'quotation_id','id');
     }
+    public function services()
+    {
+        return $this->hasMany(QuotationService::class,'quotation_id','id');
+    }
 }

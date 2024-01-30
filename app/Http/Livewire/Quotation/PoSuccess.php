@@ -5,16 +5,20 @@ namespace App\Http\Livewire\Quotation;
 use App\Models\PurchaseOrder;
 use App\Models\Quotation;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class PoSuccess extends Component
 {
+    use WithFileUploads;
+
     public $form=[
         'quotation_id'=>'',
         'status'=>0,
         'po_date'=>'',
         'inclusive_taxes'=>1,
         'inclusive_taxes_amount'=>0,
-        'grand_total'=>0
+        'grand_total'=>0,
+        'type'=>1
     ],$file,
     $temp=[];
     protected $listeners = ['set_id'=>'set_id'];
@@ -44,6 +48,7 @@ class PoSuccess extends Component
     public function set_id($id)
     {
         $this->form['quotation_id'] = $id;
+        $this->form['amount'] = $id->total;
     }
 
     public function save()
