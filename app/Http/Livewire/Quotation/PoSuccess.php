@@ -21,6 +21,14 @@ class PoSuccess extends Component
         'type'=>1
     ],$file,
     $temp=[];
+
+    public $valid = [
+        'form.quotation_id'=>'required',
+        'form.po_number'=>'required',
+        'form.po_date'=>'required',
+        'form.amount'=>'required',
+    ];
+
     protected $listeners = ['set_id'=>'set_id'];
     public function render()
     {
@@ -48,18 +56,20 @@ class PoSuccess extends Component
     public function set_id($id)
     {
         $this->form['quotation_id'] = $id;
-        $this->form['amount'] = $id->total;
     }
 
     public function save()
     {
-        $this->validate([
-            'form.quotation_id'=>'required',
-            'form.po_number'=>'required',
-            'form.po_date'=>'required',
-            'form.amount'=>'required',
-        ]);
+        if($this->file) $this->valid['file'] = 'mimes:jpeg,bmp,png,gif,svg,pdf,doc,docx';
 
+        $this->validate($this->valid);
+        
+        if($this->file){
+            $name = 'po-'.date('dmYHis').'.'.$this->file->extension();
+            $this->file->storePubliclyAs("public/quotation/{$this->form['quotation_id']}/",$name);
+            $this->form['file'] = "storage/quotation/{$this->form['quotation_id']}/{$name}";
+        }
+        
         PurchaseOrder::create($this->form);
 
         Quotation::find($this->form['quotation_id'])->update(['status'=>1]);

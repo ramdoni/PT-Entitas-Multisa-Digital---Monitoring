@@ -1,4 +1,4 @@
-@section('title', 'Purchase Order OUT')
+@section('title', 'Purchase Order IN')
 @section('sub-title', 'Management Purchase Order')
 <div class="clearfix row">
     <div class="col-lg-3 col-md-6">
@@ -72,7 +72,11 @@
                                         <a href="{{route('quotation.edit',$item->quotation_id)}}">{{$item->quotation?$item->quotation->quotation_number:''}}</a>
                                     @endif
                                 </td>
-                                <td>{{$item->po_number}}</td>
+                                <td>
+                                    @if($item->file)
+                                        <a href="{{asset($item->file)}}" target="_blank"><i class="fa fa-download"></i></a>
+                                    @endif
+                                    {{$item->po_number}}</td>
                                 <td>{{date('d-M-Y',strtotime($item->po_date))}}</td>
                                 <td class="text-right">{{format_idr($item->amount)}}</td>
                                 <td class="text-right">{{format_idr($item->inclusive_taxes_amount)}}</td>
