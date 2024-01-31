@@ -11,30 +11,38 @@
         <div class="navbar-right">
             <form id="navbar-search" class="navbar-form search-form col-md-9">
                 <div id="navbar-menu float-left">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a href="#" class="text-info dropdown-toggle icon-menu px-1" data-toggle="dropdown">Data Master</a>
-                            <ul class="dropdown-menu user-menu menu-icon">
-                                @if(\Auth::user()->user_access_id==1)
+                    @if(\Auth::user()->user_access_id==1)
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" class="text-info dropdown-toggle icon-menu px-1" data-toggle="dropdown">Data Master</a>
+                                <ul class="dropdown-menu user-menu menu-icon">
                                     <li><a href="{{ route('users.index') }}">Users</a></li>
-                                @endif
-                                <li><a href="{{ route('material.index') }}">Material / Part</a></li>
-                                <li><a href="{{ route('customer.index') }}">Customer</a></li>
-                                <li><a href="{{ route('vendor.index') }}">Vendor / Supplier</a></li>
-                                <li><a href="{{ route('company.index') }}">Company</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="{{ route('quotation.index') }}" class="text-info icon-menu px-1">Quotation</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="text-info dropdown-toggle icon-menu px-1" data-toggle="dropdown">Purchase Order</a>
-                            <ul class="dropdown-menu user-menu menu-icon">
-                                <li><a href="{{ route('purchase-order-in.index') }}">Purchase Order IN</a></li>
-                                <li><a href="{{ route('purchase-order.index') }}">Purchase Order OUT</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#" class="text-info icon-menu px-1">Invoices</a></li>
-                        <li><a href="#" class="text-info icon-menu px-1">Tracking</a></li>
-                    </ul>
+                                    <li><a href="{{ route('material.index') }}">Material / Part</a></li>
+                                    <li><a href="{{ route('customer.index') }}">Customer</a></li>
+                                    <li><a href="{{ route('vendor.index') }}">Vendor / Supplier</a></li>
+                                    <li><a href="{{ route('company.index') }}">Company</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{{ route('quotation.index') }}" class="text-info icon-menu px-1">Quotation</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="text-info dropdown-toggle icon-menu px-1" data-toggle="dropdown">Purchase Order</a>
+                                <ul class="dropdown-menu user-menu menu-icon">
+                                    <li><a href="{{ route('purchase-order-in.index') }}">Purchase Order IN</a></li>
+                                    <li><a href="{{ route('purchase-order.index') }}">Purchase Order OUT</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#" class="text-info icon-menu px-1">Invoices</a></li>
+                            <li><a href="#" class="text-info icon-menu px-1">Tracking</a></li>
+                        </ul>
+                    @endif
+                    @if(\Auth::user()->user_access_id==6)
+                        <ul class="nav navbar-nav">
+                            <li><a href="{{ route('bank-book.index') }}" class="text-info icon-menu px-1">Bank Book</a></li>   
+                            <li><a href="{{ route('bank-account.index') }}" class="text-info icon-menu px-1">Bank Account</a></li>   
+                            <li><a href="{{ route('income.index') }}" class="text-info icon-menu px-1">Income</a></li>   
+                            <li><a href="{{ route('expense.index') }}" class="text-info icon-menu px-1">Expense</a></li>   
+                        </ul>
+                    @endif
                 </div>
             </form>
             <div id="navbar-menu">
@@ -75,6 +83,9 @@
                             </li>
                             <li><a href="{{ route('setting') }}"><i class="icon-equalizer"></i>
                                     <span>Setting</span></a>
+                            </li>
+                            <li><a href="{{ route('ascii') }}"><i class="icon-equalizer"></i>
+                                    <span>Ascii</span></a>
                             </li>
                             <li><a href="{{ route('back-to-admin') }}" class="text-danger"><i
                                         class="fa fa-arrow-right"></i> <span>Back to Admin</span></a></li>

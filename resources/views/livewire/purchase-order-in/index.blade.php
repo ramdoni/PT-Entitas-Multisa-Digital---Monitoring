@@ -1,4 +1,4 @@
-@section('title', 'Purchase Order OUT')
+@section('title', 'Purchase Order IN')
 @section('sub-title', 'Management Purchase Order')
 <div class="clearfix row">
     <div class="col-lg-3 col-md-6">

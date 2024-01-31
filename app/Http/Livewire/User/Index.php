@@ -45,7 +45,7 @@ class Index extends Component
             \Auth::loginUsingId($data->id);
             \Session::put('is_login_administrator', true);
 
-            return redirect('/application-room-request')->with('message-success', 'Welcome, Login success.');
+            return redirect('/')->with('message-success', 'Welcome, Login success.');
         }
     }
 

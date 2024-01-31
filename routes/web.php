@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth']], function(){
 
 // Administrator
 Route::group(['middleware' => ['auth','access:1']], function(){
+    Route::get('ascii',App\Http\Livewire\Ascii::class)->name('ascii');
     Route::get('setting',App\Http\Livewire\Setting::class)->name('setting');
     Route::get('users/insert',App\Http\Livewire\User\Insert::class)->name('users.insert');
     Route::get('user-access', App\Http\Livewire\UserAccess\Index::class)->name('user-access.index');
@@ -68,4 +69,20 @@ Route::group(['middleware' => ['auth','access:1']], function(){
     Route::get('company',App\Http\Livewire\Company\Index::class)->name('company.index');
     Route::get('company/create',App\Http\Livewire\Company\Create::class)->name('company.create');
     Route::get('company/edit/{data}',App\Http\Livewire\Company\Edit::class)->name('company.edit');
+});
+
+Route::group(['middleware' => ['auth','access:6']], function(){
+    Route::get('bank-account',App\Http\Livewire\BankAccount\Index::class)->name('bank-account.index');
+    Route::get('bank-account/insert',App\Http\Livewire\BankAccount\Insert::class)->name('bank-account.insert');
+    Route::get('bank-account/edit/{id}',App\Http\Livewire\BankAccount\Edit::class)->name('bank-account.edit');
+
+    Route::get('bank-book',App\Http\Livewire\BankBook\Index::class)->name('bank-book.index');
+    Route::get('bank-book/insert',App\Http\Livewire\BankBook\Insert::class)->name('bank-book.insert');
+
+    Route::get('income',App\Http\Livewire\Income\Index::class)->name('income.index');
+    Route::get('income/detail/{data}',App\Http\Livewire\Income\Detail::class)->name('income.detail');
+
+    Route::get('expense',App\Http\Livewire\Expense\Index::class)->name('expense.index');
+    Route::get('expense/edit/{id}',App\Http\Livewire\Expense\Edit::class)->name('expense.edit');
+
 });
