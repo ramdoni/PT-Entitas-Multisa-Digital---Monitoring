@@ -26,7 +26,8 @@ class Index extends Component
 
     public function data()
     {
-        $data = PurchaseOrder::orderBy("created_at","desc");
+        $data = PurchaseOrder::orderBy("created_at","desc")
+                    ->where('type',2);
 
         return $data;
     }
