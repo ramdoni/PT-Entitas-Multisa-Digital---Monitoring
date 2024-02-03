@@ -31,7 +31,13 @@
                                     <li><a href="{{ route('purchase-order.index') }}">Purchase Order OUT</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#" class="text-info icon-menu px-1">Invoices</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="text-info dropdown-toggle icon-menu px-1" data-toggle="dropdown">Invoice</a>
+                                <ul class="dropdown-menu user-menu menu-icon">
+                                    <li><a href="{{ route('invoice-in.index') }}">Invoice IN</a></li>
+                                    <li><a href="{{ route('invoice.index') }}">Invoice OUT</a></li>
+                                </ul>
+                            </li>
                             <li><a href="#" class="text-info icon-menu px-1">Tracking</a></li>
                         </ul>
                     @endif

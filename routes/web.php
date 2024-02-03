@@ -63,12 +63,16 @@ Route::group(['middleware' => ['auth','access:1']], function(){
 
     Route::get('purchase-order',App\Http\Livewire\PurchaseOrder\Index::class)->name('purchase-order.index');
     Route::get('purchase-order/create/{quotation}',App\Http\Livewire\PurchaseOrder\Create::class)->name('purchase-order.create');
+    Route::get('purchase-order/edit/{data}',App\Http\Livewire\PurchaseOrder\Create::class)->name('purchase-order.edit');
 
     Route::get('purchase-order-in',App\Http\Livewire\PurchaseOrderIn\Index::class)->name('purchase-order-in.index');
 
     Route::get('company',App\Http\Livewire\Company\Index::class)->name('company.index');
     Route::get('company/create',App\Http\Livewire\Company\Create::class)->name('company.create');
     Route::get('company/edit/{data}',App\Http\Livewire\Company\Edit::class)->name('company.edit');
+
+    Route::get('invoice',App\Http\Livewire\Invoice\Index::class)->name('invoice.index');
+    Route::get('invoice-in',App\Http\Livewire\InvoiceIn\Index::class)->name('invoice-in.index');
 });
 
 Route::group(['middleware' => ['auth','access:6']], function(){
@@ -76,6 +80,7 @@ Route::group(['middleware' => ['auth','access:6']], function(){
     Route::get('bank-account/insert',App\Http\Livewire\BankAccount\Insert::class)->name('bank-account.insert');
     Route::get('bank-account/edit/{id}',App\Http\Livewire\BankAccount\Edit::class)->name('bank-account.edit');
 
+    
     Route::get('bank-book',App\Http\Livewire\BankBook\Index::class)->name('bank-book.index');
     Route::get('bank-book/insert',App\Http\Livewire\BankBook\Insert::class)->name('bank-book.insert');
 
