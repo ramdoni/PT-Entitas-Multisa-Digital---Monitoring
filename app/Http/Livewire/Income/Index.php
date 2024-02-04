@@ -14,8 +14,7 @@ class Index extends Component
     public $ordering_nominal;
     public function render()
     {
-        $data = Income::with(['from_bank_account','bank_account'])
-                        ->where('reference_type','Premium Receivable');
+        $data = Income::with(['from_bank_account','bank_account']);
         
         if($this->keyword) $data = $data->where('description','LIKE', "%{$this->keyword}%")
                                         ->orWhere('no_voucher','LIKE',"%{$this->keyword}%")

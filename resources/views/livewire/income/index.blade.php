@@ -83,7 +83,7 @@
                                 <th>Created Date</th>
                                 <th>Aging</th>
                                 <th>Due Date</th>
-                                <th>Debit Note / Kwitansi</th>
+                                <th>Invoice</th>
                                 <th>Project</th>
                                 <th class="text-right">Amount</th>
                             </tr>
@@ -107,7 +107,7 @@
                                         </td>
                                         <td>{{ $item->settle_date ? date('d M Y', strtotime($item->settle_date)) : '-' }}</td>
                                         <td>{{ date('d M Y', strtotime($item->created_at)) }}</td>
-                                        <td>{{ calculate_aging($item->due_date) }}</td>
+                                        <td>{{ $item->invoice_receive ? calculate_aging($item->invoice_receive) : '-' }}</td>
                                         <td>{{ $item->due_date ? date('d M Y', strtotime($item->due_date)) : '' }}</td>
                                         <td class="text-info" title="Source  From : {{$item->transaction_table}}">
                                             <!-- @if($item->type==1)
@@ -117,6 +117,7 @@
                                             @endif -->
                                             <a href="{{ route('income.detail', ['data' => $item->id,'page'=>$page,'keyword'=>$keyword,'unit'=>$unit,'status'=>$status,'payment_date_from'=>$payment_date_from,'payment_date_to'=>$payment_date_to])}}">{{ $item->reference_no ? $item->reference_no : '-' }}</a>
                                         </td>
+                                        <td>{{$item->client}}</td>
                                         <td class="text-right">{{ isset($item->payment_amount) ? format_idr($item->payment_amount) : '0' }}</td>
                                     </tr>
                                     @php($num++)

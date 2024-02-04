@@ -6,9 +6,11 @@ use App\Models\Income;
 use App\Models\Invoice as ModelsInvoice;
 use App\Models\PurchaseOrder;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Invoice extends Component
 {
+    use WithFileUploads;
     public $form = [
         'purchase_order_id'=>'',
         'invoice_number'=>'',
@@ -18,7 +20,7 @@ class Invoice extends Component
     ],$temp=[
         'nett_amount'=>0
     ],$use_tax=0;
-    public $purchase_order;
+    public $purchase_order,$file;
     protected $listeners = ['selected_id'=>'selected_id'];
     public function render()
     {
@@ -56,6 +58,7 @@ class Invoice extends Component
         $this->form['purchase_order_id'] = $this->purchase_order->id;
         $this->form['invoice_number'] = 'INV/'.$id.'/'.date('dY');
         $this->form['invoice_date'] = date('Y-m-d');
+        $this->form['purchase_order_detail'] = $this->purchase_order;
     }
 
     public function save()
@@ -66,10 +69,20 @@ class Invoice extends Component
             'form.amount'=>'required'
         ]);
 
-        ModelsInvoice::create($this->form);
+        $data = ModelsInvoice::create($this->form);
 
         Income::create([
-            ''
+            'transaction_id'=>$data->id,
+            'transaction_table'=>'invoices',
+            'nominal'=>$this->form['nett_amount'],
+            'reference_no'=>$this->form['invoice_number'],
+            'reference_date'=>$this->form['invoice_date'],
+            'client'=>isset($data->purchase_order->quotation->project_name) ? $data->purchase_order->quotation->project_name : '',
+            'status'=>1,
+            'payment_amount'=>$this->form['nett_amount'],
+            'invoice_detail'=>$data,
+            'purchase_order_detail'=>$data->purchase_order,
+            'quotation_detail'=>$data->purchase_order->quotation
         ]);
 
         session()->flash('message-success',__('Data saved successfully'));

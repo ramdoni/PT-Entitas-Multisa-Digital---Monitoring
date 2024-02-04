@@ -11,6 +11,11 @@ class Invoice extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'purchase_order_detail'=>'array',
+        'quotation_detail'=>'array',
+    ];
+
     public function purchase_order()
     {
         return $this->hasOne(PurchaseOrder::class,'id','purchase_order_id');

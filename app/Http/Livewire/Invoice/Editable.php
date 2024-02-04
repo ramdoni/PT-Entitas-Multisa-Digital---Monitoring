@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Invoice;
 
 use Livewire\Component;
+use App\Models\Income;
 
 class Editable extends Component
 {
@@ -31,6 +32,13 @@ class Editable extends Component
 
         if(in_array($field,['invoice_receive','top_day'])){
             $this->data->due_date = date('Y-m-d',strtotime($this->data->invoice_receive ." +{$this->data->top_day} days"));
+
+            Income::where(['transaction_table'=>'invoices','transaction_id'=>$this->data->id])->update(
+                [
+                    'due_date'=>$this->data->due_date,
+                    'invoice_receive'=>$this->data->invoice_receive
+                ]
+            );
         }
         
         $this->data->save();
