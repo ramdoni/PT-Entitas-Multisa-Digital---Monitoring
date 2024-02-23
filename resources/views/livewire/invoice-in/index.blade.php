@@ -1,4 +1,4 @@
-@section('title', 'Invoice')
+@section('title', 'Invoice IN')
 @section('sub-title', 'Management Invoice')
 <div class="clearfix row">
     <div class="col-lg-3 col-md-6">
@@ -22,12 +22,12 @@
                 <div class="col-md-2">
                     <select class="form-control" wire:model="filter.status">
                         <option value="">-- Status -- </option>
-                        <option value="0">PROPOSED</option>
-                        <option value="1">SUCCESS</option>
-                        <option value="2">REJECT</option>
+                        <option value="0">Unpaid</option>
+                        <option value="1">Paid</option>
                     </select>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-8">
+                    <a href="javascript:void(0)" class="btn btn-info" data-toggle="modal" data-target="#modal_create" ><i class="fa fa-plus"></i> Invoice</a>
                     <span wire:loading wire:target="filter.status,filter.keyword">
                         <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
                         <span class="sr-only">{{ __('Loading...') }}</span>

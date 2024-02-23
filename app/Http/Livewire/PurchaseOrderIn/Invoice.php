@@ -16,7 +16,8 @@ class Invoice extends Component
         'invoice_number'=>'',
         'top_day'=>0,
         'discount'=>0,
-        'tax'=>0
+        'tax'=>0,
+        'type'=>1 // Invoice In
     ],$temp=[
         'nett_amount'=>0
     ],$use_tax=0;
@@ -77,7 +78,7 @@ class Invoice extends Component
             'nominal'=>$this->form['nett_amount'],
             'reference_no'=>$this->form['invoice_number'],
             'reference_date'=>$this->form['invoice_date'],
-            'client'=>isset($data->purchase_order->quotation->project_name) ? $data->purchase_order->quotation->project_name : '',
+            'client'=>isset($data->purchase_order->quotation->project_name)?$data->purchase_order->quotation->project_name : '',
             'status'=>1,
             'payment_amount'=>$this->form['nett_amount'],
             'invoice_detail'=>$data,

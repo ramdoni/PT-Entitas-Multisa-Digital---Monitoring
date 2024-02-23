@@ -38,7 +38,7 @@ class Login extends Component
 
                 if (Auth::attempt($credentials)) {
                     \LogActivity::add('Login');
-                    return redirect('/');
+                    return redirect('/quotation');
                 }
                 else $this->message = __('Email / Password incorrect please try again');
             }

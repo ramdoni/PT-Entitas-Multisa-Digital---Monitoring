@@ -31,12 +31,14 @@ class Create extends Component
         'use_tax'=>1,
         'tax_amount'=>0,
         'total_material'=>0,
-        'total_services'=>0
+        'total_services'=>0,
+        'komisi'=>0,
+        'komisi_amount'=>0
     ];
-    public $material_selected_id,$arr_part=[],$materials=[],$material_selected,$material_qty=0,$arr_parts=[],$total_quotation=0,
+    public $material_selected_id,$arr_part=[],$materials=[],$material_selected,$material_qty=0,$material_factor=0,$material_factor_amount=0,$arr_parts=[],$total_quotation=0,
             $ujrah=0,$ujrah_amount=0,$customer_code;
     public $vendors=[],$arr_vendor=[],$vendor_selected,$vendor_selected_id,$engineer_description,$engineer_qty,$engineer_price,$engineer_unit;
-    public $service_selected_id, $service_selected,$service_qty=0,$service_price=0,$arr_services=[],$service_unit,$service_description;
+    public $service_selected_id, $service_selected,$service_qty=0,$service_factor=0,$service_factor_amount=0,$service_price=0,$arr_services=[],$service_unit,$service_description;
     public $is_generate_number=false,$companies=[],$customer_pics=[],$system_requirement=[],$term_and_conditions=[];
     public $text_system_requirement,$text_term_and_conditions;
     public function render()
@@ -132,15 +134,22 @@ class Create extends Component
         if($this->material_selected_id){
             $item = Material::find($this->material_selected_id);
 
-            $find = array_search($this->material_selected_id, array_column($this->arr_parts, 'id'));
-
-            if($find!=""){
+            $find = find_array($this->arr_parts,"id",$this->material_selected_id);
+            
+            if(count($find)>=1){
                 foreach($this->arr_parts as $k=>$i){
                     if($i['id']==$this->material_selected_id) $this->arr_parts[$k]['qty'] +=  $this->material_qty;
 
                     $this->arr_parts[$k]['total'] = ($this->arr_parts[$k]['price'] and $this->arr_parts[$k]['qty']>0) ? ($this->arr_parts[$k]['price'] * $this->arr_parts[$k]['qty']) : 0;
                 }
             }else{
+                $total = ($item->price and $this->material_qty>0) ? ($item->price * $this->material_qty) : 0;
+
+                if($this->material_factor>0) {
+                    $this->material_factor_amount = $this->material_factor / 100 * $total;
+                    $total += $this->material_factor_amount;
+                }
+
                 $this->arr_parts[] = [
                     'id'=>$item->id,
                     'name'=>$item->name,
@@ -149,7 +158,9 @@ class Create extends Component
                     'qty'=>$this->material_qty,
                     'uom'=>$item->uom?$item->uom->name:'-',
                     'price'=>$item->price,
-                    'total'=>($item->price and $this->material_qty>0) ? ($item->price * $this->material_qty) : 0,
+                    'factor'=>$this->material_factor,
+                    'factor_amount'=>$this->material_factor_amount,
+                    'total'=> $total,
                 ];
             }
 
@@ -157,14 +168,14 @@ class Create extends Component
 
             $this->calculate();
         }
-        $this->reset('material_selected','material_selected_id','material_qty');
+        $this->reset('material_selected','material_selected_id','material_qty','material_factor');
     }
 
     public function assign_engineer()
     {
         if($this->vendor_selected_id){
 
-            $find = array_search($this->vendor_selected_id, array_column($this->arr_vendor, 'id'));
+            $find = find_array($this->arr_vendor,"id",$this->vendor_selected_id);
 
             if($find!=""){
                 foreach($this->arr_vendor as $k=>$i){
@@ -194,15 +205,23 @@ class Create extends Component
     public function assign_service()
     {
         if($this->service_selected_id){
-            $find = array_search($this->service_selected_id, array_column($this->arr_services, 'id'));
-
-            if($find!=""){
+            //$find = array_search($this->service_selected_id, array_column($this->arr_services, 'id'));
+            $find = find_array($this->arr_services,"id",$this->service_selected_id);
+            if(count($find)>=1){
                 foreach($this->arr_services as $k=>$i){
                     if($i['id']==$this->service_selected_id) $this->arr_services[$k]['qty'] +=  $this->service_qty;
 
-                    $this->arr_services[$k]['total'] = ($this->arr_services[$k]['price'] and $this->arr_services[$k]['qty']>0) ? ($this->arr_services[$k]['price'] * $this->arr_services[$k]['qty']) : 0;
+                    $this->arr_services[$k]['total'] = ($this->arr_services[$k]['price'] and $this->arr_services[$k]['qty']>0) 
+                                                ? ($this->arr_services[$k]['price']+($this->arr_services[$k]['factor']??0) * $this->arr_services[$k]['qty']) 
+                                                : 0;
                 }
             }else{
+                $total = ($this->service_price and $this->service_qty>0) ? ($this->service_price * $this->service_qty)  : 0;
+
+                if($this->service_factor>0) {
+                    $this->service_factor_amount = $this->service_factor / 100 * $total;
+                    $total += $this->service_factor_amount;
+                }
                 $this->arr_services[] = [
                     'service_detail'=>json_encode($this->service_selected),
                     'id'=>$this->service_selected_id,
@@ -211,9 +230,13 @@ class Create extends Component
                     'qty'=>$this->service_qty,
                     'unit'=>$this->service_unit,
                     'price'=>$this->service_price,
-                    'total'=>($this->service_price and $this->service_qty>0) ? ($this->service_price * $this->service_qty) : 0,
+                    'factor'=>$this->service_factor,
+                    'factor_amount'=>$this->service_factor_amount,
+                    'total'=>$total,
                 ];
             }
+
+            $this->reset('service_factor_amount','service_selected_id','service_description','service_qty','service_unit','service_price','service_factor');
 
             $this->calculate();
         }
@@ -224,8 +247,25 @@ class Create extends Component
         $this->form['total_quotation'] = 0;$this->form['total_material']=0;$this->form['total_services']=0;
         foreach($this->arr_parts as $k=>$i){
             $this->arr_parts[$k]['total'] = ($this->arr_parts[$k]['price'] and $this->arr_parts[$k]['qty']>0) ? ($this->arr_parts[$k]['price'] * $this->arr_parts[$k]['qty']) : 0;
+            
+            if($this->arr_parts[$k]['factor']>0) {
+                $this->arr_parts[$k]['factor_amount'] = $this->arr_parts[$k]['factor'] / 100 * $this->arr_parts[$k]['total'];
+            }
+
+            $this->arr_parts[$k]['total'] += $this->arr_vendor[$k]['factor_amount']??0;
             $this->form['total_quotation'] += $this->arr_parts[$k]['total'];
             $this->form['total_material'] += $this->arr_parts[$k]['total'];
+        }
+
+        foreach($this->arr_services as $k=>$i){
+            $this->arr_services[$k]['total'] = ($this->arr_services[$k]['price'] and $this->arr_services[$k]['qty']>0) ? ($this->arr_services[$k]['price'] * $this->arr_services[$k]['qty']) : 0;
+            
+            if($this->arr_services[$k]['factor']>0) {
+                $this->arr_services[$k]['factor_amount'] = $this->arr_services[$k]['factor'] / 100 * $this->arr_services[$k]['total'];
+            }
+
+            $this->arr_services[$k]['total'] += $this->arr_services[$k]['factor_amount']??0;
+            $this->form['total_quotation'] += $this->arr_services[$k]['total'];
         }
 
         foreach($this->arr_vendor as $k=>$i){
@@ -233,11 +273,11 @@ class Create extends Component
             $this->form['total_quotation'] += $this->arr_vendor[$k]['total'];
         }                                            
 
-        if($this->form['factor'] and $this->form['total_quotation']){
-            $this->form['factor_amount'] = $this->form['factor'] /100 * $this->form['total_quotation'];
+        if($this->form['komisi'] and $this->form['total_quotation']){
+            $this->form['komisi_amount'] = $this->form['komisi'] /100 * $this->form['total_quotation'];
         }
 
-        $this->form['tabbaru'] = $this->form['total_quotation'] + $this->form['factor_amount'];
+        $this->form['tabbaru'] = $this->form['total_quotation'] + $this->form['komisi_amount'];
 
         if($this->form['ujrah'] and $this->form['tabbaru']){
             $this->form['ujrah_amount'] = $this->form['ujrah'] /100 * $this->form['tabbaru'];
@@ -290,6 +330,7 @@ class Create extends Component
                     'material_id'=>$item['id'],
                     'qty'=>$item['qty'],
                     'price'=>$item['price'],
+                    'factor'=>$item['factor'],
                     'total'=>$item['total'],
                     'material_detail'=>$material
                 ]);
@@ -306,6 +347,7 @@ class Create extends Component
                     'unit'=>$item['unit'],
                     'qty'=>$item['qty'],
                     'price'=>$item['price'],
+                    'factor'=>$item['factor'],
                     'total'=>$item['total'],
                     'vendor_detail'=>$vendor
                 ]);
@@ -322,6 +364,7 @@ class Create extends Component
                     'unit'=>$item['unit'],
                     'qty'=>$item['qty'],
                     'price'=>$item['price'],
+                    'factor'=>$item['factor'],
                     'total'=>$item['total'],
                     'service_detail'=>$service
                 ]);

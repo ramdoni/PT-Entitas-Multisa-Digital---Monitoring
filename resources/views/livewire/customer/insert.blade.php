@@ -71,11 +71,12 @@
         <div class="card">
             <div class="body">
                 <h6>PIC</h6>
-                <hr />
+                @error('pic')
+                    <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
+                @enderror
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>No</th>
                             <th>Name</th>
                             <th>Position</th>
                             <th>Mobile</th>
@@ -86,7 +87,6 @@
                     <tbody>
                         @foreach($pic as $k => $item)
                             <tr>
-                                <td>{{$k+1}}</td>
                                 <td>{{$item['name']}}</td>
                                 <td>{{$item['position']}}</td>
                                 <td>{{$item['mobile']}}</td>
@@ -96,29 +96,25 @@
                                 </td>
                             </tr>
                         @endforeach
-                        @if($insert_pic)
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <input type="text" class="form-control" wire:model="arr_form.name" />
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" wire:model="arr_form.position" />
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" wire:model="arr_form.mobile" />
-                                </td>
-                                <td>
-                                    <input type="email" class="form-control" wire:model="arr_form.email" />
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0)" wire:click="addPic"><i class="fa fa-save"></i></a>
-                                </td>
-                            </tr>
-                        @endif
+                        <tr>
+                            <td>
+                                <input type="text" class="form-control" wire:model="arr_form.name" />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" wire:model="arr_form.position" />
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" wire:model="arr_form.mobile" />
+                            </td>
+                            <td>
+                                <input type="email" class="form-control" wire:model="arr_form.email" />
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)" class="btn btn-info" wire:click="addPic"><i class="fa fa-save"></i></a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
-                <a href="javascript:void(0)" wire:click="$set('insert_pic',true)"><i class="fa fa-plus"></i> Tambah</a>
             </div>
         </div>
     </div>

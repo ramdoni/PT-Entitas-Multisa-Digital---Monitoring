@@ -1,4 +1,4 @@
-@section('title', 'Invoice')
+@section('title', 'Invoice OUT')
 @section('sub-title', 'Management Invoice')
 <div class="clearfix row">
     <div class="col-lg-3 col-md-6">
@@ -22,9 +22,8 @@
                 <div class="col-md-2">
                     <select class="form-control" wire:model="filter.status">
                         <option value="">-- Status -- </option>
-                        <option value="0">PROPOSED</option>
-                        <option value="1">SUCCESS</option>
-                        <option value="2">REJECT</option>
+                        <option value="0">Unpaid</option>
+                        <option value="1">Paid</option>
                     </select>
                 </div>
                 <div class="col-md-2">

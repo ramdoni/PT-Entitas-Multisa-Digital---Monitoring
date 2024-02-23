@@ -122,22 +122,27 @@
                 @endforeach
             </tbody>
         </table>
-        <p>
-            <strong>System Requirements</strong><br />
-            <ol>
-                @foreach($data->system_requirement as $item)
-                    <li>{!! $item !!}</li>
-                @endforeach
-            </ol>
-        </p>
-        <p>
-            <strong>Term & Conditions</strong><br />
-            <ol>
-                @foreach($data->term_and_conditions as $item)
-                    <li>{!! $item !!}</li>
-                @endforeach
-            </ol>
-        </p>
+        @if(count($data->system_requirement)>0)
+            <p>
+                <strong>System Requirements</strong><br />
+                <ol>
+                    @foreach($data->system_requirement as $item)
+                        <li>{!! $item !!}</li>
+                    @endforeach
+                </ol>
+            </p>
+        @endif
+        
+        @if(count($data->term_and_conditions)>0)
+            <p>
+                <strong>Term & Conditions</strong><br />
+                <ol>
+                    @foreach($data->term_and_conditions as $item)
+                        <li>{!! $item !!}</li>
+                    @endforeach
+                </ol>
+            </p>
+        @endif
         <br>
         <table style="width: 100%;">
             <tr>

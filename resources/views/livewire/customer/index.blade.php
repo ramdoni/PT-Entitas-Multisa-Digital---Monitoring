@@ -40,7 +40,7 @@
                                 <td style="width: 50px;">{{$k+1}}</td>
                                 <td><a href="{{route('customer.edit',$item->id)}}">{{$item->customer_code}}</a></td>
                                 <td>{{$item->name}}</td>
-                                <td>{{$item->address}}</td>
+                                <td>{{Str::limit($item->address,50)}}</td>
                                 <td>{{isset($item->provinsi->nama) ? $item->provinsi->nama : '-'}}</td>
                                 <td>{{isset($item->kabupaten->nama) ? $item->kabupaten->nama : '-'}}</td>
                                 <td>{{$item->phone}}</td>

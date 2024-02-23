@@ -26,8 +26,12 @@ class Insert extends Component
     public function save()
     {
         $this->validate([
+            'customer_id'=>'required',
             'name'=>'required',
             'phone'=>'required',
+            'pic'=>'required|array'
+        ],[
+            'customer_id.required'=>'Customer ID required'
         ]);
 
         $data = Customer::create([
@@ -58,7 +62,6 @@ class Insert extends Component
     {
         $this->pic[] = $this->arr_form;
         $this->arr_form = [];
-        $this->insert_pic = false;
     }
 
     public function deletePic($id)

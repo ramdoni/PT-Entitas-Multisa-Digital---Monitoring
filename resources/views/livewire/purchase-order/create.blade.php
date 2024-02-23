@@ -149,6 +149,7 @@
                                     <td class="text-right">{{format_idr($row_materials[$k]['total'])}}</td>
                                 </tr>
                             @endforeach
+
                             <!-- <tr wire:key="row_insert">
                                 <td></td>
                                 <td>
@@ -188,6 +189,7 @@
                                 </td>
                                 <td></td>
                             </tr> -->
+                            
                         </tbody>
                     </table>
                 </div>

@@ -17,8 +17,8 @@
             <div class="body">
                 <div class="icon text-warning"><i class="fa fa-calculator"></i> </div>
                 <div class="content">
-                    <div class="text">Factor ({{$form['factor']}}%)</div>
-                    <h6 class="number">{{format_idr($form['factor_amount'])}}</h6>
+                    <div class="text">Komisi ({{$form['komisi']}}%)</div>
+                    <h6 class="number">{{format_idr($form['komisi_amount'])}}</h6>
                 </div>
             </div>
         </div>
@@ -169,9 +169,9 @@
                         <div class="col-md-4">
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label>Factor (%)</label>
-                                    <input type="number" class="form-control" wire:model="form.factor" />
-                                    @error('form.ujrah')
+                                    <label>Komisi (%)</label>
+                                    <input type="number" class="form-control" wire:model="form.komisi" />
+                                    @error('form.komisi')
                                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                                     @enderror
                                 </div>
@@ -271,14 +271,17 @@
                             <th>Model Code Type</th>
                             <th class="text-right">Total / QTY</th>
                             <th>Unit</th>
-                            <th class="text-right">Unit Price List(IDR)</th>
-                            <th class="text-right">Sub Total(IDR)</th>
+                            <th class="text-right">Unit Price List (IDR)</th>
+                            <th class="text-right">Factor %</th>
+                            <th class="text-right">Factor (IDR)</th>
+                            <th class="text-right">Sub Total (IDR)</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @php($total_part_qty=0)
                         @php($total_part_sub_total=0)
+                        @php($total_part_factor=0)
                         @php($total_part_total=0)
                         @foreach($arr_parts as $k => $item)
                             <tr wire:key="item{{$k}}">
@@ -292,6 +295,10 @@
                                 </td>
                                 <td>{{$item['uom']}}</td>
                                 <td class="text-right">{{format_idr($item['price'])}}</td>
+                                <td>
+                                    <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="arr_parts.{{$k}}.factor" />
+                                </td>
+                                <td class="text-right">{{format_idr($item['factor_amount'])}}</td>
                                 <td class="text-right">{{format_idr($item['total'])}}</td>
                                 <td>
                                     <a href="javascript:void(0)" class="text-danger" wire:click="delete_part({{$k}})"><i class="fa fa-close"></i></a>
@@ -342,8 +349,18 @@
                                 @endif
                             </td>
                             <td>
+                                <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="material_factor" />
+                            </td>
+                            <td>
+                                @if($material_selected and $material_factor>0 and $material_qty>0)
+                                    @php($temp_total = $material_selected->price?$material_selected->price*$material_qty:0)
+                                    @php($material_factor_amount = $this->material_factor / 100 * $temp_total)
+                                    {{format_idr($material_factor_amount)}}
+                                @endif
+                            </td>
+                            <td>
                                 @if($material_selected and $material_qty>0)
-                                    {{$material_selected->price?format_idr($material_selected->price*$material_qty):'-'}}
+                                    {{$material_selected->price?format_idr(($material_selected->price+$material_factor_amount)*$material_qty):'-'}}
                                 @endif
                             </td>
                             <td>
@@ -359,6 +376,8 @@
                             <th class="text-right">{{format_idr($total_part_qty)}}</th>
                             <th></th>
                             <th class="text-right">{{format_idr($total_part_sub_total)}}</th>
+                            <th></th>
+                            <th class="text-right">{{format_idr($total_part_factor)}}</th>
                             <th class="text-right">{{format_idr($total_part_total)}}</th>
                             <th></th>
                         </tr>
@@ -481,8 +500,10 @@
                             <th>Description</th>
                             <th class="text-right">Total / QTY</th>
                             <th>Unit</th>
-                            <th class="text-right">Unit Price List(IDR)</th>
-                            <th class="text-right">Sub Total(IDR)</th>
+                            <th class="text-right">Unit Price List (IDR)</th>
+                            <th class="text-right">Factor %</th>
+                            <th class="text-right">Factor (IDR)</th>
+                            <th class="text-right">Sub Total (IDR)</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -493,17 +514,21 @@
                                 <td>{{$item['name']}}</td>
                                 <td></td>
                                 <td>
-                                    <input type="text" class="form-control float-right text-right" wire:model="arr_services.{{$k}}.description" />
+                                    <input type="text" class="form-control float-right" wire:model="arr_services.{{$k}}.description" />
                                 </td>
                                 <td class="text-right">
-                                    <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="arr_services.{{$k}}.qty" />
+                                    <input type="number" class="form-control float-right text-right" wire:model="arr_services.{{$k}}.qty" />
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control float-right text-right" wire:model="arr_services.{{$k}}.unit" />
+                                    <input type="text" class="form-control float-right" wire:model="arr_services.{{$k}}.unit" />
                                 </td>
                                 <td class="text-right">
-                                    <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="arr_services.{{$k}}.price" />
+                                    <input type="number" class="form-control float-right text-right" wire:model="arr_services.{{$k}}.price" />
                                 </td>
+                                <td>
+                                    <input type="number" class="form-control float-right text-right" wire:model="arr_services.{{$k}}.factor" />
+                                </td>
+                                <td class="text-right">{{format_idr($item['factor_amount'])}}</td>
                                 <td class="text-right">{{format_idr($item['total'])}}</td>
                                 <td>
                                     <a href="javascript:void(0)" class="text-danger" wire:click="delete_service({{$k}})"><i class="fa fa-close"></i></a>
@@ -529,7 +554,7 @@
                                 <input type="text" class="form-control" wire:model="service_description" />
                             </td>
                             <td>
-                                <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="service_qty" />
+                                <input type="number" class="form-control float-right text-right" wire:model="service_qty" />
                             </td>
                             <td>
                                 <input type="text" class="form-control" wire:model="service_unit" />
@@ -537,9 +562,18 @@
                             <td>
                                 <input type="number" class="form-control float-right text-right" wire:model="service_price" />
                             </td>
+                            <td>
+                                <input type="number" class="form-control float-right text-right" wire:model="service_factor" />
+                            </td>
+                            <td>
+                                @if($service_qty>0 and $service_price>0 and $service_factor>0)
+                                    @php($service_factor_amount = $service_factor / 100 * ($service_qty * $service_price))
+                                @endif
+                                {{format_idr($service_factor_amount)}}
+                            </td>
                             <td class="text-right">
                                 @if($service_qty>0 and $service_price>0)
-                                    {{format_idr($service_qty * $service_price)}}
+                                    {{format_idr($service_qty * ($service_price + ($service_factor_amount>0?$service_factor_amount:0)))}}
                                 @else
                                     0
                                 @endif
