@@ -16,7 +16,7 @@
     <td></td>
     <td></td>
     <td>
-        <select class="form-control" wire:model="type">
+        <select class="form-control" wire:model="type" style="width: 150px;">
             <option value=""> -- Type -- </option>
             <option value="R">R - Receivable</option>
             <option value="P">P - Payable</option>
@@ -38,6 +38,6 @@
             <span class="sr-only">{{ __('Loading...') }}</span>
         </span>
         <a href="javascript:void(0)" wire:loading.remove wire:target="save" wire:click="save" class="btn btn-success"><i class="fa fa-save"></i></a>
-        <a href="javascript:void(0)" wire:loading.remove wire:target="save" @click="insert = false" class="text-danger"><i class="fa fa-times"></i></a>
+        <a href="javascript:void(0)" wire:loading.remove wire:target="save" @click="insert = false" class="btn btn-danger"><i class="fa fa-times"></i></a>
     </td>
 </tr>

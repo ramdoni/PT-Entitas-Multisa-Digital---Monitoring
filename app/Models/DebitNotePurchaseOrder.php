@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PurchaseOrderMaterial extends Model
+class DebitNotePurchaseOrder extends Model
 {
     use HasFactory;
-
     protected $guarded = [];
+
     protected $casts = [
-        'material_row'=>'array'
+        'purchase_order_raw'=>'array',
+        'debit_note_raw'=>'array'
     ];
 }

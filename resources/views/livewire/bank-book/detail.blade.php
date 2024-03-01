@@ -13,9 +13,9 @@
         <div class="col-md-1 pr-0">
             <input type="text" class="form-control date_range" placeholder="Date" />
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
             <a href="javascript:void(0)" class="mr-2" title="Reset filter" wire:click="reset_filter"><i class="fa fa-refresh"></i> Reset filter</a>
-            <a href="javascript:void(0)" class="btn btn-info" wire:click="$emit('set_active',{{$data->id}})" @click="insert = true"><i class="fa fa-plus"></i></a>
+            <a href="javascript:void(0)" class="btn btn-danger" wire:click="$emit('set_active',{{$data?$data->id:''}})" @click="insert = true"><i class="fa fa-plus"></i> Bank Book</a>
             <span wire:loading wire:target="save">
                 <i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
                 <span class="sr-only">{{ __('Loading...') }}</span>
@@ -26,14 +26,7 @@
             </span>
         </div>
     </div>
-    <div class="mt-3">
-        <span class="alert alert-info" title="Unidentity" wire:click="$set('status',0)">Open : {{isset($total_unidentity) ? $total_unidentity : '-'}}</span> 
-        <span class="alert alert-info" title="Unidentity" wire:click="$set('status',1)">Post : {{isset($total_settle) ? $total_settle : '-'}}</span> 
-        <span class="alert alert-info" title="Opening Balance">Opening Balance : {{isset($opening_balance) ? format_idr($opening_balance) : '-'}}</span>
-        <span class="alert alert-info" title="Payable">Payable : {{isset($total_payable) ? format_idr($total_payable) : '-'}}</span>
-        <span class="alert alert-success" title="Receivable">Receivable : {{isset($total_receivable) ? format_idr($total_receivable) : '-'}}</span>
-        <span class="alert alert-secondary" title="Balance">Balance : {{isset($total_receivable) ? format_idr($opening_balance - $total_payable + $total_receivable) : '-   '}}</span> 
-    </div>
+
     <div class="table-responsive mt-4">
         <table class="table table-striped m-b-0 c_list">
             <thead>

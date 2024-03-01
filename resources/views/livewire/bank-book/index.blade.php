@@ -20,6 +20,9 @@
                                 </a>
                             </li>
                         @endforeach
+                        <li>
+                            <button type="button" data-toggle="modal" data-target="#modal_settlement" class="btn btn-info ml-5"><i class="fa fa-plus"></i> Settlement</button>
+                        </li>
                     </ul>
                 </div> 
                 <div class="px-0 tab-content">
@@ -31,6 +34,7 @@
         </div>
     </div>
 </div>
+@livewire('settlement.index',key(1))
 @push('after-scripts')
     <script>
         Livewire.on('update-url',(url)=>{

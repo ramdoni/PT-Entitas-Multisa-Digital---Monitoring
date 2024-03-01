@@ -26,6 +26,11 @@ Route::group(['middleware' => ['auth']], function(){
 
 Route::group(['middleware' => ['auth']], function(){
     Route::get('api/get-kepesertaan',[\App\Http\Controllers\Api\KepesertaanController::class,'index'])->name('api.get-kepesertaan');
+
+    Route::get('ajax/select2-get-member', [\App\Http\Controllers\AjaxController::class,'getMember2'])->name('ajax.select2-get-member');
+    Route::get('ajax/select2-get-bank-book', [\App\Http\Controllers\AjaxController::class,'getBankbook'])->name('ajax.select2-get-bank-book');
+    Route::get('ajax/select2-get-income', [\App\Http\Controllers\AjaxController::class,'getIncome'])->name('ajax.select2-get-income');
+    Route::get('ajax/select2-get-expense', [\App\Http\Controllers\AjaxController::class,'getExpense'])->name('ajax.select2-get-expense');
 });
 
 // Administrator
@@ -66,6 +71,7 @@ Route::group(['middleware' => ['auth','access:1']], function(){
     Route::get('purchase-order/edit/{data}',App\Http\Livewire\PurchaseOrder\Create::class)->name('purchase-order.edit');
 
     Route::get('purchase-order-in',App\Http\Livewire\PurchaseOrderIn\Index::class)->name('purchase-order-in.index');
+    Route::get('purchase-order-in/edit/{data}',App\Http\Livewire\PurchaseOrderIn\Edit::class)->name('purchase-order-in.edit');
 
     Route::get('company',App\Http\Livewire\Company\Index::class)->name('company.index');
     Route::get('company/create',App\Http\Livewire\Company\Create::class)->name('company.create');
@@ -73,6 +79,12 @@ Route::group(['middleware' => ['auth','access:1']], function(){
 
     Route::get('invoice',App\Http\Livewire\Invoice\Index::class)->name('invoice.index');
     Route::get('invoice-in',App\Http\Livewire\InvoiceIn\Index::class)->name('invoice-in.index');
+
+    Route::get('debit-note',App\Http\Livewire\DebitNote\Index::class)->name('debit-note.index');
+    Route::get('debit-note/edit/{data}',App\Http\Livewire\DebitNote\Edit::class)->name('debit-note.edit');
+
+    Route::get('credit-note',App\Http\Livewire\CreditNote\Index::class)->name('credit-note.index');
+    Route::get('credit-note/edit/{data}',App\Http\Livewire\CreditNote\Edit::class)->name('credit-note.edit');
 });
 
 Route::group(['middleware' => ['auth','access:6']], function(){
@@ -80,7 +92,7 @@ Route::group(['middleware' => ['auth','access:6']], function(){
     Route::get('bank-account/insert',App\Http\Livewire\BankAccount\Insert::class)->name('bank-account.insert');
     Route::get('bank-account/edit/{id}',App\Http\Livewire\BankAccount\Edit::class)->name('bank-account.edit');
 
-    
+
     Route::get('bank-book',App\Http\Livewire\BankBook\Index::class)->name('bank-book.index');
     Route::get('bank-book/insert',App\Http\Livewire\BankBook\Insert::class)->name('bank-book.insert');
 

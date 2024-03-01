@@ -150,10 +150,10 @@
                                         </span>
                                     @endif
                                     <a href="{{route('print.quotation',$item->id)}}" target="_blank"><i class="fa fa-print"></i> Print</a>
-                                    
+
                                     @if($item->status==0)
                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_po_success" wire:click="$emit('set_id',{{$item->id}})" class="badge badge-success badge-active"><i  class="fa fa-check"></i> Success</a>
-                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_reject" wire:click="$emit('set_id',{{$item->id}})" class="badge badge-warning badge-active"><i  class="fa fa-times"></i> Reject</a>
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_reject" wire:click="$emit('set_id',{{$item->id}})" class="badge badge-warning badge-active mx-0"><i  class="fa fa-times"></i> Reject</a>
                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#modal_cancel" wire:click="$emit('set_id',{{$item->id}})" class="badge badge-danger badge-active"><i  class="fa fa-times"></i> Cancel</a>
                                     @endif
                                 </td>

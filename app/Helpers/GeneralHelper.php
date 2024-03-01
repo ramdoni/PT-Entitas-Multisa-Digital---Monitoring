@@ -4,6 +4,47 @@ use App\Models\User;
 use App\Models\UserOtp;
 use Illuminate\Support\Str;
 
+function getRomawi($bln){
+    switch ($bln){
+        case 1:
+            return "I";
+            break;
+        case 2:
+            return "II";
+            break;
+        case 3:
+            return "III";
+            break;
+        case 4:
+            return "IV";
+            break;
+        case 5:
+            return "V";
+            break;
+        case 6:
+            return "VI";
+            break;
+        case 7:
+            return "VII";
+            break;
+        case 8:
+            return "VIII";
+            break;
+        case 9:
+            return "IX";
+            break;
+        case 10:
+            return "X";
+            break;
+        case 11:
+            return "XI";
+            break;
+        case 12:
+            return "XII";
+            break;
+    }
+}
+
 function find_array($array, $key, $value)
 {
     $results = array();
@@ -78,7 +119,7 @@ function sendVfdData($msg,$msg2='')
             try {
 
                 fwrite($serial_handle, "\x0C");
-                
+
                 usleep(500000); // 100,000 mikrodetik (0.1 detik)
                 if($msg2=="")
                     fwrite($serial_handle, Str::limit($msg,40,''));
@@ -93,7 +134,7 @@ function sendVfdData($msg,$msg2='')
             }
         }
     } catch(Exception $e){
-        // code here 
+        // code here
     }
 }
 function numberToRomawi($number)
@@ -321,7 +362,7 @@ function status_account_balance($status)
 function calculate_aging($date,$end_date="")
 {
     if($end_date=="") $end_date = date('Y-m-d');
-    
+
     $start_date = new \DateTime($date);
     $today = new \DateTime($end_date);
     if ($start_date > $today) {
