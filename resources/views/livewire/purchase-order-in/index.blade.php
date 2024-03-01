@@ -40,7 +40,8 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th class="text-center">Status</th>
+                                <th class="text-center">PO Status</th>
+                                <th class="text-center">Invoice Status</th>
                                 <th>Quotation No</th>
                                 <th>Purchase Order No</th>
                                 <th>Date</th>
@@ -58,15 +59,16 @@
                                 <td style="width: 50px;">{{$k+1}}</td>
                                 <td class="text-center">
                                     @if($item->status==0)
-                                        <span class="badge badge-warning">SUBMITTED</span>
+                                        <span class="badge badge-warning">ACTIVE</span>
                                     @endif
                                     @if($item->status==1)
                                         <span class="badge badge-success">INVOICE</span>
                                     @endif
                                     @if($item->status==2)
-                                        <span class="badge badge-danger">PAID</span>
+                                        <span class="badge badge-danger">CLOSED</span>
                                     @endif
                                 </td>
+                                <td></td>
                                 <td>
                                     @if($item->quotation)
                                         <a href="{{route('quotation.edit',$item->quotation_id)}}">{{$item->quotation?$item->quotation->quotation_number:''}}</a>
@@ -76,7 +78,8 @@
                                     @if($item->file)
                                         <a href="{{asset($item->file)}}" target="_blank"><i class="fa fa-download"></i></a>
                                     @endif
-                                    {{$item->po_number}}</td>
+                                    <a href="{{route('purchase-order-in.edit',$item->id)}}">{{$item->po_number}}</a>
+                                </td>
                                 <td>{{date('d-M-Y',strtotime($item->po_date))}}</td>
                                 <td class="text-right">{{format_idr($item->amount)}}</td>
                                 <td class="text-right">{{format_idr($item->inclusive_taxes_amount)}}</td>
@@ -84,6 +87,8 @@
                                 <td></td>
                                 <td></td>
                                 <td>
+                                    <a href="javascript:void(0)" class="badge badge-danger badge-active" data-toggle="modal" data-target="#modal_credit_note" wire:click="$emit('set_id',{{$item->id}});"><i class="fa fa-plus"></i> CN</a>
+                                    <a href="javascript:void(0)" class="badge badge-success badge-active mx-0" data-toggle="modal" data-target="#modal_debit_note" wire:click="$emit('set_id',{{$item->id}});"><i class="fa fa-plus"></i> DN</a>
                                     @if($item->status==0)
                                         <a href="javascript:void(0)" class="badge badge-info badge-active" data-toggle="modal" data-target="#modal_invoice" wire:click="$emit('selected_id',{{$item->id}});"><i class="fa fa-plus"></i> Invoice</a>
                                     @endif
@@ -101,3 +106,4 @@
     </div>
 </div>
 @livewire('purchase-order-in.invoice')
+@livewire('purchase-order-in.credit-note')

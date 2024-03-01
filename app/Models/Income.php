@@ -19,6 +19,34 @@ class Income extends Model
 
     protected $table="income";
 
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function($model){
+            $model->no_voucher = 'IN/'.str_pad((Income::count()+1),8, '0', STR_PAD_LEFT).'/'.date('m').'/'.date('Y');
+        });
+
+        self::created(function($model){
+            // ... code here
+        });
+
+        self::updating(function($model){
+            // ... code here
+        });
+
+        self::updated(function($model){
+            // ... code here
+        });
+
+        self::deleting(function($model){
+            // ... code here
+        });
+
+        self::deleted(function($model){
+            // ... code here
+        });
+    }
     public function income_other_coa()
     {
         return $this->hasMany(IncomeOthersCoa::class,'income_id','id');

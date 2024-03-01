@@ -31,22 +31,24 @@
                                     <li><a href="{{ route('purchase-order.index') }}">Purchase Order OUT</a></li>
                                 </ul>
                             </li>
-                            <li class="dropdown">
+                            <li><a href="{{ route('debit-note.index') }}" class="text-info icon-menu px-1">Debit Note</a></li>
+                            <li><a href="{{ route('credit-note.index') }}" class="text-info icon-menu px-1">Credit Note</a></li>
+                            {{-- <li class="dropdown">
                                 <a href="#" class="text-info dropdown-toggle icon-menu px-1" data-toggle="dropdown">Invoice</a>
                                 <ul class="dropdown-menu user-menu menu-icon">
                                     <li><a href="{{ route('invoice-in.index') }}">Invoice IN</a></li>
                                     <li><a href="{{ route('invoice.index') }}">Invoice OUT</a></li>
                                 </ul>
                             </li>
-                            <li><a href="#" class="text-info icon-menu px-1">Tracking</a></li>
+                            <li><a href="#" class="text-info icon-menu px-1">Tracking</a></li> --}}
                         </ul>
                     @endif
                     @if(\Auth::user()->user_access_id==6)
                         <ul class="nav navbar-nav">
-                            <li><a href="{{ route('bank-book.index') }}" class="text-info icon-menu px-1">Bank Book</a></li>   
-                            <li><a href="{{ route('bank-account.index') }}" class="text-info icon-menu px-1">Bank Account</a></li>   
-                            <li><a href="{{ route('income.index') }}" class="text-info icon-menu px-1">Income</a></li>   
-                            <li><a href="{{ route('expense.index') }}" class="text-info icon-menu px-1">Expense</a></li>   
+                            <li><a href="{{ route('bank-book.index') }}" class="text-info icon-menu px-1">Bank Book</a></li>
+                            <li><a href="{{ route('bank-account.index') }}" class="text-info icon-menu px-1">Bank Account</a></li>
+                            <li><a href="{{ route('income.index') }}" class="text-info icon-menu px-1">Income</a></li>
+                            <li><a href="{{ route('expense.index') }}" class="text-info icon-menu px-1">Expense</a></li>
                         </ul>
                     @endif
                 </div>

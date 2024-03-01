@@ -19,4 +19,8 @@ class PurchaseOrder extends Model
     {
         return $this->hasOne(Quotation::class,'id','quotation_id');
     }
+    public function materials()
+    {
+        return $this->hasMany(PurchaseOrderMaterial::class,'purchase_order_id','id');
+    }
 }
