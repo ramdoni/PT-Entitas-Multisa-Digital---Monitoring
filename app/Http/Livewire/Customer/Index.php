@@ -9,7 +9,7 @@ class Index extends Component
 {
     public function render()
     {
-        $data = Customer::orderBy('id','DESC');
+        $data = Customer::orderBy('customer_code','DESC');
 
         return view('livewire.customer.index')->with(['data'=>$data->paginate(100)]);
     }

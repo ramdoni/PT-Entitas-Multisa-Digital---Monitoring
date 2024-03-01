@@ -120,6 +120,16 @@
                         <td class="text-right">{{format_idr($item->total)}}</td>
                     </tr>
                 @endforeach
+                @foreach($services as $k=>$item)
+                    <tr>
+                        <td class="text-center">{{$item->qty}}</td>
+                        <td>{{$item->unit}}</td>
+                        <td>{{$item->service_detail['name']}}</td>
+                        <td class="text-right">{{format_idr($item->price)}}</td>
+                        <td></td>
+                        <td class="text-right">{{format_idr($item->total)}}</td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
         @if(count($data->system_requirement)>0)

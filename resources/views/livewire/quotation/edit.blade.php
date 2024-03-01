@@ -82,7 +82,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" title="Generate Quotation Number" style="cursor:pointer;" wire:click="generate_quotation"><i class="fa fa-refresh"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" wire:model="form.quotation_number">
+                                            <input type="text" class="form-control" wire:model="form.quotation_number" readonly>
                                         </div>
                                         @error('form.quotation_number')
                                             <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
@@ -106,7 +106,7 @@
                                     <label>Project Type</label>
                                     @if($is_revisi)
                                         <select class="form-control" wire:model="form.project_type">
-                                            <option value=""> -- Select -- </option>
+                                            <option value=""> -- SELECT -- </option>
                                             <option>Control System</option>
                                             <option>Software</option>
                                         </select>
@@ -257,6 +257,7 @@
                             <th class="text-right">Total / QTY</th>
                             <th>Unit</th>
                             <th class="text-right">Unit Price List(IDR)</th>
+                            <th class="text-right">Factor(IDR)</th>
                             <th class="text-right">Sub Total(IDR)</th>
                             <th></th>
                         </tr>
@@ -282,12 +283,20 @@
                                 </td>
                                 <td class="text-right">{{format_idr($item->qty)}}</td>
                                 <td class="text-right">{{format_idr($item->price)}}</td>
+                                <td class="text-right">{{format_idr($item->factor_amount)}}</td>
                                 <td class="text-right">{{format_idr($item->total)}}</td>
                             </tr>
                         @endforeach
                         @php($total_part_qty=0)
                         @php($total_part_sub_total=0)
                         @php($total_part_total=0)
+
+                        @if(count($arr_parts)==0)
+                            <tr>
+                                <td class="text-center"><i>Empty</i></td>
+                            </tr>
+                        @endif
+
                         @foreach($arr_parts as $k => $item)
                             <tr wire:key="item{{$k}}">
                                 <td>{{$k+1}}</td>
@@ -368,6 +377,7 @@
                             <th class="text-right">{{format_idr($total_part_qty)}}</th>
                             <th></th>
                             <th class="text-right">{{format_idr($total_part_sub_total)}}</th>
+                            <th></th>
                             <th class="text-right">{{format_idr($total_part_total)}}</th>
                             <th></th>
                         </tr>
@@ -376,104 +386,7 @@
             </div>
         </div>
     </div>
-    <!-- <div class="col-md-12">
-        <div class="card">
-            <div class="body">
-                <h6>Engineering</h6>
-                <hr>
-                <table class="table ">
-                    <thead style="background:#eee;">
-                        <tr>
-                            <th>No</th>
-                            <th>Subcontractor</th>
-                            <th></th>
-                            <th>Type</th>
-                            <th class="text-right">Total / QTY</th>
-                            <th>Unit</th>
-                            <th class="text-right">Unit Price List(IDR)</th>
-                            <th class="text-right">Sub Total(IDR)</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php($total_vendor_qty=0)
-                        @php($total_vendor_sub_total=0)
-                        @php($total_vendor_total=0)
-                        @foreach($arr_vendor as $k => $item)
-                            <tr wire:key="item{{$k}}">
-                                <td>{{$k+1}}</td>
-                                <td>{{$item['name']}}</td>
-                                <td>{{$item['description']}}</td>
-                                <td class="text-right">
-                                    <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="arr_vendor.{{$k}}.qty" />
-                                </td>
-                                <td>{{$item['unit']}}</td>
-                                <td class="text-right">{{format_idr($item['price'])}}</td>
-                                <td class="text-right">{{format_idr($item['total'])}}</td>
-                                <td>
-                                    <a href="javascript:void(0)" class="text-danger" wire:click="delete_vendor({{$k}})"><i class="fa fa-close"></i></a>
-                                </td>
-                            </tr>
-                            @php($total_vendor_qty += $item['qty'])
-                            @php($total_vendor_sub_total += $item['price'])
-                            @php($total_vendor_total += $item['total'])
-                        @endforeach
-                        <tr wire:key="item_row_engineering">
-                            <td></td>
-                            <td>
-                                <div wire:ignore>
-                                    <select class="form-control" id="vendor_id">
-                                        <option value=""> -- Select -- </option>
-                                        @foreach($vendors as $item)
-                                            <option value="{{$item->id}}">{{$item->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <a href="{{route('vendor.create')}}" title="Create New Vendor" target="_blank"><i class="fa fa-plus"></i></a>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" wire:model="engineer_description" />
-                            </td>
-                            <td>
-                                <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="engineer_qty" />
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" wire:model="engineer_unit" />
-                            </td>
-                            <td>
-                                <input type="number" class="form-control float-right text-right" wire:model="engineer_price" />
-                            </td>
-                            <td class="text-right">
-                                
-                                @if($engineer_qty>0 and $engineer_price>0) 
-                                    {{format_idr($engineer_qty * $engineer_price)}}
-                                @else
-                                    0
-                                @endif
-                            </td>
-                            <td>
-                                @if($vendor_selected)
-                                    <button type="button" class="btn btn-info" wire:click="assign_engineer"><i class="fa fa-plus"></i></button>
-                                @endif
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot style="background:#eee;">
-                        <tr wire:key="tr_total_vendor">
-                            <th colspan="4" class="text-right">Total</th>
-                            <th class="text-right">{{format_idr($total_vendor_qty)}}</th>
-                            <th></th>
-                            <th class="text-right">{{format_idr($total_vendor_sub_total)}}</th>
-                            <th class="text-right">{{format_idr($total_vendor_total)}}</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div> -->
+    
     <div class="col-md-12">
         <div class="card">
             <div class="body">
@@ -489,6 +402,7 @@
                             <th class="text-right">Total / QTY</th>
                             <th>Unit</th>
                             <th class="text-right">Unit Price List(IDR)</th>
+                            <th class="text-right">Factor(IDR)</th>
                             <th class="text-right">Sub Total(IDR)</th>
                             <th></th>
                         </tr>
@@ -503,6 +417,7 @@
                                 <td class="text-right">{{$item->qty}}</td>
                                 <td>{{$item->unit}}</td>
                                 <td class="text-right">{{format_idr($item->price)}}</td>
+                                <td class="text-right">{{format_idr($item->factor_amount)}}</td>
                                 <td class="text-right">{{format_idr($item->total)}}</td>
                             </tr>
                         @endforeach

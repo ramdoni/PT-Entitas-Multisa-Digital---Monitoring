@@ -32,6 +32,7 @@ class Create extends Component
         'tax_amount'=>0,
         'total_material'=>0,
         'total_services'=>0,
+        'total_cadangan'=>0,
         'komisi'=>0,
         'komisi_amount'=>0
     ];
@@ -72,6 +73,7 @@ class Create extends Component
 
         if($propertyName=='form.responsibility'){
             $this->form['project_code'] = $this->form['responsibility'] .'/'.str_pad(( Quotation::count()+1),4, '0', STR_PAD_LEFT);
+            $this->generate_quotation();
         }
 
         if($propertyName=='vendor_selected_id'){
@@ -100,7 +102,7 @@ class Create extends Component
             $this->form['project_code'] = $this->form['responsibility'] .'/'.str_pad(( Quotation::count()+1),4, '0', STR_PAD_LEFT);
         }
 
-        if(in_array($propertyName,['form.quotation_date','form.customer_id','form.responsibility'])){
+        if(in_array($propertyName,['form.quotation_date','form.customer_id','form.responsibility','form.company_id'])){
             $this->generate_quotation();
         }
 
@@ -138,7 +140,7 @@ class Create extends Component
             
             if(count($find)>=1){
                 foreach($this->arr_parts as $k=>$i){
-                    if($i['id']==$this->material_selected_id) $this->arr_parts[$k]['qty'] +=  $this->material_qty;
+                    if($i['id']==$this->material_selected_id) $this->arr_parts[$k]['qty'] =  $this->material_qty;
 
                     $this->arr_parts[$k]['total'] = ($this->arr_parts[$k]['price'] and $this->arr_parts[$k]['qty']>0) ? ($this->arr_parts[$k]['price'] * $this->arr_parts[$k]['qty']) : 0;
                 }
@@ -164,10 +166,9 @@ class Create extends Component
                 ];
             }
 
-            sendVfdData($item->name,format_idr($item->price));
-
             $this->calculate();
         }
+        
         $this->reset('material_selected','material_selected_id','material_qty','material_factor');
     }
 
@@ -245,14 +246,17 @@ class Create extends Component
     public function calculate()
     {
         $this->form['total_quotation'] = 0;$this->form['total_material']=0;$this->form['total_services']=0;
+        $this->form['factor_amount'] = 0;
         foreach($this->arr_parts as $k=>$i){
             $this->arr_parts[$k]['total'] = ($this->arr_parts[$k]['price'] and $this->arr_parts[$k]['qty']>0) ? ($this->arr_parts[$k]['price'] * $this->arr_parts[$k]['qty']) : 0;
             
-            if($this->arr_parts[$k]['factor']>0) {
+            if($this->arr_parts[$k]['factor']>0){
                 $this->arr_parts[$k]['factor_amount'] = $this->arr_parts[$k]['factor'] / 100 * $this->arr_parts[$k]['total'];
             }
 
-            $this->arr_parts[$k]['total'] += $this->arr_vendor[$k]['factor_amount']??0;
+            $this->arr_parts[$k]['total'] = $this->arr_parts[$k]['total'] + $this->arr_parts[$k]['factor_amount']??0;
+
+            $this->form['factor_amount'] += $this->arr_parts[$k]['factor_amount'];
             $this->form['total_quotation'] += $this->arr_parts[$k]['total'];
             $this->form['total_material'] += $this->arr_parts[$k]['total'];
         }
@@ -268,22 +272,28 @@ class Create extends Component
             $this->form['total_quotation'] += $this->arr_services[$k]['total'];
         }
 
-        foreach($this->arr_vendor as $k=>$i){
-            $this->arr_vendor[$k]['total'] = ($this->arr_vendor[$k]['price'] and $this->arr_vendor[$k]['qty']>0) ? ($this->arr_vendor[$k]['price'] * $this->arr_vendor[$k]['qty']) : 0;
-            $this->form['total_quotation'] += $this->arr_vendor[$k]['total'];
-        }                                            
+        $factor = $this->form['factor_amount'];
+        if($this->form['ujrah']>0){
+            $this->form['ujrah_amount'] = ($this->form['ujrah']/100) * $factor;
+            $factor = $factor-$this->form['ujrah_amount'];
+        }
+
+        $this->form['total_cadangan'] = $factor;
 
         if($this->form['komisi'] and $this->form['total_quotation']){
-            $this->form['komisi_amount'] = $this->form['komisi'] /100 * $this->form['total_quotation'];
+            $this->form['komisi_amount'] = ($this->form['komisi']/100) * $this->form['total_cadangan'];
         }
+        
+        $this->form['tabbaru']=$this->form['total_quotation']-$this->form['ujrah_amount']-$this->form['komisi_amount'];
 
-        $this->form['tabbaru'] = $this->form['total_quotation'] + $this->form['komisi_amount'];
-
-        if($this->form['ujrah'] and $this->form['tabbaru']){
-            $this->form['ujrah_amount'] = $this->form['ujrah'] /100 * $this->form['tabbaru'];
-        }
-
-        $this->form['grand_total'] = $this->form['tabbaru'] + $this->form['ujrah_amount'];
+        /**
+         * Factor
+         * 
+         * Ujroh= Factor*persentase
+         * Tabbarur=Factor-Ujroh
+         * Komisi=tabbaru*persentase
+         */
+        $this->form['grand_total'] = $this->form['total_quotation'];
 
         if($this->form['use_tax']==1 and $this->form['grand_total']>0){
             $this->form['tax_amount'] = (11/100*$this->form['grand_total']);
@@ -313,7 +323,7 @@ class Create extends Component
             'form.project_type'=>'required',
             'form.quotation_number'=>'required',
             'form.valid_until'=>'required',
-            'arr_parts'=>'required|array'
+            // 'arr_parts'=>'required|array'
         ]);
 
         $this->form['submitted_id'] = \Auth::user()->id;

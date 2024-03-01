@@ -184,7 +184,7 @@
                                 </div> -->
                                 <div class="form-group col-md-6">
                                     <label>Ujrah (%)</label>
-                                    <input type="number" class="form-control" wire:model="form.ujrah" />
+                                    <input type="number" class="form-control" wire:model="form.ujrah" max="100" />
                                     @error('form.ujrah')
                                         <ul class="parsley-errors-list filled" id="parsley-id-29"><li class="parsley-required">{{ $message }}</li></ul>
                                     @enderror
@@ -306,8 +306,10 @@
                             </tr>
                             @php($total_part_qty += $item['qty'])
                             @php($total_part_sub_total += $item['price'])
+                            @php($total_part_factor += $item['factor_amount'])
                             @php($total_part_total += $item['total'])
                         @endforeach
+
                         <tr wire:key="item_row_part">
                             <td></td>
                             <td>
@@ -343,7 +345,7 @@
                                     {{$material_selected->uom?$material_selected->uom->name:'-'}}
                                 @endif
                             </td>
-                            <td>
+                            <td  class="text-right">
                                 @if($material_selected)
                                     {{$material_selected->price?format_idr($material_selected->price):'-'}}
                                 @endif
@@ -351,16 +353,19 @@
                             <td>
                                 <input type="number" class="form-control float-right text-right" style="width: 100px;" wire:model="material_factor" />
                             </td>
-                            <td>
+                            <td class="text-right">
+                                @php($temp_total=0)
                                 @if($material_selected and $material_factor>0 and $material_qty>0)
                                     @php($temp_total = $material_selected->price?$material_selected->price*$material_qty:0)
                                     @php($material_factor_amount = $this->material_factor / 100 * $temp_total)
+
                                     {{format_idr($material_factor_amount)}}
+
                                 @endif
                             </td>
-                            <td>
+                            <td class="text-right">
                                 @if($material_selected and $material_qty>0)
-                                    {{$material_selected->price?format_idr(($material_selected->price+$material_factor_amount)*$material_qty):'-'}}
+                                    {{format_idr($temp_total+$material_factor_amount)}}
                                 @endif
                             </td>
                             <td>
